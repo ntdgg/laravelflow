@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Index;
 
 use App\Http\Controllers\Controller;
+use DB;
 
 class NewsController extends Controller
 {
@@ -16,7 +17,8 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('index.news.index', []);
+        $list = DB::table('news')->simplePaginate(10);
+        return view('index.news.index',compact('list'));
     }
 
     /**

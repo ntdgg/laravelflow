@@ -24,16 +24,18 @@
 			</tr>
 		</thead>
 		<tbody>
-			{volist name='list' id='k'}
+            @foreach($list as $k=>$v)
 			<tr class="text-c">
 				<td><input type="checkbox" value="{$k.id}/{$k.status}" name="ids"></td>
-				<td>{$k.id}</td>
-				<td>{$k.uid}</td>
-				<td>{$k.new_type}</td>
-				<td>{eq name='$k.new_top' value='1'}
+				<td>{{$v->id}}</td>
+				<td>{{$v->uid}}</td>
+				<td>{{$v->new_type}}</td>
+				<td>
+                    @if($v->new_top==1)
 				<i class="Hui-iconfont" style='color:red'>&#xe684;</i>
-				{/eq}{$k.new_title}</td>
-				<td>{$k.add_time|date='Y-m-d H:i'}</td>
+                    @endif
+                        {{$v->new_title}}</td>
+				<td>{{date('Y-m-d',$v->add_time)}}</td>
 				<td>
 				<!--获取流状态-->
 				{:\\tpflow\\Api::wfaccess('status',['status'=>$k.status]);}
@@ -47,12 +49,12 @@
 				</div>
 				</td>
 			</tr>
-			{/volist}
+            @endforeach
 		</tbody>
 	</table>
 </div>
 <script type="text/javascript" src="__Flow__/workflow.5.0.js" ></script>
-<div class="page-bootstrap">{$list|raw}</div>
+<div class="page-bootstrap">{{$list->links()}}</div>
 <script type="text/javascript">
  $(document).ready(function (){
          $('input[type=checkbox]').click(function(){

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Index;
 
 use App\Http\Controllers\Controller;
+use DB;
 
 class IndexController extends Controller
 {
@@ -14,10 +15,16 @@ class IndexController extends Controller
      */
     public function index()
     {
-        return view('index.index.index', []);
+        $list = DB::table('user')->get();
+        return view('index.index.index', compact('list'));
     }
     public function welcome()
     {
         return view('index.index.welcome', []);
+    }
+    public function login($id,$name){
+        session(['uid' => $id]);
+        session(['uname' => $name]);
+       return redirect('/');
     }
 }

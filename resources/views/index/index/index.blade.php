@@ -9,7 +9,12 @@
             <span class='logo navbar-slogan f-l mr-10 hidden-xs'>作者：蝈蝈（1838188896） 交流群：532797225</span>
             </nav>
             <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
-                <ul class="cl"><li>{if condition='session("uid")'}欢迎您：{:session('uname')} {else/}请先模拟登入！{/if}</li>
+                <ul class="cl"><li>
+                        @if(session('uid'))
+                            欢迎您：{{session('uname')}}
+                            @else
+                            请先模拟登入
+                        @endif</li>
                     <li><a onClick='login()'>切换账号</a></li>
                 </ul>
             </nav>
@@ -69,7 +74,7 @@
 <script>
 
 
-    var session ="{:session('uid')}";
+    var session ="{{session('uid')}}";
     if(session =='' ){
         login();
         layer.open({
@@ -87,7 +92,7 @@
             type: 1,
             skin: 'layui-layer-rim', //加上边框
             area: ['520px', '180px'], //宽高
-            content: '<h2>模拟登入:</h2><br><b>　　{volist name="user" id="k"}<span class="btn  radius size-S"><a href="{:url("login",["id"=>$k.id,"user"=>$k.username,"role"=>$k.role])}">{$k.username}</a></span>　{/volist}<b>'
+            content: '<h2>模拟登入:</h2><br><b>　　@foreach($list as $k=>$v)<span class="btn  radius size-S"><a href="{{url('login',['uid'=>$v->id,'name'=>$v->username])}}">{{$v->username}}</a></span>　@endforeach<b>'
         });
     }
 </script>
