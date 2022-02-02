@@ -26,14 +26,15 @@ class NewsController extends Controller
      */
     public function add()
     {
-
+        return view('index.news.add');
     }
     /**
      * 查看新闻
      */
-    public function view()
+    public function view($id)
     {
-
+        $info = DB::table('news')->find($id);
+        return view('index.news.view',compact('info'));
     }
     /**
      * 修改新闻

@@ -3,7 +3,7 @@
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray">
 	<span class="l">
-	<a class="btn btn-primary radius" onclick="layer_show('新增新闻','{:url('add')}','850','500')" >
+	<a class="btn btn-primary radius" onclick="layer_show('新增新闻','{{url('news/add')}}','850','500')" >
 	<i class="Hui-iconfont-add Hui-iconfont"></i> 新增</a>
 	<a class="btn btn-secondary radius" onclick='end_flow()'><i class="Hui-iconfont Hui-iconfont-power"></i> 终止</a>
 	<a class="btn btn-warning radius" onclick='cancel_flow()'><i class="Hui-iconfont Hui-iconfont-close2"></i> 去审</a>
@@ -26,7 +26,7 @@
 		<tbody>
             @foreach($list as $k=>$v)
 			<tr class="text-c">
-				<td><input type="checkbox" value="{$k.id}/{$k.status}" name="ids"></td>
+				<td><input type="checkbox" value="{{$v->id}}/{{$v->status}}}" name="ids"></td>
 				<td>{{$v->id}}</td>
 				<td>{{$v->uid}}</td>
 				<td>{{$v->new_type}}</td>
@@ -42,10 +42,10 @@
 				</td>
 				<td class="td-manage">
 				<div class="btn-group">
-					<span class="btn  radius size-S" data-title="查看" data-href="{:url('view',['id'=>$k.id])}" onclick="Hui_admin_tab(this)"><i class="Hui-iconfont">查看</span>
+					<span class="btn  radius size-S" data-title="查看" data-href="{{url('news/view',['id'=>$v->id])}}" onclick="Hui_admin_tab(this)"><i class="Hui-iconfont">查看</span>
 						<!--按钮权限验证，审批权限验证，发起验证-->
 						{:\\tpflow\\Api::wfaccess('btn',['id'=>$k.id,'type'=>'news','status'=>$k.status]);}
-					<span class="btn  radius size-S" onclick="layer_show('修改','{:url('edit',['id'=>$k.id])}','850','500')">修改</span>
+					<span class="btn  radius size-S" onclick="layer_show('修改','{{url('news/edit',['id'=>$v->id])}}','850','500')">修改</span>
 				</div>
 				</td>
 			</tr>

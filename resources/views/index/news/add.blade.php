@@ -1,4 +1,4 @@
-{include file='pub/base' /}
+@extends('index.pub.base')
 <article class="page-container">
 		{present name="info.id"}
 			<form action="{:url('edit')}" method="post" name="form" id="form">
@@ -27,19 +27,17 @@
 			<td>新闻类别：</td><td>
 			<span class="select-box">
 				<select name="new_type"  class="select"  datatype="*" >
-					
 					<option value="1">新闻</option>
 					<option value="2">公告</option>
-					
 				</select>
 				</span>
 			</td>
 			<td></td><td>
-			
+
 			</td>
 			</tr><tr><td>新闻内容</td><td colspan="3" ><textarea name='new_con'  datatype="*"  type="text/plain" style="width:100%;height:300px;">{$info.new_con ?? ''}</textarea> </td></tr>
 		</table>
-		
+
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
@@ -60,7 +58,7 @@ $(function(){
 		radioClass: 'iradio-blue',
 		increaseArea: '20%'
 	});
-	
+
 	$("#form").Validform({
             tiptype:2,
             ajaxPost:true,

@@ -12,5 +12,5 @@ Route::get('login/{id}/{name}', [App\Http\Controllers\Index\IndexController::cla
 
 Route::get('news/index', [NewsController::class, 'index'])->name('index.news.index');
 Route::get('news/add', [NewsController::class, 'add'])->name('index.news.add');
-Route::get('news/view', [NewsController::class, 'view'])->name('index.news.view');
-Route::get('news/edit', [NewsController::class, 'edit'])->name('index.news.edit');
+Route::get('news/view/{id}', [NewsController::class, 'view'])->name('index.news.view');
+Route::any('news/edit/{id}', [NewsController::class, 'edit'])->name('index.news.edit');
