@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Index;
 
 use App\Http\Controllers\Controller;
 use DB;
+use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
@@ -24,8 +25,19 @@ class NewsController extends Controller
     /**
      * 新增新闻
      */
-    public function add()
+    public function add(Request $request)
     {
+        if ($request->isMethod('post')) {
+            $input = $request->post();
+            unset($input['_token']);
+            $input['uid'] = 1;
+            $res = DB::table('news')->insert($input);
+            if($res){
+                return json_encode(['code'=>0,'msg'=>'success']);
+            }else{
+                return json_encode(['code'=>1,'msg'=>'err']);
+            }
+        }
         return view('index.news.add');
     }
     /**
@@ -39,9 +51,20 @@ class NewsController extends Controller
     /**
      * 修改新闻
      */
-    public function edit()
+    public function edit($id,Request $request)
     {
-
+        if ($request->isMethod('post')) {
+            $input = $request->post();
+            unset($input['_token']);
+            $res = DB::table('news')->where('id',$id)->update($input);
+            if($res){
+                return json_encode(['code'=>0,'msg'=>'success']);
+            }else{
+                return json_encode(['code'=>1,'msg'=>'err']);
+            }
+        }
+        $info = DB::table('news')->find($id);
+        return view('index.news.add',compact('info'));
     }
 
 }

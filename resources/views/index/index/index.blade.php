@@ -72,8 +72,6 @@
     </div>
 </section>
 <script>
-
-
     var session ="{{session('uid')}}";
     if(session =='' ){
         login();

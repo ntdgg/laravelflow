@@ -179,7 +179,7 @@ class Application implements ResetInterface
             $exitCode = $e->getCode();
             if (is_numeric($exitCode)) {
                 $exitCode = (int) $exitCode;
-                if (0 === $exitCode) {
+                if ($exitCode <= 0) {
                     $exitCode = 1;
                 }
             } else {
@@ -363,9 +363,18 @@ class Application implements ResetInterface
             CompletionInput::TYPE_ARGUMENT_VALUE === $input->getCompletionType()
             && 'command' === $input->getCompletionName()
         ) {
-            $suggestions->suggestValues(array_filter(array_map(function (Command $command) {
-                return $command->isHidden() ? null : $command->getName();
-            }, $this->all())));
+            $commandNames = [];
+            foreach ($this->all() as $name => $command) {
+                // skip hidden commands and aliased commands as they already get added below
+                if ($command->isHidden() || $command->getName() !== $name) {
+                    continue;
+                }
+                $commandNames[] = $command->getName();
+                foreach ($command->getAliases() as $name) {
+                    $commandNames[] = $name;
+                }
+            }
+            $suggestions->suggestValues(array_filter($commandNames));
 
             return;
         }
@@ -977,6 +986,16 @@ class Application implements ResetInterface
         if ($command instanceof SignalableCommandInterface && ($this->signalsToDispatchEvent || $command->getSubscribedSignals())) {
             if (!$this->signalRegistry) {
                 throw new RuntimeException('Unable to subscribe to signal events. Make sure that the `pcntl` extension is installed and that "pcntl_*" functions are not disabled by your php.ini\'s "disable_functions" directive.');
+            }
+
+            if (Terminal::hasSttyAvailable()) {
+                $sttyMode = shell_exec('stty -g');
+
+                foreach ([\SIGINT, \SIGTERM] as $signal) {
+                    $this->signalRegistry->register($signal, static function () use ($sttyMode) {
+                        shell_exec('stty '.$sttyMode);
+                    });
+                }
             }
 
             if ($this->dispatcher) {

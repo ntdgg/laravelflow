@@ -7,10 +7,13 @@
     "require": {
         "php": "^7.3|^8.0",
         "fruitcake/laravel-cors": "^2.0",
+        "guoguo/tpflow": "^6.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "psr/log": "1.1.4",
+        "topthink/think-orm": "2.0.52"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

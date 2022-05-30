@@ -2,15 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Index\NewsController;
+use App\Http\Controllers\Index\IndexController;
+
+Route::controller(IndexController::class)->group(function () {
+    Route::get('/', 'index');
+    Route::get('welcome', 'welcome');
+    Route::get('login/{id}/{name}', 'login');
+});
 
 
-Route::get('/', [App\Http\Controllers\Index\IndexController::class, 'index'])->name('index.index.index');
-Route::get('welcome', [App\Http\Controllers\Index\IndexController::class, 'welcome'])->name('index.index.welcome');
-
-
-Route::get('login/{id}/{name}', [App\Http\Controllers\Index\IndexController::class, 'login'])->name('index.index.login');
-
-Route::get('news/index', [NewsController::class, 'index'])->name('index.news.index');
-Route::get('news/add', [NewsController::class, 'add'])->name('index.news.add');
-Route::get('news/view/{id}', [NewsController::class, 'view'])->name('index.news.view');
-Route::any('news/edit/{id}', [NewsController::class, 'edit'])->name('index.news.edit');
+Route::controller(NewsController::class)->group(function () {
+    Route::get('news/index', 'index');
+    Route::any('news/add', 'add');
+    Route::any('news/edit/{id}', 'edit');
+    Route::any('news/view/{id}', 'view');
+});

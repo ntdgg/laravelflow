@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2020 Justin Hileman
+ * (c) 2012-2022 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -225,6 +225,7 @@ if (!\function_exists('Psy\\info')) {
             'color mode'       => $config->colorMode(),
             'output decorated' => $config->getOutputDecorated(),
             'output verbosity' => $config->verbosity(),
+            'output pager'     => $config->getPager(),
         ];
 
         $pcntl = [

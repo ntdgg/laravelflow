@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2020 Justin Hileman
+ * (c) 2012-2022 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -816,9 +816,11 @@ class Configuration
                 return Readline\GNUReadline::class;
             } elseif (Readline\Libedit::isSupported()) {
                 return Readline\Libedit::class;
-            } elseif (Readline\HoaConsole::isSupported()) {
-                return Readline\HoaConsole::class;
             }
+        }
+
+        if (Readline\Userland::isSupported()) {
+            return Readline\Userland::class;
         }
 
         return Readline\Transient::class;
@@ -1206,7 +1208,7 @@ class Configuration
                 $this->pager = $pager;
             } elseif ($less = \exec('which less 2>/dev/null')) {
                 // check for the presence of less...
-                $this->pager = $less.' -R -S -F -X';
+                $this->pager = $less.' -R -F -X';
             }
         }
 
@@ -1373,7 +1375,7 @@ class Configuration
     {
         if (!isset($this->manualDb)) {
             $dbFile = $this->getManualDbFile();
-            if (\is_file($dbFile)) {
+            if ($dbFile !== null && \is_file($dbFile)) {
                 try {
                     $this->manualDb = new \PDO('sqlite:'.$dbFile);
                 } catch (\PDOException $e) {

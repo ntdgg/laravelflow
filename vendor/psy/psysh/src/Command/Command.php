@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2020 Justin Hileman
+ * (c) 2012-2022 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -147,7 +147,7 @@ abstract class Command extends BaseCommand
 
                 $description = \str_replace("\n", "\n".\str_pad('', $max + 2, ' '), $argument->getDescription());
 
-                $messages[] = \sprintf(" <info>%-${max}s</info> %s%s", $argument->getName(), $description, $default);
+                $messages[] = \sprintf(" <info>%-{$max}s</info> %s%s", $argument->getName(), $description, $default);
             }
 
             $messages[] = '';
@@ -182,7 +182,7 @@ abstract class Command extends BaseCommand
 
                 $optionMax = $max - \strlen($option->getName()) - 2;
                 $messages[] = \sprintf(
-                    " <info>%s</info> %-${optionMax}s%s%s%s",
+                    " <info>%s</info> %-{$optionMax}s%s%s%s",
                     '--'.$option->getName(),
                     $option->getShortcut() ? \sprintf('(-%s) ', $option->getShortcut()) : '',
                     $description,

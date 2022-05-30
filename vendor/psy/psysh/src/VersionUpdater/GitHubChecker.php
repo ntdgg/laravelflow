@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2020 Justin Hileman
+ * (c) 2012-2022 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -75,7 +75,7 @@ class GitHubChecker implements Checker
         $context = \stream_context_create([
             'http' => [
                 'user_agent' => 'PsySH/'.Shell::VERSION,
-                'timeout'    => 3,
+                'timeout'    => 1.0,
             ],
         ]);
 

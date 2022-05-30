@@ -38,14 +38,17 @@
 				<td>{{date('Y-m-d',$v->add_time)}}</td>
 				<td>
 				<!--获取流状态-->
-				{:\\tpflow\\Api::wfaccess('status',['status'=>$k.status]);}
-				</td>
-				<td class="td-manage">
-				<div class="btn-group">
-					<span class="btn  radius size-S" data-title="查看" data-href="{{url('news/view',['id'=>$v->id])}}" onclick="Hui_admin_tab(this)"><i class="Hui-iconfont">查看</span>
+
+                        {{@tpflow\Api::wfaccess('status',['status'=>$v->status])}}
+
+                    </td>
+                    <td class="td-manage">
+                    <div class="btn-group">
+                        <span class="btn  radius size-S" data-title="查看" data-href="{{url('news/view',['id'=>$v->id])}}" onclick="Hui_admin_tab(this)"><i class="Hui-iconfont">查看</span>
 						<!--按钮权限验证，审批权限验证，发起验证-->
-						{:\\tpflow\\Api::wfaccess('btn',['id'=>$k.id,'type'=>'news','status'=>$k.status]);}
+
 					<span class="btn  radius size-S" onclick="layer_show('修改','{{url('news/edit',['id'=>$v->id])}}','850','500')">修改</span>
+                        {{@tpflow\Api::wfaccess('btn',['id'=>$v->id,'type'=>'news','status'=>$v->status])}}
 				</div>
 				</td>
 			</tr>
