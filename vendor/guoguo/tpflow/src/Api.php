@@ -15,7 +15,8 @@ define('Tpflow_Ver', '6.0.5' );
 use tpflow\service\Control;
 //引用工具类
 use tpflow\lib\unit;
-use think\facade\Request;
+
+use Illuminate\Http\Request;
 
 	class Api{
 	public function  __construct(){
@@ -62,18 +63,17 @@ use think\facade\Request;
 	 * 调用 tpflow\adaptive\Control 的核心适配器进行API接口的调用
      * @return array 返回类型
 	 */
-	public function designapi($act,$flow_id=''){
-        dump(input('flow_id'));
-
-        dump($flow_id);exit;
+	public function designapi(Request $request,$act,$flow_id=''){
+        //dump($flow_id);dump($act);exit;
+        //var_dump($request->input());exit;
 		if($act=='welcome' ||$act=='check' || $act=='delAll' || $act=='wfdesc'){
-            return unit::return_msg(Control::WfDescCenter($act,input('flow_id')));
+            return unit::return_msg(Control::WfDescCenter($act,$flow_id));
 		}
         if($act=='add'){
             return unit::return_msg(Control::WfDescCenter($act,input('flow_id'),input('data')));
         }
 		if($act=='save'){
-            return unit::return_msg(Control::WfDescCenter($act,input('flow_id'),input('process_info')));
+            return unit::return_msg(Control::WfDescCenter($act,$flow_id,input('process_info')));
 		}
 		if($act=='del' ||$act=='att'){
             return unit::return_msg(Control::WfDescCenter($act,input('flow_id'),input('id')));

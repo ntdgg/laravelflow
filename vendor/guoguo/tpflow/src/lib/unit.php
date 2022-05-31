@@ -12,10 +12,15 @@ declare (strict_types=1);
 
 namespace tpflow\lib;
 
+use Illuminate\Http\Request;
+
 
 class unit
 {
 
+    public static function get_param($key){
+        return (new Request())->input($key);
+    }
 	/**
 	 * 判断是否是POST
 	 *

@@ -37,9 +37,9 @@ class lib
 		} else {
 			return $st[$status] ?? 'ERR';
 		}
-		
+
 	}
-	
+
 	/**
 	 * 工作流按钮权限
 	 *
@@ -240,7 +240,7 @@ php;
 php;
 		return $view;
 	}
-	
+
 	/**
 	 * 添加代理会签模板
 	 *
@@ -291,14 +291,14 @@ php;
 			</script>
 php;
 	}
-	
+
 	/**
 	 * 用户角色选择模板
 	 *
 	 **/
 	public static function tmp_suser($url, $kid, $user, $type = 'user')
 	{
-		
+
 		$tmp = self::commontmp('Tpflow V5.0 ');
 		return <<<php
 		 {$tmp['head']}
@@ -368,7 +368,7 @@ php;
 </script>
 php;
 	}
-	
+
 	/**
 	 * 工作流监控模板
 	 *
@@ -380,7 +380,7 @@ php;
 		 {$tmp['head']}<div class="page-container"><table class="table"><thead><tr class="text-c"><th>工作流编号</th><th >工作流类型</th><th >工作流名称</th><th >当前状态</th><th >业务办理人</th><th >接收时间</th><th >操作</th></thead></tr>{$data}</table></div>{$tmp['js']}</body></html>
 php;
 	}
-	
+
 	public static function tmp_wfstart($info, $flow)
 	{
 		$urls = unit::gconfig('wf_url');
@@ -402,7 +402,7 @@ php;
 </html>
 php;
 	}
-	
+
 	/**
 	 * 工作流提交模板
 	 *
@@ -443,7 +443,7 @@ php;
 				<td colspan=2 class='text-c'>
 						<input id='submit_to_save' name='submit_to_save' value='{$info['wf_submit']}' type='hidden'>
 						<button  class="button" type="submit"> 提交同意</button>
-						<a class="button" id='backbton' onclick='Tpflow.lclose()'>取消</a> 
+						<a class="button" id='backbton' onclick='Tpflow.lclose()'>取消</a>
 						<a class="button" onclick=Tpflow.lopen("Upload","{$info['tpflow_upload']}?id=upload",20,50) style="background-color: #19be6b">附件</a>
 				</td>
 				</tr>
@@ -459,7 +459,7 @@ $(function(){
 	$("#wfform").Validform({
             tiptype:function(msg,o,cssctl){
 				if (o.type == 3){
-					layer.msg(msg, {time: 800}); 
+					layer.msg(msg, {time: 800});
 				}
 			},
             ajaxPost:true,
@@ -469,7 +469,7 @@ $(function(){
 						layer.msg(ret.msg,{icon:1,time: 1500},function(){
 							window.parent.parent.location.reload(); //关闭所有弹出层
 							layer.closeAll();
-						});          
+						});
 					} else {
 					   layer.alert(ret.msg, {title: "错误信息", icon: 2});
 					}
@@ -481,7 +481,7 @@ $(function(){
 </html>
 php;
 	}
-	
+
 	/**
 	 * 工作流回退模板
 	 *
@@ -523,7 +523,7 @@ php;
 				<td colspan=2 class='text-c'>
 						<input id='submit_to_save' name='submit_to_save' value='back' type='hidden'>
 						<button  class="button" type="submit"> 提交回退</button>
-						<a class="button" id='backbton' onclick='Tpflow.lclose()'>取消</a> 
+						<a class="button" id='backbton' onclick='Tpflow.lclose()'>取消</a>
 				</td>
 				</tr>
 				</table>
@@ -538,7 +538,7 @@ $(function(){
 	$("#wfform").Validform({
             tiptype:function(msg,o,cssctl){
 				if (o.type == 3){
-					layer.msg(msg, {time: 800}); 
+					layer.msg(msg, {time: 800});
 				}
 			},
             ajaxPost:true,
@@ -548,7 +548,7 @@ $(function(){
 						layer.msg(ret.msg,{icon:1,time: 1500},function(){
 							window.parent.parent.location.reload(); //关闭所有弹出层
 							layer.closeAll();
-						});          
+						});
 					} else {
 					   layer.alert(ret.msg, {title: "错误信息", icon: 2});
 					}
@@ -560,7 +560,7 @@ $(function(){
 </html>
 php;
 	}
-	
+
 	/**
 	 * 工作流设计模板
 	 *
@@ -569,9 +569,73 @@ php;
 	{
 		$tmp = self::commontmp('Tpflow V5.0 ');
         $data = json_decode($process_data,'true');
-        return view(BEASE_URL.'/template/index.html',['surl'=>$urlApi,'id'=>$id,'x6'=>json_encode($data['x6'])]);
+        $surl = $urlApi;
+        $id = $id;
+        $x6 = json_encode($data['x6']);
+        $csr = csrf_token();
+        return <<<str
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tpflow工作流引擎 V6.0</title>
+    <link rel="stylesheet" href="/static/work/app.css">
+    <meta name="csrf-token" content="{$csr}">
+</head>
+<body>
+<div class="wrap">
+    <div class="header">
+        Tpflow工作流引擎 V6.0
+    </div>
+<div class='toolbar'>
+        <hr  style="margin: 0 5px;padding-top: 5px;border: none;border-bottom: solid 1px #DDD;clear: both;"/>
+        <a onclick='TFAPI.sApi("save")'>♡ 保存</a>
+        <a onclick='TFAPI.sApi("delAll")'>✘ 清空</a>
+        <a onclick='TFAPI.sApi("Refresh")'>➲ 刷新</a>
+        <hr  style="margin: 0 5px;padding-top: 5px;border: none;border-bottom: solid 1px #DDD;clear: both;"/>
+        <a onclick='TFAPI.sApi("check")'>♢ 校验</a>
+        <a onclick='TFAPI.sApi("Help")'>§ 帮助</a>
+        <a onclick='TFAPI.sApi()'>↓ 下载</a>
+        <a onclick='TFAPI.sApi("Doc")'>© 版权</a>
+        <a onclick='TFAPI.sApi("zoomIn")' style="position: fixed;left: 98%;font-weight: 1000;">+</a>
+        <a onclick='TFAPI.sApi("zoomOut")' style="position: fixed;left: 97%;font-weight: 1000;">-</a>
+    </div>
+    <div class="content">
+        <div class="app-stencil" id="sidebar"></div>
+        <div class="app-content" id="main"></div>
+        <div id="minimap" class="minimap"></div>
+    </div>
+</div>
+<script>
+    const Tpflow_Id = {$id};
+    const Tpflow_Server_Url = '{$surl}';
+</script>
+<script src="/static/work/jquery-1.7.2.min.js"></script>
+<script src="/static/work/lib/layer/2.4/layer.js"></script>
+<script src="/static/work/tpflow.x6.js"></script>
+<script src="/static/work/app.js"></script>
+<script src="/static/work/tpflow.node.js"></script>
+<script src="/static/work/tpflow.api.js"></script>
+<script>
+    function resize(){
+        const width=document.body.offsetWidth - 120;
+        const height=document.body.offsetHeight - 100;
+        graph.resize(width, height);
+    }
+    window.onresize = function (){
+        resize()
+    }
+    resize();
+    stencil.load([startNode, flowNode, judgeNode, msg_node,ccNode, linkNode ])
+    graph.fromJSON({$x6});
+</script>
+</body>
+</html>
+str;
+
+
 	}
-	
+
 	/**
 	 * 工作流会签模板
 	 *
@@ -614,7 +678,7 @@ php;
 				<td colspan=2 class='text-c'>
 						<input id='submit_to_save' name='submit_to_save' value='{$sing}' type='hidden'>
 						<button  class="button" type="submit">会签</button>
-						<a class="button" id='backbton' onclick='Tpflow.lclose()'>取消</a> 
+						<a class="button" id='backbton' onclick='Tpflow.lclose()'>取消</a>
 				</td>
 				</tr>
 				</table>
@@ -628,7 +692,7 @@ $(function(){
 	$("#wfform").Validform({
             tiptype:function(msg,o,cssctl){
 				if (o.type == 3){
-					layer.msg(msg, {time: 800}); 
+					layer.msg(msg, {time: 800});
 				}
 			},
             ajaxPost:true,
@@ -638,7 +702,7 @@ $(function(){
 						layer.msg(ret.msg,{icon:1,time: 1500},function(){
 							window.parent.parent.location.reload(); //关闭所有弹出层
 							layer.closeAll();
-						});          
+						});
 					} else {
 					   layer.alert(ret.msg, {title: "错误信息", icon: 2});
 					}
@@ -650,7 +714,7 @@ $(function(){
 </html>
 php;
 	}
-	
+
 	/**
 	 * 工作流程模板
 	 *
@@ -667,10 +731,10 @@ var _this = $('#flowdesign_canvas');
 $(function(){
 	Tpflow.show({$process_data});
 });
-</script>	
+</script>
 php;
 	}
-	
+
 	/**
 	 * 工作流列表模板
 	 *
@@ -692,7 +756,7 @@ php;
 str;
 		return str_ireplace(['{head}','{url}','{data}','{js}'], [$tmp['head'],$url,$data,$tmp['js']], $html);
 	}
-	
+
 	/**
 	 * 工作流管理模板
 	 *
@@ -708,7 +772,7 @@ str;
 {$tmp['js']}</body></html>
 php;
 	}
-	
+
 	/**
 	 * 工作流审批模板
 	 *
@@ -738,7 +802,7 @@ php;
 		}
 		$html .= ' <a class="button" onclick=Tpflow.lopen("审批历史","' . $info['tpflow_log'] . '",50,30)>✤ 审批历史</a> ';
 		$tmp = self::commontmp('Tpflow V5.0 ');
-		
+
 		return <<<php
 {$tmp['head']}
 <div class="page-container" style='width:100%;padding: 0px;'>
@@ -756,7 +820,7 @@ php;
 </html>
 php;
 	}
-	
+
 	/**
 	 * 步骤属性模板
 	 *
@@ -800,7 +864,7 @@ php;
         $tmp = self::commontmp('Tpflow V6.0 管理列表');
         return view(BEASE_URL.'/template/att.html',['urls'=>$urls,'one'=>$one,'wf_action'=>$wf_action,'process_type'=>$process_type,'from_html'=>$from_html,'condition'=>$condition,'wf_mode'=>$wf_mode,'process_to_html'=>$process_to_html,'tmp'=>$tmp,'wf_action_select'=>$wf_action_select]);
 	}
-	
+
 	/**
 	 * 公用模板方法
 	 *
@@ -823,7 +887,7 @@ php;
 				$("#form").Validform({
 						tiptype:function(msg,o,cssctl){
 							if (o.type == 3){
-								layer.msg(msg, {time: 800}); 
+								layer.msg(msg, {time: 800});
 							}
 						},
 						ajaxPost:true,
