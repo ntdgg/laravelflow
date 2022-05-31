@@ -24,10 +24,10 @@ return [
         'searchwhere'=>'username'//查询筛选字段 用于设计器where匹配
     ],
     'wf_url' => [
-        'wfdo'=>"/index/wf/wfdo.html",
-        'start'=>"/index/wf/wfstart.html", //表名
-        'wfapi'=>"/index/wf/wfapi.html", //表名
-        'designapi'=>"/index/wf/designapi.html", //表名
+        'wfdo'=>"/wf/wfdo",
+        'start'=>"/wf/wfstart", //表名
+        'wfapi'=>"/wf/wfapi", //表名
+        'designapi'=>"/wf/designapi", //表名
     ],
     /*角色信息配置*/
     'role' => [

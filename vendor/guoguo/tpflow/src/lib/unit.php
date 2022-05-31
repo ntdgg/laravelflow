@@ -15,7 +15,7 @@ namespace tpflow\lib;
 
 class unit
 {
-	
+
 	/**
 	 * 判断是否是POST
 	 *
@@ -24,7 +24,7 @@ class unit
 	{
 		return isset($_SERVER['REQUEST_METHOD']) && strtoupper($_SERVER['REQUEST_METHOD']) == 'POST';
 	}
-	
+
 	/**
 	 * return_msg 通用数据返回处理
 	 * @param $data
@@ -32,7 +32,7 @@ class unit
 	 */
 	public static function return_msg($data)
 	{
-		
+
 		$className = unit::gconfig('return_msg');
 		if ($className == '') {
 			if ($_SERVER['REQUEST_METHOD'] == 'JSON' || $_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -40,7 +40,7 @@ class unit
 			} else {
 				return $data;
 			}
-			
+
 		} else {
 			if (!class_exists($className)) {
 				return '404,对不起，您的自定义返回类不存在！';
@@ -48,7 +48,7 @@ class unit
 			return (new $className())->Msg($data);
 		}
 	}
-	
+
 	/**
 	 * 加载自定义事务驱动文件
 	 *
@@ -65,7 +65,7 @@ class unit
 		}
 		return new $className($id, $run_id, $data);
 	}
-	
+
 	/**
 	 * 获取定义的信息
 	 * @param string $key
@@ -89,9 +89,9 @@ class unit
 		} else {
 			return $user_info[$key] ?? '';
 		}
-		
+
 	}
-	
+
 	/**
 	 * 根据键值加载全局配置文件
 	 *
@@ -107,7 +107,7 @@ class unit
 		$ret = require($file);
 		return $ret[$key] ?? '';
 	}
-	
+
 	/**
 	 * 消息返回统一处理
 	 *
@@ -119,7 +119,7 @@ class unit
 	{
 		return ["code" => $code, "msg" => $msg, "data" => $data];
 	}
-	
+
 	/**
 	 * 步骤转换
 	 *
@@ -154,7 +154,7 @@ class unit
 			return $pr . $op;
 		}
 	}
-	
+
 	/**
 	 * IDS数组转换
 	 *
@@ -182,7 +182,7 @@ class unit
 		if (!$idstr) $idstr = 0;
 		return $idstr;
 	}
-	
+
 	/**
 	 * JSON 转换处理
 	 *
@@ -203,7 +203,7 @@ class unit
 			foreach ($value['condition'] as $val) {
 				$preg = "/'(data_[0-9]*|checkboxs_[0-9]*)'/s";
 				preg_match_all($preg, $val, $temparr);
-				
+
 				$condition .= $val;
 			}
 			$value['condition'] = $condition;
@@ -211,7 +211,7 @@ class unit
 		}
 		return $json_data;
 	}
-	
+
 	/**
 	 * 获取字段名称
 	 */
@@ -231,6 +231,6 @@ class unit
 		}
 		return $title;
 	}
-	
+
 }
 

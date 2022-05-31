@@ -56,7 +56,7 @@
 		</tbody>
 	</table>
 </div>
-<script type="text/javascript" src="__Flow__/workflow.5.0.js" ></script>
+<script type="text/javascript" src="/static/work/workflow.5.0.js" ></script>
 <div class="page-bootstrap">{{$list->links()}}</div>
 <script type="text/javascript">
  $(document).ready(function (){

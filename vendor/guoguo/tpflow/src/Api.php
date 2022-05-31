@@ -62,7 +62,10 @@ use think\facade\Request;
 	 * 调用 tpflow\adaptive\Control 的核心适配器进行API接口的调用
      * @return array 返回类型
 	 */
-	public function designapi($act){
+	public function designapi($act,$flow_id=''){
+        dump(input('flow_id'));
+
+        dump($flow_id);exit;
 		if($act=='welcome' ||$act=='check' || $act=='delAll' || $act=='wfdesc'){
             return unit::return_msg(Control::WfDescCenter($act,input('flow_id')));
 		}
@@ -142,8 +145,8 @@ use think\facade\Request;
 	 public static function wfUserData($act='userFlow',$map=[],$field='',$order='',$group='',$page=1,$limit=20){
 		return Control::wfUserData($act,$map,$field,$order,$group,$page,$limit);
 	}
-	 
-	 
+
+
 	/**
 	 * Tpflow 5.0统一接口 前端权限控制中心
 	 * @param string $act 调用接口方法
@@ -160,4 +163,3 @@ use think\facade\Request;
     }
 
 }
-	

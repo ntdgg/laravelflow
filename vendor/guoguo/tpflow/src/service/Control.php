@@ -8,7 +8,7 @@
  * Author: guoguo(1838188896@qq.com)
  *+------------------
  */
-declare (strict_types = 1); 
+declare (strict_types = 1);
 
 namespace tpflow\service;
 
@@ -16,8 +16,8 @@ use tpflow\lib\unit;
 
 
 Class Control{
-	
-	protected $mode ; 
+
+	protected $mode ;
     public function  __construct(){
 		if(unit::gconfig('view_return')==1){
 			$className = '\\tpflow\\service\\method\\Tpl';
@@ -84,7 +84,7 @@ Class Control{
 	 */
 	static function WfDescCenter($act,$flow_id='',$data=''){
 		return (new Control())->mode->WfDescCenter($act,$flow_id,$data);
-		
+
 	}
 	/**
 	 * Tpflow 5.0统一接口
@@ -95,7 +95,7 @@ Class Control{
 	 * status  状态判断
 	 */
 	static function WfAccess($act,$data=''){
-		return (new Control())->mode->WfAccess($act,$data);
+		echo (new Control())->mode->WfAccess($act,$data);
 	}
 	/**
 	 * Tpflow 5.0统一接口
@@ -115,5 +115,5 @@ Class Control{
     static function wfMysend($page,$limit){
         return (new Control())->mode->wfMysend($page,$limit);
     }
-	
+
 }
