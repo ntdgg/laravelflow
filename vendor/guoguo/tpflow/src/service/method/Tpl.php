@@ -190,8 +190,8 @@ class Tpl
 			if ($wf_op == 'log') {
 				return Log::FlowLog($wf_fid, $wf_type);
 			}
-			
-			
+
+
 		}
 		//超级接口
 		if ($act == 'endflow') {
@@ -217,7 +217,7 @@ class Tpl
 		}
 		return $act . '参数出错';
 	}
-	
+
 	/**
 	 * Tpflow 5.0统一接口 流程管理中心
 	 * @param string $act 调用接口方法
@@ -250,7 +250,7 @@ class Tpl
 				$status = ['正常', '禁用'];
 				if ($v['edit'] == '') {
 					$url_edit = $urls['wfapi'] . '?act=add&id=' . $v['id'];
-					$url_desc = $urls['designapi'] . '?act=wfdesc&flow_id=' . $v['id'];
+					$url_desc = $urls['designapi'] . '/wfdesc/' . $v['id'];
 					$btn = "<a class='button' onclick=Tpflow.lopen('修改','" . $url_edit . "','55','60')> 修改</a> <a class='button' onclick=Tpflow.lopen('设计','" . $url_desc . "',100,100)> 设计</a> ";
 				} else {
 					$btn = "<a class='btn  radius size-S'> 运行中....</a>";
@@ -269,7 +269,7 @@ class Tpl
 			$html = '';
 			foreach ($data as $k => $v) {
 				$status = ['未审核', '已审核'];
-				
+
 				$html .= '<tr class="text-c"><td>' . $v['id'] . '</td><td>' . $v['from_table'] . '</td><td>' . $v['flow_name'] . '</td><td>' . $status[$v['status']] . '</td><td>' . $v['flow_name'] . '</td><td>' . date("Y-m-d H:i", $v['dateline']) . '</td><td><a  onclick=Tpflow.wfconfirm("' . $urls['wfapi'] . '?act=wfend",{"id":' . $v['id'] . '},"您确定要终止该工作流吗？");>终止</a>  |  ' . lib::tpflow_btn($v['from_id'], $v['from_table'], 100, self::WfCenter('Info', $v['from_id'], $v['from_table'])) . '</td></tr>';
 			}
 			return lib::tmp_wfjk($html);
@@ -350,7 +350,7 @@ class Tpl
         }
 		return $act . '参数出错';
 	}
-	
+
 	/**
 	 * Tpflow 5.0 工作流代理接口
 	 * @param string $act 调用接口方法
@@ -398,7 +398,7 @@ class Tpl
 		}
 		return $act . '参数出错';
 	}
-	
+
 	/**
 	 * Tpflow 5.0统一接口设计器
 	 * @param string $act 调用接口方法
@@ -476,7 +476,7 @@ class Tpl
 		}
 		return $act . '参数出错';
 	}
-	
+
 	/**
 	 * Tpflow 5.0统一接口
 	 * @param string $act 调用接口方法
@@ -503,7 +503,7 @@ class Tpl
 		}
 		return $act . '参数出错';
 	}
-	
+
 	/**
 	 * Tpflow 5.0统一接口
 	 * @param string $act 调用接口方法
@@ -535,5 +535,5 @@ class Tpl
         $data = Run::dataRunMy(unit::getuserinfo('uid'),$page, $limit);
         return ['code' => 1, 'msg' => '查询成功', 'data' => $data['data'], 'count' => $data['count']];
     }
-	
+
 }

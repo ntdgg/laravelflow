@@ -41,7 +41,7 @@ class unit
 		$className = unit::gconfig('return_msg');
 		if ($className == '') {
 			if ($_SERVER['REQUEST_METHOD'] == 'JSON' || $_SERVER['REQUEST_METHOD'] == 'POST') {
-				return json($data);
+				return json_encode($data);
 			} else {
 				return $data;
 			}

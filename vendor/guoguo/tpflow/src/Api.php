@@ -64,8 +64,9 @@ use Illuminate\Http\Request;
      * @return array 返回类型
 	 */
 	public function designapi(Request $request,$act,$flow_id=''){
-        //dump($flow_id);dump($act);exit;
-        //var_dump($request->input());exit;
+       //
+      //   dump($flow_id);dump($act);exit;
+       // var_dump($request->input());exit;
 		if($act=='welcome' ||$act=='check' || $act=='delAll' || $act=='wfdesc'){
             return unit::return_msg(Control::WfDescCenter($act,$flow_id));
 		}
@@ -73,7 +74,8 @@ use Illuminate\Http\Request;
             return unit::return_msg(Control::WfDescCenter($act,input('flow_id'),input('data')));
         }
 		if($act=='save'){
-            return unit::return_msg(Control::WfDescCenter($act,$flow_id,input('process_info')));
+            $data = $request->input('process_info');
+            return unit::return_msg(Control::WfDescCenter($act,$flow_id,$data));
 		}
 		if($act=='del' ||$act=='att'){
             return unit::return_msg(Control::WfDescCenter($act,input('flow_id'),input('id')));
