@@ -161,7 +161,7 @@ const initEvents = (domName) => {
         const xy = node.position()
         const wh = node.size()
         TFAPI.sApi('save');
-        var Url = Tpflow_Server_Url+'?act=add';
+        var Url = Tpflow_Server_Url+'/add/'+Tpflow_Id;
         TFAPI.sPost(Url,{"flow_id":Tpflow_Id,'data':{'process_name':node.attrs.text.text,'style':'{"width":'+wh.width+',"height":'+wh.height+',"color":"#2d6dcc"}','process_type':node.data,'setleft':xy.y,'settop':xy.x}},true);
     })
 
@@ -180,7 +180,7 @@ const initEvents = (domName) => {
                 },
                 onClick({ view }) {
                     if(confirm("你确定删除步骤吗？")) {
-                        TFAPI.sPost(Tpflow_Server_Url+'?act=del',{"flow_id":Tpflow_Id,"id":node.data});
+                        TFAPI.sPost(Tpflow_Server_Url+'/del/'+Tpflow_Id,{"flow_id":Tpflow_Id,"id":node.data});
                     }
                 },
             },

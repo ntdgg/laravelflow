@@ -17,7 +17,7 @@ use tpflow\lib\unit;
 class Flow
 {
 	protected $mode;
-	
+
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
@@ -27,7 +27,7 @@ class Flow
 		}
 		$this->mode = new $className();
 	}
-	
+
 	/**
 	 * 获取流程信息
 	 *
@@ -46,7 +46,7 @@ class Flow
     {
         return (new Flow())->mode->del($id);
     }
-	
+
 	/**
 	 * 获取类别工作流
 	 *
@@ -62,7 +62,7 @@ class Flow
 		$map[] = ['type', '=', $wf_type];
 		return (new Flow())->mode->SearchFlow($map);
 	}
-	
+
 	/**
 	 * 获取流程信息
 	 *
@@ -80,7 +80,7 @@ class Flow
 			return false;
 		}
 	}
-	
+
 	/**
 	 * 判断工作流是否存在
 	 *
@@ -98,7 +98,7 @@ class Flow
 			return false;
 		}
 	}
-	
+
 	/**
 	 * 获取步骤信息
 	 *
@@ -108,7 +108,7 @@ class Flow
 	{
 		return Process::find($id);
 	}
-	
+
 	/**
 	 * API获取工作流列表
 	 * API接口调用
@@ -122,7 +122,7 @@ class Flow
 		}
 		return $data;
 	}
-	
+
 	/**
 	 * API 新增工作流
 	 * @param array $data POST提交的数据
@@ -136,7 +136,7 @@ class Flow
 			return ['code' => 1, 'data' => 'Db0001-写入数据库出错！'];
 		}
 	}
-	
+
 	/**
 	 * API 编辑工作流
 	 * @param array $data POST提交的数据
@@ -150,7 +150,7 @@ class Flow
 			return ['code' => 1, 'data' => 'Db0001-写入数据库出错！'];
 		}
 	}
-	
+
 	/**
 	 * 获取所有步骤信息
 	 * @param $flow_id
@@ -194,7 +194,7 @@ class Flow
        $x6_data =  array_merge($x6,$x62);
 		return json_encode(['x6'=>['cells'=>$x6_data]]);
 	}
-	
+
 	/**
 	 * 删除步骤信息
 	 * @param $flow_id
@@ -234,7 +234,7 @@ class Flow
 		}
 		return ['code' => 0, 'msg' => '删除成功', 'info' => ''];
 	}
-	
+
 	/**
 	 * 删除步骤信息
 	 * @param $flow_id
@@ -248,7 +248,7 @@ class Flow
 			return ['code' => 1, 'msg' => '操作错误！'];
 		}
 	}
-	
+
 	/**
 	 * 新增步骤信息
 	 * @param $flow_id
@@ -271,7 +271,7 @@ class Flow
 			return ['code' => 0, 'msg' => '添加成功！', 'info' => ''];
 		}
 	}
-	
+
 	/**
 	 * 步骤连接
 	 * @param $flow_id
@@ -301,7 +301,9 @@ class Flow
                     'process_to' => $process_to,
                     'uptime' => time()
                 ];
-                Process::EditFlowProcess([['id', '=', $p_id], ['flow_id', '=', $flow_id]], $datas);
+                if(is_numeric($p_id)){
+                    Process::EditFlowProcess([['id', '=', $p_id], ['flow_id', '=', $flow_id]], $datas);
+                }
             }
 		}
 		return ['code' => 0, 'msg' => '保存步骤成功~', 'info' => ''];
@@ -384,7 +386,7 @@ class Flow
 			return ['code' => 1, 'msg' => '保存失败！', 'info' => ''];
 		}
 	}
-	
+
 	/**
 	 * 属性查看
 	 * @param $process_id
@@ -420,7 +422,7 @@ class Flow
 		$child_flow_list = $mode->SearchFlow([['is_del', '=', 0]], 'id,flow_name');
 		return ['show' => 'basic', 'info' => $one, 'process_to_list' => $process_to_list, 'child_flow_list' => $child_flow_list, 'from' => $mode->get_db_column_comment($flow_one['type'])];
 	}
-	
+
 	/**
 	 * 步骤逻辑检查
 	 * @param $wfid
@@ -431,7 +433,7 @@ class Flow
 			return ['code' => 1, 'msg' => '参数出错!', 'info' => ''];
 		}
 		$pinfo = Process::SearchFlowProcess([['flow_id', '=', $wfid]]);
-		
+
 		if (count($pinfo) < 1) {
 			return ['code' => 1, 'msg' => '没有找到步骤信息!', 'info' => ''];
 		}
@@ -444,7 +446,7 @@ class Flow
 		}
 		return ['code' => 0, 'msg' => '简单逻辑检查通过，请自行检查转出条件！', 'info' => ''];
 	}
-	
+
 	/**
 	 *结束工作流主状态
 	 *
@@ -453,7 +455,7 @@ class Flow
 	{
 		return Run::EditRun($run_id, ['status' => 1, 'endtime' => time()]);
 	}
-	
+
 	/**
 	 *结束工作流步骤信息
 	 *
@@ -464,7 +466,7 @@ class Flow
         Kpi::Run($run_process);
 		return Run::EditRunProcess([['id', 'in', $run_process]], ['status' => 2, 'remark' => $check_con, 'bl_time' => time()]);
 	}
-	
+
 	/**
 	 *更新流程主信息
 	 *

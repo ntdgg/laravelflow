@@ -17,17 +17,17 @@ use think\facade\Db;
 
 class AdapteeProcess
 {
-	
+
 	function find($id, $field = '*')
 	{
 		return Db::name('wf_flow_process')->field($field)->find($id);
 	}
-	
+
 	function finds($ids, $field = '*')
 	{
 		return Db::name('wf_flow_process')->field($field)->where('id', 'in', $ids)->select()->all();
 	}
-	
+
 	function SearchFlowProcess($where = [], $field = '*', $order = '', $limit = 0)
 	{
 		if ($limit > 0) {
@@ -36,22 +36,22 @@ class AdapteeProcess
 			return Db::name('wf_flow_process')->where($where)->field($field)->order($order)->select()->all();
 		}
 	}
-	
+
 	function EditFlowProcess($where, $data)
 	{
 		return Db::name('wf_flow_process')->where($where)->update($data);
 	}
-	
+
 	function DelFlowProcess($where)
 	{
 		return Db::name('wf_flow_process')->where($where)->delete();
 	}
-	
+
 	function AddFlowProcess($data)
 	{
 		return Db::name('wf_flow_process')->insertGetId($data);
 	}
-	
+
 	function get_userprocess($uid, $role)
 	{
 		$dt = Db::name('wf_flow_process')

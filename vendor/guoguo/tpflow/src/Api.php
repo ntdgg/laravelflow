@@ -64,21 +64,20 @@ use Illuminate\Http\Request;
      * @return array 返回类型
 	 */
 	public function designapi(Request $request,$act,$flow_id=''){
-       //
-      //   dump($flow_id);dump($act);exit;
-       // var_dump($request->input());exit;
 		if($act=='welcome' ||$act=='check' || $act=='delAll' || $act=='wfdesc'){
             return unit::return_msg(Control::WfDescCenter($act,$flow_id));
 		}
         if($act=='add'){
-            return unit::return_msg(Control::WfDescCenter($act,input('flow_id'),input('data')));
+            $data = $request->input('data');
+            return unit::return_msg(Control::WfDescCenter($act,$flow_id,$data));
         }
 		if($act=='save'){
             $data = $request->input('process_info');
             return unit::return_msg(Control::WfDescCenter($act,$flow_id,$data));
 		}
 		if($act=='del' ||$act=='att'){
-            return unit::return_msg(Control::WfDescCenter($act,input('flow_id'),input('id')));
+            $data = $request->input('id');
+            return unit::return_msg(Control::WfDescCenter($act,$flow_id,$data));
 		}
 		if($act=='saveatt'){
             return unit::return_msg(Control::WfDescCenter($act,'',input('post.')));
