@@ -217,7 +217,7 @@ const initEvents = (domName) => {
         if(node.shape=='node-end'){
             layer.msg('结束节点');return;
         }
-        var url = Tpflow_Server_Url + "?id=" + node.data + "&act=att";
+        var url = Tpflow_Server_Url + "/att/" + node.data;
         TFAPI.lopen("属性设计", url, 50, 60);
     })
 }

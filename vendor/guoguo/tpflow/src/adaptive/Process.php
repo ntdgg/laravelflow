@@ -16,9 +16,9 @@ use tpflow\lib\unit;
 
 class Process
 {
-	
+
 	protected $mode;
-	
+
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
@@ -28,7 +28,7 @@ class Process
 		}
 		$this->mode = new $className();
 	}
-	
+
 	/**
 	 * 根据ID获取流程信息
 	 *
@@ -40,7 +40,7 @@ class Process
 	}
 
 
-	
+
 	/**
 	 * 添加工作流步骤
 	 *
@@ -50,7 +50,7 @@ class Process
 	{
 		return (new Process())->mode->AddFlowProcess($data);
 	}
-	
+
 	/**
 	 * 编辑工作流步骤信息
 	 *
@@ -61,7 +61,7 @@ class Process
 	{
 		return (new Process())->mode->EditFlowProcess($where, $data);
 	}
-	
+
 	/**
 	 * 删除步骤信息
 	 *
@@ -71,7 +71,7 @@ class Process
 	{
 		return (new Process())->mode->DelFlowProcess($where);
 	}
-	
+
 	/**
 	 * 查询工作流步骤信息
 	 *
@@ -84,8 +84,8 @@ class Process
 	{
 		return (new Process())->mode->SearchFlowProcess($where, $field, $order, $limit);
 	}
-	
-	
+
+
 	/**
 	 * 根据ID获取流程信息
 	 *
@@ -114,7 +114,7 @@ class Process
 		}
 		return $info;
 	}
-	
+
 	/**
 	 * 同步步骤信息
 	 *
@@ -241,7 +241,7 @@ class Process
 		}
 		return $process;
 	}
-	
+
 	/**
 	 * 获取前步骤的流程信息
 	 *
@@ -281,7 +281,7 @@ class Process
 		}
 		return $prearray;
 	}
-	
+
 	/**
 	 * 同步模式下获取未办结的流程信息
 	 *
@@ -292,7 +292,7 @@ class Process
 	{
 		return Run::SearchRunProcess([['run_id', '=', $run_id], ['status', '=', 0], ['id', '<>', $run_process]]);
 	}
-	
+
 	/**
 	 * 获取第一个流程
 	 *
@@ -314,7 +314,7 @@ class Process
 		}
 		return $flow_process_first;
 	}
-	
+
 	/**
 	 * 阻止重复提交
 	 *
@@ -325,7 +325,7 @@ class Process
 		$data = Run::FindRunProcessId($id);
 		return $data['status'];
 	}
-	
+
 	/**
 	 *获取sing_id
 	 *
@@ -336,7 +336,7 @@ class Process
 		$data = Run::FindRunId($run_id);
 		return $data['sing_id'];
 	}
-	
+
 	/**
 	 *获取所有相关的流程步骤
 	 *

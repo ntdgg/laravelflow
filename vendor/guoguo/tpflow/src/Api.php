@@ -75,12 +75,16 @@ use Illuminate\Http\Request;
             $data = $request->input('process_info');
             return unit::return_msg(Control::WfDescCenter($act,$flow_id,$data));
 		}
-		if($act=='del' ||$act=='att'){
+		if($act=='del'){
             $data = $request->input('id');
             return unit::return_msg(Control::WfDescCenter($act,$flow_id,$data));
 		}
+        if($act=='att'){
+            return unit::return_msg(Control::WfDescCenter($act,'',$flow_id));
+        }
 		if($act=='saveatt'){
-            return unit::return_msg(Control::WfDescCenter($act,'',input('post.')));
+            $data = $request->input();
+            return unit::return_msg(Control::WfDescCenter($act,'',$data));
 		}
 		if($act=='super_user'){
 			return unit::return_msg(Control::WfDescCenter($act,'',['kid'=>input('kid'),'type_mode'=>input('type_mode'),'key'=>input('key'),'type'=>input('type')]));
