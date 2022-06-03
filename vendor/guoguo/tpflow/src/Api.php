@@ -61,7 +61,7 @@ use Illuminate\Http\Request;
 	 * Tpflow 5.0统一接口设计器
 	 * @param string $act 调用接口方法
 	 * 调用 tpflow\adaptive\Control 的核心适配器进行API接口的调用
-     * @return array 返回类型
+     * @return  返回类型
 	 */
 	public function designapi(Request $request,$act,$flow_id=''){
 		if($act=='welcome' ||$act=='check' || $act=='delAll' || $act=='wfdesc'){
@@ -87,7 +87,10 @@ use Illuminate\Http\Request;
             return unit::return_msg(Control::WfDescCenter($act,'',$data));
 		}
 		if($act=='super_user'){
-			return unit::return_msg(Control::WfDescCenter($act,'',['kid'=>input('kid'),'type_mode'=>input('type_mode'),'key'=>input('key'),'type'=>input('type')]));
+            $type_mode = $request->query('type_mode');
+            $key = $request->query('key');
+            $type = $request->query('type');
+			return unit::return_msg(Control::WfDescCenter($act,'',['kid'=>$flow_id,'type_mode'=>$type_mode,'key'=>$key,'type'=>$type]));
 		}
 	}
 	/**

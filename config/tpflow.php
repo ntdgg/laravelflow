@@ -17,7 +17,7 @@ return [
     'work_table'=>'[work]',//特定的表前缀，用于接入工作流的实体表
     /*用户信息配置*/
     'user' => [
-        'db'=>'soft_user', //表名
+        'db'=>'user', //表名
         'key'=>'id', //主键
         'getfield'=>'username',//获取用户名称
         'field'=>'id,username',//查询筛选字段 用于设计器的选人
@@ -31,7 +31,7 @@ return [
     ],
     /*角色信息配置*/
     'role' => [
-        'db'=>'soft_role', //表名
+        'db'=>'role', //表名
         'key'=>'id', //主键
         'getfield'=>'name',//获取用户名称
         'field'=>'id,name as username',//查询筛选字段 用于设计器的选人
