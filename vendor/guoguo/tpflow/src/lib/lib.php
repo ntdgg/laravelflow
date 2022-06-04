@@ -49,7 +49,7 @@ class lib
         $btn_lang = unit::gconfig('wf_btn');
 		$urls = unit::gconfig('wf_url');
 		$thisuser = ['thisuid' => unit::getuserinfo('uid'), 'thisrole' => unit::getuserinfo('role')];
-		$url = ['url' => $urls['wfdo'] . '?act=do&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid];
+		$url = ['url' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid];
         $ccHtml = Cc::ccStatus($wf_type,$wf_fid);
 		switch ($status) {
 			case 0:
@@ -62,13 +62,13 @@ class lib
                     }
                 }
 				if ($return == 1) {
-					return ['Url' => $urls['wfdo'] . '?act=start&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid, 'User' => '', 'status' => 1];
+					return ['Url' => $urls['wfdo'] . '/start/' . $wf_type . '/' . $wf_fid, 'User' => '', 'status' => 1];
 				}
 				if(!$btn_access){
                     return '';
                 }
 
-                $btnHtml =   '<span class="btn" onclick=Tpflow.lopen(\'发起\',"' . $urls['wfdo'] . '?act=start&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '",35,30)>'.$btn_lang['start'].'</span>';
+                $btnHtml =   '<span class="btn" onclick=Tpflow.lopen(\'发起\',"' . $urls['wfdo'] . '/start/' . $wf_type . '/' . $wf_fid . '",35,30)>'.$btn_lang['start'].'</span>';
 
 				break;
 			case 1:
@@ -207,10 +207,12 @@ php;
             $info['tmp'] = '';
 		}
 		$tmp = self::commontmp('Tpflow V5.0 ');
+        $csr = csrf_token();
 		$view = <<<php
 				{$tmp['head']}
 				<form action="{$url}" method="post" name="form" id="form" style="padding: 10px;">
 				<input type="hidden" name="id" value="{$info['id']}">
+				<input type="hidden" name="_token" value="{$csr}">
 				   <table class="table"><tr><th style='width:75px'>流程名称</th><td style='width:330px;text-align: left;'>
 							<input type="text" class="input-text" value="{$info['flow_name']}" name="flow_name"  datatype="*" ></td></tr><tr>
 							<th>流程类型</th><td style='width:330px;text-align: left;'>
@@ -384,12 +386,14 @@ php;
 	public static function tmp_wfstart($info, $flow)
 	{
 		$urls = unit::gconfig('wf_url');
-		$url = $urls['wfdo'] . '?act=start&wf_type=' . $info['wf_type'] . '&wf_fid=' . $info['wf_fid'];
+		$url = $urls['wfdo'] . '/start/' . $info['wf_type'] . '/' . $info['wf_fid'];
 		$tmp = self::commontmp('Tpflow V5.0 ');
+        $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
 		<form action="{$url}" method="post" name="form" id="form">
 		<input type='hidden' value="{$info['wf_fid']}" name='wf_fid'>
+		<input type="hidden" name="_token" value="{$csr}">
 		<table class="table">
 			<tr><td>选择工作流：</td><td style="text-align:left"><select name="wf_id"  class="smalls "  datatype="*" ><option value="">请选择工作流</option>{$flow}</select>
 			</td></tr><tr>
@@ -411,6 +415,7 @@ php;
 	{
 		$sup = $_GET['sup'] ?? '';
 		$tmp = self::commontmp('Tpflow V5.0 ');
+        $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
 		<form action="{$info['tpflow_ok']}" method="post" name="form" id="wfform">
@@ -421,6 +426,7 @@ php;
 		<input type="hidden" value="{$sup}" name="sup">
 		<input type="hidden" value="{$flowinfo['run_process']}" name="run_process">
 		<input type="hidden" value="{$flowinfo['flow_process']}" name="flow_process">
+		<input type="hidden" name="_token" value="{$csr}">
 		<table class="table table-border table-bordered table-bg" style='width:98%'>
 			<thead>
 			<tr>
@@ -495,12 +501,14 @@ php;
 		}
 		$sup = $_GET['sup'] ?? '';
 		$tmp = self::commontmp('Tpflow V5.0 ');
+        $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
 		<form action="{$info['tpflow_back']}" method="post" name="form" id="wfform">
 		<input type="hidden" value="{$flowinfo['run_id']}" name="run_id" id='run_id'>
 		<input type="hidden" value="{$sup}" name="sup">
 		<input type="hidden" value="{$flowinfo['run_process']}" name="run_process">
+		<input type="hidden" name="_token" value="{$csr}">
 		<table class="table table-border table-bordered table-bg" style='width:98%'>
 			<thead>
 			<tr>
@@ -649,12 +657,14 @@ str;
 		}
 		$sup = $_GET['sup'] ?? '';
 		$tmp = self::commontmp('Tpflow V5.0 ');
+        $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
 		<form action="{$info['tpflow_sign']}" method="post" name="form" id="wfform">
 		<input type="hidden" value="{$flowinfo['run_id']}" name="run_id" id='run_id'>
 		<input type="hidden" value="{$sup}" name="sup">
 		<input type="hidden" value="{$flowinfo['run_process']}" name="run_process">
+		<input type="hidden" name="_token" value="{$csr}">
 		<table class="table table-border table-bordered table-bg" style='width:98%'>
 			<thead>
 			<tr>

@@ -8,7 +8,7 @@ return [
     'version'=>'6.0.4',//当前版本
     'database'=>config('database.connections.mysql.database'),//数据库名称
     'prefix'=>config('database.connections.mysql.prefix'),//数据库前缀
-    'int_url'=>'/index',//使用工作流的模块名称
+    'int_url'=>'',//使用工作流的模块名称
     'gateway_mode' =>1,//1,默认使用Tp的助手函数
     'start_flow'=>['gongdan','lunwen','zhuanli'],//流程发起控制，填写 table 则只有填写人可以发起工作流
     'gateway_action' =>'\\sys\\Gateway',//自定义方法返回数据 命名空间 中的GetUserInfo

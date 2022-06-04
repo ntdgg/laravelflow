@@ -93,11 +93,11 @@ class Tpl
 				'wf_fid' => $wf_fid,
 				'wf_type' => $wf_type,
 				'wf_submit' => $data['submit'],
-				'tpflow_ok' => $urls['wfdo'] . '?act=do&wf_op=ok&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
-				'tpflow_back' => $urls['wfdo'] . '?act=do&wf_op=back&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
-				'tpflow_sign' => $urls['wfdo'] . '?act=do&wf_op=sign&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
-				'tpflow_flow' => $urls['wfdo'] . '?act=do&wf_op=flow&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
-				'tpflow_log' => $urls['wfdo'] . '?act=do&wf_op=log&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
+				'tpflow_ok' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=ok&sup=' . $sup,
+				'tpflow_back' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=back&sup=' . $sup,
+				'tpflow_sign' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=sign&sup=' . $sup,
+				'tpflow_flow' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=flow&sup=' . $sup,
+				'tpflow_log' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=log&sup=' . $sup,
 				'tpflow_upload' => unit::gconfig('wf_upload_file')
 			];
 			if ($wf_op == 'check') {
@@ -105,7 +105,6 @@ class Tpl
 			}
             /*对审批提交执行人进行权限校验*/
             if($wf_op == 'ok' || $wf_op == 'back' || $wf_op == 'sign'){
-
                 $flowinfo = self::WfCenter('Info', $wf_fid, $wf_type);
                 $thisuser = ['thisuid' => unit::getuserinfo('uid'), 'thisrole' => unit::getuserinfo('role')];
                 $st = 0;
@@ -262,7 +261,7 @@ class Tpl
 				}
 				$tr .= '<tr><td>' . $v['id'] . '</td><td>' . $v['flow_name'] . '</td><td>' .($type[$v['type']] ?? 'Err') . '</td><td>' . date('Y/m/d H:i', $v['add_time']) . '</td><td>' . $status[$v['status']] . '</td><td>' . $btn . '</td></tr>';
 			}
-			return lib::tmp_index($urls['wfapi'] . '?act=add', $tr, $html);
+			return lib::tmp_index($urls['wfapi'] . '/add', $tr, $html);
 		}
 		if ($act == 'wfjk') {
 			$data = Info::worklist();
@@ -298,7 +297,7 @@ class Tpl
 			foreach (Info::get_wftype() as $k => $v) {
 				$type .= '<option value="' . $v['name'] . '">' . $v['title'] . '</option>';
 			}
-			return lib::tmp_add($urls['wfapi'] . '?act=add', $info, $type);
+			return lib::tmp_add($urls['wfapi'] . '/add', $info, $type);
 		}
 		if ($act == 'event') {
 			if ($data != '' && !is_numeric($data)) {

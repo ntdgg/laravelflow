@@ -29,27 +29,27 @@ use Illuminate\Http\Request;
 	  * @param string $act 调用接口方法
 	  * 调用 tpflow\adaptive\Control 的核心适配器进行API接口的调用
 	  */
-	 public function WfDo($act='index'){
+	 public function WfDo(Request $request,$act='index',$wf_type='',$wf_fid=''){
 		if($act=='start'){
 			if (unit::is_post()) {
-				$data = input('post.');
-                return unit::return_msg(Control::WfCenter($act,input('wf_fid'),input('wf_type'),$data));
+                $data = $request->input();
+                return unit::return_msg(Control::WfCenter($act,$wf_fid,$wf_type,$data));
 			 }else{
-				 return Control::WfCenter($act,input('wf_fid'),input('wf_type'));
+				 return Control::WfCenter($act,$wf_fid,$wf_type);
 			 }
 		}
 		if($act=='endflow'||$act=='cancelflow'){
             return unit::return_msg(Control::WfCenter($act,'','',['bill_table'=>input('bill_table'),'bill_id'=>input('bill_id')]));
 		}
 		if($act=='do'){
-			$wf_op = input('wf_op') ?? 'check';
-			$ssing = input('ssing') ?? 'sing';
-			$submit = input('submit') ?? 'ok';
+			$wf_op =  $request->query('wf_op') ?? 'check';
+			$ssing =  $request->query('ssing') ?? 'sing';
+			$submit =  $request->query('submit') ?? 'ok';
 			if (unit::is_post()) {
-				$post = input('post.');
-                return unit::return_msg(Control::WfCenter($act,input('wf_fid'),input('wf_type'),['wf_op'=>$wf_op,'ssing'=>$ssing,'submit'=>$submit],$post));
+                $post = $request->input();
+                return unit::return_msg(Control::WfCenter($act,$wf_fid,$wf_type,['wf_op'=>$wf_op,'ssing'=>$ssing,'submit'=>$submit],$post));
 			 }else{
-                return unit::return_msg(Control::WfCenter($act,input('wf_fid'),input('wf_type'),['wf_op'=>$wf_op,'ssing'=>$ssing,'submit'=>$submit]));
+                return unit::return_msg(Control::WfCenter($act,$wf_fid,$wf_type,['wf_op'=>$wf_op,'ssing'=>$ssing,'submit'=>$submit]));
 			 }
 		}
         /*用户确认抄送*/
@@ -99,7 +99,7 @@ use Illuminate\Http\Request;
 	 * 调用 tpflow\adaptive\Control 的核心适配器进行API接口的调用
      * @return array 返回类型
 	 */
-	public function wfapi($act='index'){
+	public function wfapi(Request $request,$act='index'){
 		if($act=='index'||$act=='wfjk' ||$act=='verUpdate'){
 			return Control::WfFlowCenter($act);
 		}
@@ -108,7 +108,7 @@ use Illuminate\Http\Request;
 		}
 		if($act=='event'){
 			if (unit::is_post()) {
-				$data = input('post.');
+                $data = $request->input();
 				return unit::return_msg(Control::WfFlowCenter($act,$data));
 			}else{
 				$data = input('id') ?? -1;
@@ -117,10 +117,11 @@ use Illuminate\Http\Request;
 		}
 		if($act=='add'){
 			if (unit::is_post()) {
-				$data = input('post.');
+                $data = $request->input();
+                unset($data['_token'],$data['s']);
                 return unit::return_msg(Control::WfFlowCenter($act,$data));
 			 }else{
-                $data = input('id') ?? -1;
+                $data = $request->query('id') ?? -1;
                 return unit::return_msg(Control::WfFlowCenter($act,$data));
 			 }
 		}
