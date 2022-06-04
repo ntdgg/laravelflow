@@ -39,7 +39,9 @@ use Illuminate\Http\Request;
 			 }
 		}
 		if($act=='endflow'||$act=='cancelflow'){
-            return unit::return_msg(Control::WfCenter($act,'','',['bill_table'=>input('bill_table'),'bill_id'=>input('bill_id')]));
+            $bill_table =  $request->query('bill_table') ?? '';
+            $bill_id =  $request->query('bill_id') ?? '';
+            return unit::return_msg(Control::WfCenter($act,'','',['bill_table'=>$bill_table,'bill_id'=>$bill_id]));
 		}
 		if($act=='do'){
 			$wf_op =  $request->query('wf_op') ?? 'check';
