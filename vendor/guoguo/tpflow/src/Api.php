@@ -90,9 +90,9 @@ use Illuminate\Http\Request;
             return unit::return_msg(Control::WfDescCenter($act,'',$data));
 		}
 		if($act=='super_user'){
-            $type_mode = $request->query('type_mode');
-            $key = $request->query('key');
-            $type = $request->query('type');
+            $type_mode = $request->input('type_mode');
+            $key = $request->input('key');
+            $type = $request->input('type');
 			return unit::return_msg(Control::WfDescCenter($act,'',['kid'=>$flow_id,'type_mode'=>$type_mode,'key'=>$key,'type'=>$type]));
 		}
 	}

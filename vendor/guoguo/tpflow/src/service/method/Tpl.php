@@ -461,14 +461,14 @@ class Tpl
 				foreach ($info as $k => $v) {
 					$user .= '<option value="' . $v['id'] . '">' . $v['username'] . '</option>';
 				}
-				return lib::tmp_suser($urls['designapi'] . '?act=super_user&type_mode=super_get', $data['kid'], $user);
+				return lib::tmp_suser($urls['designapi'] . '/super_user?type_mode=super_get', $data['kid'], $user);
 			} elseif ($data['type_mode'] == 'role') {
 				$info = User::GetRole();
 				$user = '';
 				foreach ($info as $k => $v) {
 					$user .= '<option value="' . $v['id'] . '">' . $v['username'] . '</option>';
 				}
-				return lib::tmp_suser($urls['designapi'] . '?act=super_user&type_mode=super_get', 'auto_role', $user, 'role');
+				return lib::tmp_suser($urls['designapi'] . '/super_user?type_mode=super_get', 'auto_role', $user, 'role');
 			} else {
 				return ['data' => User::AjaxGet(trim($data['type']), $data['key']), 'code' => 1, 'msg' => '查询成功！'];
 			}

@@ -16,19 +16,19 @@ use tpflow\lib\unit;
 
 class User
 {
-	
+
 	protected $mode;
-	
+
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\tpflow\\custom\\think\\AdapteeUser';
+			$className = '\\tpflow\\custom\\laravel\\AdapteeUser';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeUser';
 		}
 		$this->mode = new $className();
 	}
-	
+
 	/**
 	 * 获取用户列表
 	 *
@@ -46,7 +46,7 @@ class User
     {
         return (new User())->mode->searchRoleIds($role);
     }
-	
+
 	/**
 	 * 获取角色列表
 	 *
@@ -55,7 +55,7 @@ class User
 	{
 		return (new User())->mode->GetRole();
 	}
-	
+
 	/**
 	 * 获取AJAX信息
 	 *
@@ -64,7 +64,7 @@ class User
 	{
 		return (new User())->mode->AjaxGet($type, $keyword);
 	}
-	
+
 	/**
 	 * 查询用户消息
 	 *
@@ -73,7 +73,7 @@ class User
 	{
 		return (new User())->mode->GetUserInfo($id);
 	}
-	
+
 	/**
 	 * 查询用户名称
 	 *

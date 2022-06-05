@@ -304,6 +304,7 @@ php;
 	{
 
 		$tmp = self::commontmp('Tpflow V5.0 ');
+        $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
 <article class="page-container">
@@ -350,7 +351,7 @@ php;
         });
         $("#search").on("click",function(){
 			var url = "{$url}";
-			$.post(url,{"type":'{$type}',"key":$('#key').val()},function(data){
+			$.post(url,{"type":'{$type}',"_token":'{$csr}',"key":$('#key').val()},function(data){
 				layer.msg(data.msg);
 				var userdata = data.data;
 				var optionList = [];

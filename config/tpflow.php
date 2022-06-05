@@ -20,7 +20,7 @@ return [
         'db'=>'user', //表名
         'key'=>'id', //主键
         'getfield'=>'username',//获取用户名称
-        'field'=>'id,username',//查询筛选字段 用于设计器的选人
+        'field'=>['id','username'],//查询筛选字段 用于设计器的选人
         'searchwhere'=>'username'//查询筛选字段 用于设计器where匹配
     ],
     'wf_url' => [
@@ -34,7 +34,7 @@ return [
         'db'=>'role', //表名
         'key'=>'id', //主键
         'getfield'=>'name',//获取用户名称
-        'field'=>'id,name as username',//查询筛选字段 用于设计器的选人
+        'field'=>['id','name as username'],//查询筛选字段 用于设计器的选人
         'searchwhere'=>'name'//查询筛选字段 用于设计器where匹配
     ],
     /*工作流类别信息配置*/
