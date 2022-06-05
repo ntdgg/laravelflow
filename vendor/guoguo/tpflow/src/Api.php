@@ -56,7 +56,8 @@ use Illuminate\Http\Request;
 		}
         /*用户确认抄送*/
         if($act=='entCc'){
-            return Control::WfCenter($act,input('id'));
+            $id =  $request->query('id');
+            return Control::WfCenter($act,$id);
         }
 	}
 	/**

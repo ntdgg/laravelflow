@@ -248,16 +248,16 @@ class Tpl
 			foreach ($data['rows'] as $k => $v) {
 				$status = ['正常', '禁用'];
 				if ($v['edit'] == '') {
-					$url_edit = $urls['wfapi'] . '?act=add&id=' . $v['id'];
+					$url_edit = $urls['wfapi'] . '/add?id=' . $v['id'];
 					$url_desc = $urls['designapi'] . '/wfdesc/' . $v['id'];
 					$btn = "<a class='button' onclick=Tpflow.lopen('修改','" . $url_edit . "','55','60')> 修改</a> <a class='button' onclick=Tpflow.lopen('设计','" . $url_desc . "',100,100)> 设计</a> ";
 				} else {
 					$btn = "<a class='btn  radius size-S'> 运行中....</a>";
 				}
 				if ($v['status'] == 0) {
-					$btn .= "<a class='button' onclick=Tpflow.wfconfirm('" . $urls['wfapi'] . '?act=add' . "',{'id':" . $v['id'] . ",'status':1},'您确定要禁用该工作流吗？')> 禁用</a>";
+					$btn .= "<a class='button' onclick=Tpflow.wfconfirm('" . $urls['wfapi'] . '/add' . "',{'id':" . $v['id'] . ",'status':1},'您确定要禁用该工作流吗？')> 禁用</a>";
 				} else {
-					$btn .= "<a class='button' onclick=Tpflow.wfconfirm('" . $urls['wfapi'] . '?act=add' . "',{'id':" . $v['id'] . ",'status':0},'您确定要启用该工作流吗？')> 启用</a>";
+					$btn .= "<a class='button' onclick=Tpflow.wfconfirm('" . $urls['wfapi'] . '/add' . "',{'id':" . $v['id'] . ",'status':0},'您确定要启用该工作流吗？')> 启用</a>";
 				}
 				$tr .= '<tr><td>' . $v['id'] . '</td><td>' . $v['flow_name'] . '</td><td>' .($type[$v['type']] ?? 'Err') . '</td><td>' . date('Y/m/d H:i', $v['add_time']) . '</td><td>' . $status[$v['status']] . '</td><td>' . $btn . '</td></tr>';
 			}

@@ -368,20 +368,33 @@ var Tpflow = {
 		});
 	},
 	sPost : function(Post_Url,PostData,reload=true) {
-		$.post(Post_Url,PostData,function(data){
-			if(data.code==0){
-				layer.msg(data.msg,{icon:1,time: 1500},function(){
-					if(reload){
-						location.reload();
-					}
-				});
-			}else{
-				layer.msg(data.msg, {
-					time: 2000, //20s后自动关闭
-				});
+        $.ajax({
+            url: Post_Url,
+            data: PostData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'post',
+            cache: true,
+            dataType: 'json',
+            success: function (ret) {
+                if(ret.code==0){
+                    layer.msg(ret.msg,{icon:1,time: 1500},function(){
+                        if(reload){
+                            location.reload();
+                        }
+                    });
+                }else{
+                    layer.msg(ret.msg, {
+                        time: 2000, //20s后自动关闭
+                    });
 
-			}
-		},'json');
+                }
+            },
+            error: function () {
+                layer.alert('请求出错！', {title: "错误信息", icon: 2});
+            }
+        });
 	},
 	DelJProcessData : function(){
 		if(confirm("你确定删除步骤吗？")){

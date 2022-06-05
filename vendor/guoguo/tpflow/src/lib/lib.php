@@ -752,12 +752,14 @@ php;
 	public static function tmp_index($url, $data, $html)
 	{
 		$tmp = self::commontmp('Tpflow V5.0 ');
+        $csr = csrf_token();
 		$html = <<<str
 		{head}
+		<meta name="csrf-token" content="{$csr}">
 		<div style='padding: 15px;'>
 		<a onclick="Tpflow.lopen('添加工作流','{url}',55,60)" class="button ">添加</a> <a onclick="location.reload();" class="button" style="background-color: #FFB800;">刷新</a>
 		<table class="table" style="text-align: center">
-		<thead><tr><th style="width: 30px">ID</th><th>流程名称</th><th>流程类型</th><th>添加时间</th><th>状态</th><th>操作</th></thead></tr>{data}
+		    <thead><tr><th style="width: 30px">ID</th><th>流程名称</th><th>流程类型</th><th>添加时间</th><th>状态</th><th>操作</th></thead></tr>{data}
 		</table>
 		</div>
 		{js}
