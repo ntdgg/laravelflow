@@ -35,8 +35,8 @@
                 <dt><i class="Hui-iconfont"></i> 工作流设计<i class="Hui-iconfont menu_dropdown-arrow"></i></dt>
                 <dd style="display: block;"><ul>
                         <li><a data-href="{{url('wf/wfapi')}}" data-title="工作流列表" href="javascript:void(0)">工作流列表</a></li>
-                        <li><a data-href="{:url('wf/wfapi')}?act=wfjk" data-title="工作流监控" href="javascript:void(0)">工作流监控</a></li>
-                        <li><a data-href="{:url('wf/wfapi')}?act=wfdl" data-title="工作流代理" href="javascript:void(0)">工作流代理</a></li>
+                        <li><a data-href="{{url('wf/wfapi')}}/wfjk" data-title="工作流监控" href="javascript:void(0)">工作流监控</a></li>
+                        <li><a data-href="{{url('wf/wfapi')}}/wfdl" data-title="工作流代理" href="javascript:void(0)">工作流代理</a></li>
                 </dd>
             </dl>
             <dl>

@@ -269,7 +269,7 @@ class Tpl
 			foreach ($data as $k => $v) {
 				$status = ['未审核', '已审核'];
 
-				$html .= '<tr class="text-c"><td>' . $v['id'] . '</td><td>' . $v['from_table'] . '</td><td>' . $v['flow_name'] . '</td><td>' . $status[$v['status']] . '</td><td>' . $v['flow_name'] . '</td><td>' . date("Y-m-d H:i", $v['dateline']) . '</td><td><a  onclick=Tpflow.wfconfirm("' . $urls['wfapi'] . '?act=wfend",{"id":' . $v['id'] . '},"您确定要终止该工作流吗？");>终止</a>  |  ' . lib::tpflow_btn($v['from_id'], $v['from_table'], 100, self::WfCenter('Info', $v['from_id'], $v['from_table'])) . '</td></tr>';
+				$html .= '<tr class="text-c"><td>' . $v['id'] . '</td><td>' . $v['from_table'] . '</td><td>' . $v['flow_name'] . '</td><td>' . $status[$v['status']] . '</td><td>' . $v['flow_name'] . '</td><td>' . date("Y-m-d H:i", $v['dateline']) . '</td><td><a  onclick=Tpflow.wfconfirm("' . $urls['wfapi'] . '/wfend",{"id":' . $v['id'] . '},"您确定要终止该工作流吗？");>终止</a>  |  ' . lib::tpflow_btn($v['from_id'], $v['from_table'], 100, self::WfCenter('Info', $v['from_id'], $v['from_table'])) . '</td></tr>';
 			}
 			return lib::tmp_wfjk($html);
 		}
@@ -364,7 +364,7 @@ class Tpl
 			$list = Entrust::lists();
 			$html = '';
 			foreach ($list as $k => $v) {
-				$btn = "<a class='button' onclick=Tpflow.lopen('修改','" . $urls['wfapi'] . '?act=dladd&id=' . $v['id'] . "','65','60')> 修改</a> ";
+				$btn = "<a class='button' onclick=Tpflow.lopen('修改','" . $urls['wfapi'] . '/dladd?id=' . $v['id'] . "','65','60')> 修改</a> ";
 				$sq = "步骤授权";
 				if ($v['flow_id'] == 0) {
 					$sq = "全局授权";

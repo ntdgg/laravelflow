@@ -251,10 +251,12 @@ php;
 	{
 		$tmp = self::commontmp('Tpflow V5.0 管理列表');
 		$urls = unit::gconfig('wf_url');
+        $csr = csrf_token();
 		return <<<php
 				{$tmp['head']}
-				<form action="{$urls['wfapi']}?act=dladd" method="post" name="form" id="form">
+				<form action="{$urls['wfapi']}/dladd" method="post" name="form" id="form">
 				<input type="hidden" name="id" value="{$info['id']}">
+				<input type="hidden" name="_token" value="{$csr}">
 				   <table class="table">
 							<tr><th style='width:75px'>委托标题</th>
 							<td style='width:330px;text-align: left;'><input type="text" class="input-text" name="entrust_title"  datatype="*" value="{$info['entrust_title']}"></td>
@@ -378,8 +380,9 @@ php;
 	public static function tmp_wfjk($data)
 	{
 		$tmp = self::commontmp('Tpflow V5.0 ');
+        $csr = csrf_token();
 		return <<<php
-		 {$tmp['head']}<div class="page-container"><table class="table"><thead><tr class="text-c"><th>工作流编号</th><th >工作流类型</th><th >工作流名称</th><th >当前状态</th><th >业务办理人</th><th >接收时间</th><th >操作</th></thead></tr>{$data}</table></div>{$tmp['js']}</body></html>
+		 {$tmp['head']}<meta name="csrf-token" content="{$csr}"><div class="page-container"><table class="table"><thead><tr class="text-c"><th>工作流编号</th><th >工作流类型</th><th >工作流名称</th><th >当前状态</th><th >业务办理人</th><th >接收时间</th><th >操作</th></thead></tr>{$data}</table></div>{$tmp['js']}</body></html>
 php;
 	}
 
@@ -777,9 +780,11 @@ str;
 	{
 		$tmp = self::commontmp('Tpflow V5.0 ');
 		$urls = unit::gconfig('wf_url');
+        $csr = csrf_token();
 		return <<<php
 	{$tmp['head']}
-<div class="page-container"><div style='float: left;width:80px'><a onclick="Tpflow.lopen('添加委托授权','{$urls['wfapi']}?act=dladd','75','40')" class="button ">委托代理</a> <hr/><a onclick="location.reload();" class="button ">刷新页面</a></div>
+	<meta name="csrf-token" content="{$csr}">
+<div class="page-container"><div style='float: left;width:80px'><a onclick="Tpflow.lopen('添加委托授权','{$urls['wfapi']}/dladd','75','40')" class="button ">委托代理</a> <hr/><a onclick="location.reload();" class="button ">刷新页面</a></div>
 <div style='float: left;width:calc(100% - 80px);'><table class="table" ><thead><tr><th>ID</th><th>授权名称</th> <th>委托类型</th><th>授权关系</th><th>起止时间</th><th>委托备注</th><th>操作</th></tr></thead>{$data}</table></div></div>
 {$tmp['js']}</body></html>
 php;

@@ -135,14 +135,17 @@ use Illuminate\Http\Request;
             }
         }
 		if($act=='wfend'){
-			 return Control::WfFlowCenter($act,input('id'));
+            $id = $request->input('id');
+			 return Control::WfFlowCenter($act,$id);
 		}
 		if($act=='dladd'){
 			if (unit::is_post()) {
-				$data = input('post.');
+                $data = $request->input();
+                unset($data['_token'],$data['s']);
 				return Control::WfEntrustCenter('add',$data);
 			 }else{
-				 return Control::WfEntrustCenter('add',input('id'));
+                $id = $request->query('id');
+				 return Control::WfEntrustCenter('add',$id);
 			 }
 		}
 	}
