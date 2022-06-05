@@ -16,19 +16,19 @@ use tpflow\lib\unit;
 
 class Work
 {
-	
+
 	protected $mode;
-	
+
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\tpflow\\custom\\think\\AdapteeWork';
+			$className = '\\tpflow\\custom\\laravel\\AdapteeWork';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeWork';
 		}
 		$this->mode = new $className();
 	}
-	
+
 	/**
 	 * 节点事务接口
 	 *
@@ -53,7 +53,7 @@ class Work
 		}
 		return 'work_sql:' . $sql_return . '|work_msg:' . $msg_return;
 	}
-	
+
 	/**
 	 * 审批事务执行处理
 	 *
@@ -62,7 +62,7 @@ class Work
 	{
 		return (new Work())->mode->WorkSql($config, $flow_process_info);
 	}
-	
+
 	/**
 	 * 消息转换
 	 *
@@ -71,5 +71,5 @@ class Work
 	{
 		return (new Work())->mode->WorkMsg($config, $flow_process_info);
 	}
-	
+
 }

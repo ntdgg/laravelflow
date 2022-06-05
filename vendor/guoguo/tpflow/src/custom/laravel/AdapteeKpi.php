@@ -4,15 +4,15 @@ declare (strict_types=1);
 
 namespace tpflow\custom\laravel;
 
-use think\facade\Db;
+use DB;
 
 class AdapteeKpi
 {
     function addKpi($data){
 
-        Db::startTrans();
+        DB::beginTransaction();
         try {
-            Db::name('wf_kpi_data')->insertGetId($data);
+            DB::table('wf_kpi_data')->insertGetId($data);
             if($this->hasKpiMonth($data['k_uid'])){
                 $this->incKpiMonth($data['k_uid'],$data['k_mark']);
                 }else{
@@ -23,17 +23,17 @@ class AdapteeKpi
             }else{
                 $this->addKpiYear($data);
             }
-            Db::commit();
+            DB::commit();
             return true;
         } catch (\Exception $e) {
             // 回滚事务
-            Db::rollback();
+            DB::rollBack();
             return false;
         }
     }
 
     function hasKpiYear($uid){
-        $has = Db::name('wf_kpi_year')->where('k_uid',$uid)->where('k_year',date('Y'))->find();
+        $has = DB::table('wf_kpi_year')->where('k_uid',$uid)->where('k_year',date('Y'))->first();
         if($has){
             return true;
         }else{
@@ -42,7 +42,7 @@ class AdapteeKpi
     }
 
     function hasKpiMonth($uid){
-        $has = Db::name('wf_kpi_month')->where('k_uid',$uid)->where('k_year',date('Y'))->where('k_month',date('m'))->find();
+        $has = DB::table('wf_kpi_month')->where('k_uid',$uid)->where('k_year',date('Y'))->where('k_month',date('m'))->first();
         if($has){
             return true;
         }else{
@@ -59,7 +59,7 @@ class AdapteeKpi
             'k_time'=>1,
             'k_create_time'=>time(),
         ];
-        Db::name('wf_kpi_year')->insertGetId($post);
+        DB::table('wf_kpi_year')->insertGetId($post);
     }
 
     function addKpiMonth($data){
@@ -72,18 +72,14 @@ class AdapteeKpi
             'k_time'=>1,
             'k_create_time'=>time(),
         ];
-        Db::name('wf_kpi_month')->insertGetId($post);
+        DB::table('wf_kpi_month')->insertGetId($post);
     }
 
     function incKpiYear($uid,$mark){
-        Db::name('wf_kpi_year')->where('k_uid',$uid)->where('k_year',date('Y'))->inc('k_mark', $mark)->inc('k_time')->update();
+        DB::table('wf_kpi_year')->where('k_uid',$uid)->where('k_year',date('Y'))->increment('k_mark', (int)$mark, ['k_time'=>DB::raw('k_time + 1')]);
     }
 
     function incKpiMonth($uid,$mark){
-        Db::name('wf_kpi_month')->where('k_uid',$uid)->where('k_year',date('Y'))->where('k_month',date('m'))->inc('k_mark', $mark)->inc('k_time')->update();
+        DB::table('wf_kpi_month')->where('id',$uid)->where('k_year',date('Y'))->where('k_month',date('m'))->increment('k_mark', $mark, ['k_time'=>DB::raw('k_time + 1')]);
     }
-
-
-
-
 }

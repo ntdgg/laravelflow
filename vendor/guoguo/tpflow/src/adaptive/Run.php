@@ -16,19 +16,19 @@ use tpflow\lib\unit;
 
 class Run
 {
-	
+
 	protected $mode;
-	
+
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\tpflow\\custom\\think\\AdapteeRun';
+			$className = '\\tpflow\\custom\\laravel\\AdapteeRun';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeRun';
 		}
 		$this->mode = new $className();
 	}
-	
+
 	/**
 	 * 添加运行步骤
 	 *
@@ -38,7 +38,7 @@ class Run
 	{
 		return (new Run())->mode->AddRun($data);
 	}
-	
+
 	/**
 	 * 查询run流程信息
 	 *
@@ -48,7 +48,7 @@ class Run
 	{
 		return (new Run())->mode->FindRunId($id, $field);
 	}
-	
+
 	/**
 	 * 编辑run流程信息
 	 *
@@ -59,7 +59,7 @@ class Run
 	{
 		return (new Run())->mode->EditRun($id, $data);
 	}
-	
+
 	/**
 	 * 查询run流程信息
 	 *
@@ -70,7 +70,7 @@ class Run
 	{
 		return (new Run())->mode->FindRun($where, $field);
 	}
-	
+
 	/**
 	 * 查询run流程信息
 	 *
@@ -81,7 +81,7 @@ class Run
 	{
 		return (new Run())->mode->SearchRun($where, $field);
 	}
-	
+
 	/**
 	 * 查询run流程信息
 	 *
@@ -91,7 +91,7 @@ class Run
 	{
 		return (new Run())->mode->FindRunProcessId($id, $field);
 	}
-	
+
 	/**
 	 * 查询run步骤流程信息
 	 *
@@ -102,7 +102,7 @@ class Run
 	{
 		return (new Run())->mode->FindRunProcess($where, $field);
 	}
-	
+
 	/**
 	 * 添加run步骤流程信息
 	 *
@@ -112,7 +112,7 @@ class Run
 	{
 		return (new Run())->mode->AddRunProcess($data);
 	}
-	
+
 	/**
 	 * 查询run步骤流程信息
 	 *
@@ -123,18 +123,18 @@ class Run
 	{
 		return (new Run())->mode->SearchRunProcess($where, $field);
 	}
-	
+
 	/**
 	 * 编辑run步骤流程信息
 	 *
 	 * @param array $where 查询条件
 	 * @param array $data 数据信息
 	 */
-	static function EditRunProcess($where, $data)
+	static function EditRunProcess($id, $data)
 	{
-		return (new Run())->mode->EditRunProcess($where, $data);
+		return (new Run())->mode->EditRunProcess($id, $data);
 	}
-	
+
 	/**
 	 * 数据处理
 	 *
@@ -155,7 +155,7 @@ class Run
         return (new Run())->mode->dataRunMy($uid,$page, $limit);
     }
 
-	
+
 	/**
 	 * 查询运行中的会签信息
 	 *
@@ -166,7 +166,7 @@ class Run
 	{
 		return (new Run())->mode->FindRunSign($where, $field);
 	}
-	
+
 	/**
 	 * 添加会签信息
 	 *
@@ -187,7 +187,7 @@ class Run
 		}
 		return $run_sign;
 	}
-	
+
 	/**
 	 * 结束会签信息
 	 *
@@ -198,7 +198,7 @@ class Run
 	{
 		return (new Run())->mode->EndRunSing($sing_sign, $check_con);
 	}
-	
+
 	/**
 	 * 获取步骤消息
 	 *
@@ -207,9 +207,9 @@ class Run
 	 */
 	static function getprocessinfo($pid, $run_id)
 	{
-		
+
 		$wf_process = (new Run())->mode->FindRunProcess([['run_id', '=', $run_id], ['run_flow_process', '=', $pid], ['status', '=', 0]]);
-		
+
 		if ($wf_process != NULL && $wf_process['auto_person'] == 3) {
 			$todo = $wf_process['sponsor_ids'] . '*%*' . $wf_process['sponsor_text'];
 		} else {
@@ -217,5 +217,5 @@ class Run
 		}
 		return $todo;
 	}
-	
+
 }

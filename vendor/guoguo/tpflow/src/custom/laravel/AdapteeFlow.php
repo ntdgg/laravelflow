@@ -12,7 +12,7 @@ declare (strict_types=1);
 
 namespace tpflow\custom\laravel;
 
-use think\facade\Db;
+use DB;
 use tpflow\lib\unit;
 
 class AdapteeFlow
@@ -20,35 +20,35 @@ class AdapteeFlow
 
 	function find($id, $field = '*')
 	{
-		return Db::name('wf_flow')->field($field)->find($id);
+		return (array)DB::table('wf_flow')->find($id);
 	}
 
     function del($id)
     {
-        return Db::name('wf_flow')->delete($id);
+        return DB::table('wf_flow')->delete($id);
     }
 
 	function AddFlow($data)
 	{
-		return Db::name('wf_flow')->insertGetId($data);
+		return DB::table('wf_flow')->insertGetId($data);
 	}
 
 	function EditFlow($data)
 	{
         $data['add_time'] = time();
-		return Db::name('wf_flow')->update($data);
+		return DB::table('wf_flow')->update($data);
 	}
 
 	function SearchFlow($where = [], $field = '*')
 	{
-		return Db::name('wf_flow')->where($where)->field($field)->select();
+		return DB::table('wf_flow')->where($where)->get()->map(function ($value) {return (array)$value;})->toArray();
 	}
 
 	function ListFlow($map, $page, $rows, $order)
 	{
 		$offset = ($page - 1) * $rows;
-		$list = Db::name('wf_flow')->where($map)->order($order)->limit($offset, $rows)->select()->all();
-		$count = Db::name('wf_flow')->where($map)->count();
+		$list = DB::table('wf_flow')->where($map)->orderBy('id','desc')->limit($rows)->offset($offset)->get()->map(function ($value) {return (array)$value;})->toArray();
+		$count = DB::table('wf_flow')->where($map)->count();
 		return ['total' => $count, 'rows' => $list];
 	}
 
@@ -67,14 +67,14 @@ class AdapteeFlow
 			$param[] = $field;
 			$columeName = "AND COLUMN_NAME = ?";
 		}
-		$res = Db::query("SELECT COLUMN_NAME as field,column_comment as comment FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = ? AND table_schema = ? $columeName", $param);
+		$res = DB::select("SELECT COLUMN_NAME as field,column_comment as comment FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = ? AND table_schema = ? $columeName", $param);
 		$result = array();
+
 		foreach ($res as $k => $value) {
-			foreach ($value as $key => $v) {
-				if ($value['comment'] != '') {
-					$result[$value['field']] = $value['comment'];
-				}
-			}
+            $value =(array)$value;
+            if ($value['comment'] != '') {
+                $result[$value['field']] = $value['comment'];
+            }
 		}
 		return count($result) == 1 ? reset($result) : $result;
 	}

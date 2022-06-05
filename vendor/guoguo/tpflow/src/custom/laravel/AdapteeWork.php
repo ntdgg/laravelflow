@@ -12,7 +12,7 @@ declare (strict_types=1);
 
 namespace tpflow\custom\laravel;
 
-use think\facade\Db;
+use DB;
 
 class AdapteeWork
 {
@@ -29,7 +29,7 @@ class AdapteeWork
 		} catch (\Exception $e) {
 			$work_return = 'SQL_Err:' . $new_work_sql;
 		}
-		$result = Db::name('wf_workinfo')->insertGetId(['datetime' => date('Y-m-d h:i:s'), 'type' => 'work_sql', 'bill_info' => json_encode($config), 'data' => $new_work_sql, 'info' => $work_return]);
+		$result = DB::table('wf_workinfo')->insertGetId(['datetime' => date('Y-m-d h:i:s'), 'type' => 'work_sql', 'bill_info' => json_encode($config), 'data' => $new_work_sql, 'info' => $work_return]);
 		if (!$result) {
 			return '-1';
 		}
@@ -43,6 +43,6 @@ class AdapteeWork
 	function WorkMsg($config, $flow_process_info)
 	{
 		$new_work_msg = str_replace(['@from_id', '@run_id', '@check_con'], [$config['wf_fid'], $config['run_id'], $config['check_con']], $flow_process_info['work_msg']);        //使用函数处理字符串
-		return Db::name('wf_workinfo')->insertGetId(['datetime' => date('Y-m-d h:i:s'), 'type' => 'work_msg', 'bill_info' => json_encode($config), 'data' => $new_work_msg, 'info' => 'success']);
+		return DB::table('wf_workinfo')->insertGetId(['datetime' => date('Y-m-d h:i:s'), 'type' => 'work_msg', 'bill_info' => json_encode($config), 'data' => $new_work_msg, 'info' => 'success']);
 	}
 }

@@ -22,7 +22,7 @@ class Cc
     public function __construct()
     {
         if (unit::gconfig('wf_db_mode') == 1) {
-            $className = '\\tpflow\\custom\\think\\AdapteeCc';
+            $className = '\\tpflow\\custom\\laravel\\AdapteeCc';
         } else {
             $className = unit::gconfig('wf_db_namespace') . 'AdapteeCc';
         }

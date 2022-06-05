@@ -12,29 +12,29 @@ declare (strict_types=1);
 
 namespace tpflow\custom\laravel;
 
-use think\facade\Db;
+use DB;
 
 class AdapteeEntrust
 {
 
 	function get_Entrust($map = [], $Raw = '')
 	{
-		return Db::name('wf_entrust')
+		return DB::table('wf_entrust')
 			->whereBetweenTimeField('entrust_stime', 'entrust_etime')
 			->where($map)
 			->whereRaw($Raw)
-			->field('id,flow_process,old_user')
-			->select();
+			->select(['id','flow_process','old_user'])
+			->get()->map(function ($value) {return (array)$value;})->toArray();
 	}
 
 	function lists()
 	{
-		return Db::name('wf_entrust')->select();
+		return DB::table('wf_entrust')->get()->map(function ($value) {return (array)$value;})->toArray();
 	}
 
 	function find($id)
 	{
-		$info = Db::name('wf_entrust')->find($id);
+		$info = (array)DB::table('wf_entrust')->find($id);
 		if ($info == '') {
 			$info['entrust_stime'] = '';
 			$info['entrust_etime'] = '';
@@ -70,9 +70,9 @@ class AdapteeEntrust
 		unset($data['type']);
 		$data['add_time'] = time();
 		if ($data['id'] != '') {
-			$ret = Db::name('wf_entrust')->update($data);
+			$ret = DB::table('wf_entrust')->update($data);
 		} else {
-			$ret = Db::name('wf_entrust')->insertGetId($data);
+			$ret = DB::table('wf_entrust')->insertGetId($data);
 		}
 		if ($ret) {
 			return ['code' => 0, 'data' => $ret];
@@ -89,7 +89,7 @@ class AdapteeEntrust
 				'process_id' => $run_process,
 				'add_time' => date('Y-m-d H:i:s'),
 			];
-			$ret = Db::name('wf_entrust_rel')->insertGetId($rel);
+			$ret = DB::table('wf_entrust_rel')->insertGetId($rel);
 			if (!$ret) {
 				return ['code' => 1, 'data' => 'Db0001-写入关系失败！'];
 			}
@@ -101,7 +101,7 @@ class AdapteeEntrust
 		if ($info == NULL) {
 			return $info;
 		}
-		$has_rel = Db::name('wf_entrust_rel')->where('process_id', $info['id'])->find();
+		$has_rel = (array)DB::table('wf_entrust_rel')->where('process_id', $info['id'])->first();
 		if (!$has_rel) {
 			return $info;
 		}

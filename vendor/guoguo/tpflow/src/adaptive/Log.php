@@ -16,19 +16,19 @@ use tpflow\lib\unit;
 
 class Log
 {
-	
+
 	protected $mode;
-	
+
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\tpflow\\custom\\think\\AdapteeLog';
+			$className = '\\tpflow\\custom\\laravel\\AdapteeLog';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeLog';
 		}
 		$this->mode = new $className();
 	}
-	
+
 	static function FlowLog($wf_fid, $wf_type, $type = 'Html')
 	{
 		$info = self::RunLog($wf_fid, $wf_type);
@@ -56,7 +56,7 @@ class Log
 			return json_encode($info);
 		}
 	}
-	
+
 	/**
 	 * 流程日志
 	 *
@@ -73,7 +73,7 @@ class Log
 		}
 		return $run_log;
 	}
-	
+
 	/**
 	 * 工作流审批日志记录
 	 *

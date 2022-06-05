@@ -13,7 +13,7 @@ declare (strict_types=1);
 
 namespace tpflow\custom\laravel;
 
-use think\facade\Db;
+use DB;
 
 class AdapteeMsg
 {
@@ -23,7 +23,7 @@ class AdapteeMsg
      **/
     function add($data)
     {
-        $ret = Db::name('wf_run_process_msg')->insertGetId($data);
+        $ret = DB::table('wf_run_process_msg')->insertGetId($data);
         if (!$ret) {
             return false;
         }
@@ -31,11 +31,11 @@ class AdapteeMsg
     }
     function update($map)
     {
-        return Db::name('wf_run_process_msg')->where($map)->update(['status'=>2,'uptime'=>time()]);
+        return DB::table('wf_run_process_msg')->where($map)->update(['status'=>2,'uptime'=>time()]);
     }
     function findWhere($map)
     {
-        return Db::name('wf_run_process_msg')->where($map)->find();
+        return (array)DB::table('wf_run_process_msg')->where($map)->first();
     }
 
 

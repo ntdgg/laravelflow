@@ -22,7 +22,7 @@ class Msg
     public function __construct()
     {
         if (unit::gconfig('wf_db_mode') == 1) {
-            $className = '\\tpflow\\custom\\think\\AdapteeMsg';
+            $className = '\\tpflow\\custom\\laravel\\AdapteeMsg';
         } else {
             $className = unit::gconfig('wf_db_namespace') . 'AdapteeMsg';
         }

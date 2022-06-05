@@ -22,7 +22,7 @@ class Process
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\tpflow\\custom\\think\\AdapteeProcess';
+			$className = '\\tpflow\\custom\\laravel\\AdapteeProcess';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeProcess';
 		}

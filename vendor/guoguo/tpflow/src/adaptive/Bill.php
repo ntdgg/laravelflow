@@ -16,19 +16,19 @@ use tpflow\lib\unit;
 
 class Bill
 {
-	
+
 	protected $mode;
-	
+
 	public function __construct($type = 'Bill')
 	{
 		if (unit::gconfig('wf_bill_mode') == 1) {
-			$className = '\\tpflow\\custom\\think\\Adaptee' . $type;
+			$className = '\\tpflow\\custom\\laravel\\Adaptee' . $type;
 		} else {
 			$className = unit::gconfig('wf_bill_namespace') . $type;
 		}
 		$this->mode = new $className();
 	}
-	
+
 	/**
 	 * 定义获取单据详细信息
 	 * @param string $bill_table 表名称
@@ -38,7 +38,7 @@ class Bill
 	{
 		return (new Bill())->mode->getbill($bill_table, $bill_id);
 	}
-	
+
 	/**
 	 * 定义获取单据单个字段值
 	 * @param string $bill_table 表名称
@@ -49,7 +49,7 @@ class Bill
 	{
 		return (new Bill())->mode->getbillvalue($bill_table, $bill_id, $bill_field);
 	}
-	
+
 	/**
 	 * 更新单据信息
 	 * @param string $bill_table 表名称
@@ -60,7 +60,7 @@ class Bill
 	{
 		return (new Bill())->mode->updatebill($bill_table, $bill_id, $updata);
 	}
-	
+
 	/**
 	 * 判断单据信息
 	 * @param string $bill_table 表名称
@@ -80,5 +80,5 @@ class Bill
     static function billtablename($table){
         return (new Bill())->mode->tablename($table);
     }
-	
+
 }

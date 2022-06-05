@@ -16,13 +16,13 @@ use tpflow\lib\unit;
 
 class Event
 {
-	
+
 	protected $mode;
-	
+
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\tpflow\\custom\\think\\AdapteeEvent';
+			$className = '\\tpflow\\custom\\laravel\\AdapteeEvent';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeEvent';
 		}
@@ -37,14 +37,14 @@ class Event
 		}
 		return $ret;
 	}
-	
+
 	/**
 	 * 创建PHP类
 	 * @param $sid
 	 * @return array
 	 */
 	static function CreatePHP($data){
-		
+
 		$find = (new Event())->mode->select(['type'=>$data['type']]);
 		$class = strtolower(str_replace('_','',$data['type']));
 		$title =[
@@ -61,7 +61,7 @@ class Event
 		$cancel = $function['cancel'] ?? self::tpl('cancel');
 		$template = file_get_contents(BEASE_URL . "/adaptive/Event.tpl");
 		$namespace = stripslashes(unit::gconfig('wf_work_namespace'));
-		
+
 		$str = str_replace(
 				["[namespace]", "[class]", "[before]", "[after]",'[cancel]'],
 				[$namespace, $class, $before, $after,$cancel],
@@ -80,7 +80,7 @@ class Event
 		}
 		return ['code'=>0,'data'=>'success'];
 	}
-	
+
 	static function getFun($act,$type)
 	{
 		$find = (new Event())->mode->find(['type'=>$type,'act'=>$act]);

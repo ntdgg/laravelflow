@@ -16,19 +16,19 @@ use tpflow\lib\unit;
 
 class Entrust
 {
-	
+
 	protected $mode;
-	
+
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\tpflow\\custom\\think\\AdapteeEntrust';
+			$className = '\\tpflow\\custom\\laravel\\AdapteeEntrust';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeEntrust';
 		}
 		$this->mode = new $className();
 	}
-	
+
 	/**
 	 * get_Entrust 获取代理信息
 	 * @param array $whereRaw raw查询条件
@@ -38,7 +38,7 @@ class Entrust
 	{
 		return (new Entrust())->mode->get_Entrust($map, $whereRaw);
 	}
-	
+
 	/**
 	 * lists 列表信息
 	 * @param array $data POST提交的数据
@@ -47,7 +47,7 @@ class Entrust
 	{
 		return (new Entrust())->mode->lists();
 	}
-	
+
 	/**
 	 * find 信息查询
 	 * @param array $data POST提交的数据
@@ -56,7 +56,7 @@ class Entrust
 	{
 		return (new Entrust())->mode->find($id);
 	}
-	
+
 	/**
 	 * Add 新增
 	 * @param array $data POST提交的数据
@@ -65,7 +65,7 @@ class Entrust
 	{
 		return (new Entrust())->mode->Add($data);
 	}
-	
+
 	/**
 	 * save_rel 保存关系
 	 * @param array $data 步骤信息
@@ -75,7 +75,7 @@ class Entrust
 	{
 		return (new Entrust())->mode->save_rel($data, $run_process);
 	}
-	
+
 	/**
 	 * change 权限转换
 	 * @param array $info 修改信息
@@ -84,5 +84,5 @@ class Entrust
 	{
 		return (new Entrust())->mode->change($info);
 	}
-	
+
 }

@@ -14,7 +14,7 @@ declare (strict_types=1);
 
 namespace tpflow\custom\laravel;
 
-use think\facade\Db;
+use DB;
 
 class AdapteeCc
 {
@@ -24,7 +24,7 @@ class AdapteeCc
      **/
     function add($data)
     {
-        $ret = Db::name('wf_run_process_cc')->insertGetId($data);
+        $ret = DB::table('wf_run_process_cc')->insertGetId($data);
         if (!$ret) {
             return false;
         }
@@ -36,7 +36,7 @@ class AdapteeCc
      **/
     function update($data)
     {
-        return Db::name('wf_run_process_cc')->update($data);
+        return DB::table('wf_run_process_cc')->update($data);
     }
     /**
      * 查询
@@ -44,6 +44,6 @@ class AdapteeCc
      **/
     function findWhere($map)
     {
-        return Db::name('wf_run_process_cc')->where($map)->find();
+        return (array)DB::table('wf_run_process_cc')->where($map)->first();
     }
 }

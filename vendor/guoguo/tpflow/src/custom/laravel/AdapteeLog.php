@@ -13,7 +13,7 @@ declare (strict_types=1);
 
 namespace tpflow\custom\laravel;
 
-use think\facade\Db;
+use DB;
 
 class AdapteeLog
 {
@@ -24,7 +24,7 @@ class AdapteeLog
 	 **/
 	function AddrunLog($data)
 	{
-		$ret = Db::name('wf_run_log')->insertGetId($data);
+		$ret = DB::table('wf_run_log')->insertGetId($data);
 		if (!$ret) {
 			return false;
 		}
@@ -33,7 +33,7 @@ class AdapteeLog
 
 	function SearchRunLog($wf_fid, $wf_type)
 	{
-		return Db::name('wf_run_log')->where('from_id', $wf_fid)->where('from_table', $wf_type)->order('id desc')->select()->all();
+		return DB::table('wf_run_log')->where('from_id', $wf_fid)->where('from_table', $wf_type)->order('id desc')->get()->map(function ($value) {return (array)$value;})->toArray();
 	}
 
 

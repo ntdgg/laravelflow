@@ -12,7 +12,7 @@ namespace tpflow\custom\laravel;
  *+------------------
  */
 
-use think\facade\Db;
+use DB;
 use tpflow\lib\unit;
 
 class AdapteeBill
@@ -23,7 +23,7 @@ class AdapteeBill
 		if ($bill_table == '' || $bill_id == '') {
 			return false;
 		}
-		$info = Db::name($bill_table)->find($bill_id);
+		$info = (array)DB::table($bill_table)->find($bill_id);
 		if ($info) {
 			return $info;
 		} else {
@@ -33,7 +33,7 @@ class AdapteeBill
 
 	function getbillvalue($bill_table, $bill_id, $bill_field)
 	{
-		$result = Db::name($bill_table)->where('id', $bill_id)->value($bill_field);
+		$result = DB::table($bill_table)->where('id', $bill_id)->value($bill_field);
 		if (!$result) {
 			return false;
 		}
@@ -42,7 +42,7 @@ class AdapteeBill
 
 	function updatebill($bill_table, $bill_id, $updata)
 	{
-		$result = Db::name($bill_table)->where('id', $bill_id)->update(['status' => $updata, 'uptime' => time()]);
+		$result = DB::table($bill_table)->where('id', $bill_id)->update(['status' => $updata, 'uptime' => time()]);
 		if (!$result) {
 			return false;
 		}
@@ -51,17 +51,18 @@ class AdapteeBill
 
 	function checkbill($bill_table, $bill_id, $where)
 	{
-		return Db::name($bill_table)->whereRaw($where)->where('id', $bill_id)->find();
+		return (array)DB::table($bill_table)->where('id', $bill_id)->find($bill_id);
 	}
 
     function tablename($table){
         if (unit::gconfig('wf_type_mode') == 0) {
-            $data =  Db::query("select replace(TABLE_NAME,'" . unit::gconfig('prefix') . "','')as name,TABLE_COMMENT as title from information_schema.tables where table_schema='" . unit::gconfig('database') . "' and TABLE_COMMENT like '" . unit::gconfig('work_table') . "%' and TABLE_NAME not like '%_bak';");
+            $data =  (array)Db::select("select replace(TABLE_NAME,'" . unit::gconfig('prefix') . "','')as name,TABLE_COMMENT as title from information_schema.tables where table_schema='" . unit::gconfig('database') . "' and TABLE_COMMENT like '" . unit::gconfig('work_table') . "%' and TABLE_NAME not like '%_bak';");
         } else {
             $data =  unit::gconfig('wf_type_data');
         }
         $dataArray = [];
         foreach ($data as $k => $v) {
+            $v = (array)$v;
             $dataArray[$v['name']] = str_replace('[work]', '', $v['title']);
         }
         return $dataArray[$table] ?? '';

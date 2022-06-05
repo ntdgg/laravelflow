@@ -17,19 +17,19 @@ use tpflow\service\command\AutoFlow;
 
 class Info
 {
-	
+
 	protected $mode;
-	
+
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\tpflow\\custom\\think\\AdapteeInfo';
+			$className = '\\tpflow\\custom\\laravel\\AdapteeInfo';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeInfo';
 		}
 		$this->mode = new $className();
 	}
-	
+
 	/**
 	 * 添加工作流
 	 *
@@ -55,7 +55,7 @@ class Info
 		}
 		return $run_id;
 	}
-	
+
 	/**
 	 * 添加运行步骤信息
 	 *
@@ -147,7 +147,7 @@ class Info
         }
 		return $process_id;
 	}
-	
+
 	/**
 	 * 根据单据ID，单据表 获取流程信息
 	 *
@@ -157,7 +157,7 @@ class Info
 	public static function workflowInfo($wf_fid, $wf_type, $userinfo,$sup=0)
 	{
 		$workflow = [];
-		//根据表信息，判断当前流程是否还在运行  
+		//根据表信息，判断当前流程是否还在运行
 		$findwhere = [['from_id', '=', $wf_fid], ['from_table', '=', $wf_type], ['is_del', '=', 0], ['status', '=', 0]];
 		$count = Run::SearchRun($findwhere);//查询运行的流程
 
@@ -205,14 +205,13 @@ class Info
                     }
                 }
 			}
-
 			//4.0版本新增查找是否有代理审核人员，并给与权限，权限转换
 			$info = Entrust::change($info);
 			//拼接返回数据
 			if ($result) {
 
 				if ($result['is_sing'] != 1) {
-					$workflow ['sing_st'] = 0;//会签模式 
+					$workflow ['sing_st'] = 0;//会签模式
 					$workflow ['run_id'] = $result['id'];
 					$workflow ['status'] = $info;
 					$workflow ['flow_process'] = $info['run_flow_process'] ?? '';//运行的flow_processid
@@ -232,7 +231,7 @@ class Info
 					$workflow ['process'] = $process;
 					$workflow ['sing_info'] = Run::FindRunSign([['id', '=', $result['sing_id']]]);
 				}
-				
+
 				if ($workflow['status']['wf_mode'] != 2) {
                     if(($workflow ['nexprocess']['process_type'] ?? '')=='node-end'){
                         $workflow['nexid'] = '';//终点节点，直接结束步骤
@@ -246,10 +245,10 @@ class Info
 				$workflow['npi'] = unit::nexnexprocessinfo($workflow['status']['wf_mode'], $workflow['nexprocess']);//显示下一步骤的信息
 			}
 		}
-		
+
 		return $workflow;
 	}
-	
+
 	/**
 	 * 根据单据ID，单据表 获取流程信息
 	 *
@@ -260,7 +259,7 @@ class Info
 	{
 		return Run::FindRunId($run_id);
 	}
-	
+
 	/**
 	 * 工作流列表
 	 *
@@ -289,7 +288,7 @@ class Info
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * 接入工作流的类别
 	 *

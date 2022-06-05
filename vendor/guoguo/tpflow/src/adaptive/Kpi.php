@@ -22,7 +22,7 @@ class Kpi
     public function __construct()
     {
         if (unit::gconfig('wf_db_mode') == 1) {
-            $className = '\\tpflow\\custom\\think\\AdapteeKpi';
+            $className = '\\tpflow\\custom\\laravel\\AdapteeKpi';
         } else {
             $className = unit::gconfig('wf_db_namespace') . 'AdapteeKpi';
         }

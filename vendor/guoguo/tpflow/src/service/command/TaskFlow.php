@@ -64,13 +64,13 @@ class TaskFlow
 			$xt_text_val = implode(",", $xt_text);
 			$xt_ids_val = implode(",", $xt_ids);
 			//更新流程，将办理人删除
-			$up_process = Run::EditRunProcess(['id'=>$run_process],['sponsor_ids'=>$xt_ids_val,'sponsor_text'=>$xt_text_val,'updatetime'=>time()]);
+			$up_process = Run::EditRunProcess($run_process,['sponsor_ids'=>$xt_ids_val,'sponsor_text'=>$xt_text_val,'updatetime'=>time()]);
 			if (!$up_process) {
 				return ['msg' => '更新运行步骤失败！', 'code' => '-1'];
 			}
 			//等于空说明协同步骤已经办理完成，需要把原办理流程人还回去
 			if($xt_ids_val == '') {
-				$up_process = Run::EditRunProcess(['id'=>$run_process],['sponsor_ids'=>$data['auto_xt_ids'],'sponsor_text'=>$data['auto_xt_text'],'updatetime'=>time()]);
+				$up_process = Run::EditRunProcess($run_process,['sponsor_ids'=>$data['auto_xt_ids'],'sponsor_text'=>$data['auto_xt_text'],'updatetime'=>time()]);
 				if (!$up_process) {
 					return ['msg' => '更新运行步骤失败！', 'code' => '-1'];
 				}
@@ -153,7 +153,7 @@ class TaskFlow
         Msg::find([['run_id','=',$run_id],['process_id','=',$config['flow_process']]]);//执行消息节点步骤信息
 		return ['msg' => 'success!', 'code' => '0'];
 	}
-	
+
 	public function Run($config, $uid, $todo)
 	{
 		$nex_pid = explode(",", $config['npid']);

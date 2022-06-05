@@ -13,7 +13,7 @@ declare (strict_types=1);
 
 namespace tpflow\custom\laravel;
 
-use think\facade\Db;
+use DB;
 
 class AdapteeEvent
 {
@@ -24,7 +24,7 @@ class AdapteeEvent
 	 **/
 	function add($data)
 	{
-		$ret = Db::name('wf_event')->insertGetId($data);
+		$ret = DB::table('wf_event')->insertGetId($data);
 		if (!$ret) {
 			return false;
 		}
@@ -32,21 +32,21 @@ class AdapteeEvent
 	}
 	function find($where=[])
 	{
-		return Db::name('wf_event')->where($where)->find();
+		return (array)DB::table('wf_event')->where($where)->first();
 	}
 	function select($where=[])
 	{
-		return Db::name('wf_event')->where($where)->select()->toArray();
+		return DB::table('wf_event')->where($where)->get()->map(function ($value) {return (array)$value;})->toArray();
 	}
 	function save($data,$uid)
 	{
-		$find = Db::name('wf_event')->where('type',$data['type'])->where('act',$data['fun'])->find();
+		$find = (array)DB::table('wf_event')->where('type',$data['type'])->where('act',$data['fun'])->first();
 		if($find){
 			$post = [
 				'code'=>$data['code'],
 				'uptime'=>time()
 			];
-			$ret = Db::name('wf_event')->where('id',$find['id'])->update($post);
+			$ret = DB::table('wf_event')->where('id',$find['id'])->update($post);
 			if(!$ret){
 				return ['code'=>1,'msg'=>'更新失败！'];
 			}
@@ -58,7 +58,7 @@ class AdapteeEvent
 				'code'=>$data['code'],
 				'uptime'=>time()
 			];
-			$ret = Db::name('wf_event')->insertGetId($post);
+			$ret = DB::table('wf_event')->insertGetId($post);
 			if(!$ret){
 				return ['code'=>1,'msg'=>'更新失败！'];
 			}

@@ -21,7 +21,7 @@ class Flow
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\tpflow\\custom\\think\\AdapteeFlow';
+			$className = '\\tpflow\\custom\\laravel\\AdapteeFlow';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeFlow';
 		}
@@ -464,7 +464,7 @@ class Flow
 	{
         //Kpi绩效数据 结束步骤写入Kpi
         Kpi::Run($run_process);
-		return Run::EditRunProcess([['id', 'in', $run_process]], ['status' => 2, 'remark' => $check_con, 'bl_time' => time()]);
+		return Run::EditRunProcess($run_process, ['status' => 2, 'remark' => $check_con, 'bl_time' => time()]);
 	}
 
 	/**
