@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Index\NewsController;
 use App\Http\Controllers\Index\IndexController;
-use Tpflow\Api;
+use laravelflow\Api;
 
 Route::controller(IndexController::class)->group(function () {
     Route::get('/', 'index');

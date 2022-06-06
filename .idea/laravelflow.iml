@@ -122,7 +122,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/think-helper" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/think-orm" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/guoguo/tpflow" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guoguo/laravelflow" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
