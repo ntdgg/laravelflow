@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 6.0 系统默认模板接口调用类
+ * laravelflow 1.0 系
  *+------------------
  */
 declare (strict_types = 1);
@@ -10,7 +10,7 @@ namespace laravelflow;
 
 define('BEASE_URL', realpath ( dirname ( __FILE__ ) ) );
 
-define('laravelflow_Ver', '6.0.5' );
+define('laravelflow_Ver', '1.0.0' );
 //引用适配器核心控制
 use laravelflow\service\Control;
 //引用工具类

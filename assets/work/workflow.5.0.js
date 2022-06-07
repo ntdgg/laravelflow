@@ -9,7 +9,7 @@
  * Date: 2020年11月28日21:12:20
  */
 
-var Tpflow = {
+var laravelflow = {
 	lopen : function(title,url,w,h) {
 		if (title == null || title === '') {
 			title=false;

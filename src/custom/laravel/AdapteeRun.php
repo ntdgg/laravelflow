@@ -87,19 +87,19 @@ class AdapteeRun
     function dataRunProcess($map, $mapRaw,$field, $order,$page,$limit)
     {
         $offset = ($page-1)*$limit;
-        return DB::table('wf_run_process')->alias('f')->join('wf_flow w', 'f.run_flow = w.id')->join('wf_run r', 'f.run_id = r.id')->where($map)->whereRaw($mapRaw)->limit($offset,(int)$limit)->order($order)->get()->map(function ($value) {return (array)$value;})->toArray();
+        return DB::table('wf_run_process')->alias('f')->join('wf_flow w', 'f.run_flow = w.id')->join('wf_run r', 'f.run_id = r.id')->where($map)->whereRaw($mapRaw)->limit($offset,(int)$limit)->get()->map(function ($value) {return (array)$value;})->toArray();
     }
 
     function dataRunMy($uid,$page,$limit)
     {
         $offset = ($page-1)*$limit;
-        $data = DB::table('wf_run_process')->alias('f')->join('wf_flow w', 'f.run_flow = w.id')->join('wf_run r', 'f.run_id = r.id')->where('r.uid',$uid)->limit($offset,(int)$limit)->group('r.id')->order('r.id desc')->get()->map(function ($value) {return (array)$value;})->toArray();;
+        $data = DB::table('wf_run_process')->alias('f')->join('wf_flow w', 'f.run_flow = w.id')->join('wf_run r', 'f.run_id = r.id')->where('r.uid',$uid)->limit($offset,(int)$limit)->group('r.id')->orderBy('r.id','DESC')->get()->map(function ($value) {return (array)$value;})->toArray();;
         $count = DB::table('wf_run_process')->alias('f')->join('wf_flow w', 'f.run_flow = w.id')->join('wf_run r', 'f.run_id = r.id')->where('r.uid',$uid)->group('r.id')->count();
         return ['data'=>$data,'count'=>$count];
     }
 
 	function dataRunProcessGroup($map, $field, $order, $group)
 	{
-		return DB::table('wf_run_process')->alias('f')->join('wf_flow w', 'f.run_flow = w.id')->join('wf_run r', 'f.run_id = r.id')->where($map)->order($order)->group($group)->get()->map(function ($value) {return (array)$value;})->toArray();;
+		return DB::table('wf_run_process')->alias('f')->join('wf_flow w', 'f.run_flow = w.id')->join('wf_run r', 'f.run_id = r.id')->where($map)->group($group)->get()->map(function ($value) {return (array)$value;})->toArray();;
 	}
 }

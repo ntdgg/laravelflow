@@ -139,7 +139,7 @@ class lib
 		if (!$info) {
 			$info['type'] = '';
 		}
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
 		$patch = unit::gconfig('static_url');
 		$view = <<<php
 				{$tmp['head']}
@@ -206,7 +206,7 @@ php;
             $info['is_field'] = 0;
             $info['tmp'] = '';
 		}
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
         $csr = csrf_token();
 		$view = <<<php
 				{$tmp['head']}
@@ -249,7 +249,7 @@ php;
 	 **/
 	public static function tmp_entrust($info, $type, $user)
 	{
-		$tmp = self::commontmp('laravelflow V5.0 管理列表');
+		$tmp = self::commontmp('laravelflow V1.0 管理列表');
 		$urls = unit::gconfig('wf_url');
         $csr = csrf_token();
 		return <<<php
@@ -303,7 +303,7 @@ php;
 	public static function tmp_suser($url, $kid, $user, $type = 'user')
 	{
 
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
@@ -380,7 +380,7 @@ php;
 	 **/
 	public static function tmp_wfjk($data)
 	{
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}<meta name="csrf-token" content="{$csr}"><div class="page-container"><table class="table"><thead><tr class="text-c"><th>工作流编号</th><th >工作流类型</th><th >工作流名称</th><th >当前状态</th><th >业务办理人</th><th >接收时间</th><th >操作</th></thead></tr>{$data}</table></div>{$tmp['js']}</body></html>
@@ -391,7 +391,7 @@ php;
 	{
 		$urls = unit::gconfig('wf_url');
 		$url = $urls['wfdo'] . '/start/' . $info['wf_type'] . '/' . $info['wf_fid'];
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
@@ -418,7 +418,7 @@ php;
 	public static function tmp_wfok($info, $flowinfo)
 	{
 		$sup = $_GET['sup'] ?? '';
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
@@ -504,7 +504,7 @@ php;
 			$op .= '<option value="' . $k . '">' . $v . '</option>';
 		}
 		$sup = $_GET['sup'] ?? '';
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
@@ -579,7 +579,7 @@ php;
 	 **/
 	public static function tmp_wfdesc($id, $process_data, $urlApi)
 	{
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
         $data = json_decode($process_data,'true');
         $surl = $urlApi;
         $id = $id;
@@ -590,14 +590,14 @@ php;
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>laravelflow工作流引擎 V6.0</title>
+    <title>laravelflow工作流引擎 V1.0</title>
     <link rel="stylesheet" href="/static/work/app.css">
     <meta name="csrf-token" content="{$csr}">
 </head>
 <body>
 <div class="wrap">
     <div class="header">
-        laravelflow工作流引擎 V6.0
+        laravelflow工作流引擎 V1.0
     </div>
 <div class='toolbar'>
         <hr  style="margin: 0 5px;padding-top: 5px;border: none;border-bottom: solid 1px #DDD;clear: both;"/>
@@ -660,7 +660,7 @@ str;
 			$op .= '<option value="' . $v['id'] . '">' . $v['username'] . '</option>';
 		}
 		$sup = $_GET['sup'] ?? '';
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
@@ -735,7 +735,7 @@ php;
 	 **/
 	public static function tmp_wfflow($process_data)
 	{
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
 		return <<<php
 		 {$tmp['head']}<body  style="height: 100%; overflow: hidden;margin: 0px; padding: 0px;"><div class="panel layout-panel split-center" style="width:100%; cursor: default;" > <div  style="width:100%; height: 800px;" id="flowdesign_canvas"></div></div></div></body>
 </html>
@@ -755,7 +755,7 @@ php;
 	 **/
 	public static function tmp_index($url, $data, $html)
 	{
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
         $csr = csrf_token();
 		$html = <<<str
 		{head}
@@ -779,7 +779,7 @@ str;
 	 **/
 	public static function tmp_wfgl($data)
 	{
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
 		$urls = unit::gconfig('wf_url');
         $csr = csrf_token();
 		return <<<php
@@ -819,7 +819,7 @@ php;
 			$html = '<a class="button" style="background-color: #19be6b" onclick=laravelflow.lopen("会签提交","' . $info['laravelflow_ok'] . '&submit=sok",45,42)>↷ 会签提交</a> <a class="button" style="background-color: #c9302c;"  onclick=laravelflow.lopen("会签回退","' . $info['laravelflow_ok'] . '&submit=sback",45,42)>↶ 会签回退</a> <a class="button" style="background-color: #f37b1d;" onclick=laravelflow.lopen("工作流会签","' . $info['laravelflow_sign'] . '&ssing=ssing",45,42)>⇅ 再会签</a>';
 		}
 		$html .= ' <a class="button" onclick=laravelflow.lopen("审批历史","' . $info['laravelflow_log'] . '",50,30)>✤ 审批历史</a> ';
-		$tmp = self::commontmp('laravelflow V5.0 ');
+		$tmp = self::commontmp('laravelflow V1.0 ');
 
 		return <<<php
 {$tmp['head']}
@@ -879,7 +879,7 @@ php;
         if (class_exists($wf_class)) {
             $wf_action_select = (new $wf_class())->info($table);
         }
-        $tmp = self::commontmp('laravelflow V6.0 管理列表');
+        $tmp = self::commontmp('laravelflow V1.0 管理列表');
         //return view(BEASE_URL.'/template/att.html',['urls'=>$urls,'one'=>$one,'wf_action'=>$wf_action,'process_type'=>$process_type,'from_html'=>$from_html,'condition'=>$condition,'wf_mode'=>$wf_mode,'process_to_html'=>$process_to_html,'tmp'=>$tmp,'wf_action_select'=>$wf_action_select]);
         $style ='';
         if(($one['process_type'] == 'node-cc')or($one['process_type'] == 'node-msg')){
@@ -892,9 +892,9 @@ php;
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>laravelflow工作流引擎 V6.0</title>
+    <title>laravelflow工作流引擎 V1.0</title>
     <link rel="stylesheet" href="/static/work/app.css">
-    <link rel="stylesheet" type="text/css" href="/static/work/workflow.5.0.css?v5.0"/>
+    <link rel="stylesheet" type="text/css" href="/static/work/workflow.5.0.css?V1.0"/>
 </head>
 <body>
 <div class="wrap">
@@ -1098,7 +1098,7 @@ php;
 	static function commontmp($title)
 	{
 		$patch = unit::gconfig('static_url');
-		$css = '<link rel="stylesheet" type="text/css" href="' . $patch . 'workflow.5.0.css?v5.0"/>';
+		$css = '<link rel="stylesheet" type="text/css" href="' . $patch . 'workflow.5.0.css?V1.0"/>';
 		$js = '<script type="text/javascript" src="' . $patch . 'jquery-1.7.2.min.js" ></script>
 	<script type="text/javascript" src="' . $patch . 'jsPlumb-1.3.16-all-min.js"></script>
 			<script type="text/javascript" src="' . $patch . 'lib/layer/2.4/layer.js" ></script>

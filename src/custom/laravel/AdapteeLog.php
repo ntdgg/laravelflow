@@ -33,7 +33,7 @@ class AdapteeLog
 
 	function SearchRunLog($wf_fid, $wf_type)
 	{
-		return DB::table('wf_run_log')->where('from_id', $wf_fid)->where('from_table', $wf_type)->order('id desc')->get()->map(function ($value) {return (array)$value;})->toArray();
+		return DB::table('wf_run_log')->where('from_id', $wf_fid)->where('from_table', $wf_type)->orderBy('id','DESC')->get()->map(function ($value) {return (array)$value;})->toArray();
 	}
 
 

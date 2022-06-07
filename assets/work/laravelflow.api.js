@@ -12,13 +12,13 @@ var TFAPI = {
                 return;
                 break;
             case 'save':
-                var PostData = {"@csrf":$('meta[name="csrf-token"]').attr('content'),"flow_id":Tpflow_Id,"process_info":JSON.stringify(graph.toJSON().cells)};//获取到步骤信息
+                var PostData = {"@csrf":$('meta[name="csrf-token"]').attr('content'),"flow_id":laravelflow_Id,"process_info":JSON.stringify(graph.toJSON().cells)};//获取到步骤信息
                 break;
             case 'delAll':
                 if(!confirm("你确定清空全部吗？")){//delAll会自动保存，添加确认步骤更安全
                     return;
                 }
-                var PostData = {"flow_id":Tpflow_Id};
+                var PostData = {"flow_id":laravelflow_Id};
                 reload = true;
                 break;
             case 'att':
@@ -26,12 +26,12 @@ var TFAPI = {
                 break;
             case 'add':
 
-                //Tpflow.sPost(Server_Url+'?act=save',{"flow_id":Tpflow_Id,"process_info":Tpflow.GetJProcessData()},false);
-                var PostData = {"flow_id":Tpflow_Id};
+                //Tpflow.sPost(Server_Url+'?act=save',{"flow_id":laravelflow_Id,"process_info":Tpflow.GetJProcessData()},false);
+                var PostData = {"flow_id":laravelflow_Id};
                 reload = true;
                 break;
             case 'check':
-                var PostData = {"flow_id":Tpflow_Id};
+                var PostData = {"flow_id":laravelflow_Id};
                 break;
             case 'Refresh':
                 location.reload();return;
@@ -46,7 +46,7 @@ var TFAPI = {
                 window.open("//gitee.com/ntdgg/tpflow");
 
         }
-        var Url = Tpflow_Server_Url+'/'+act+'/'+Tpflow_Id;
+        var Url = laravelflow_Server_Url +'/'+act+'/'+laravelflow_Id;
         TFAPI.sPost(Url,PostData,reload);
     },
     lopen : function(title,url,w,h) {

@@ -161,8 +161,8 @@ const initEvents = (domName) => {
         const xy = node.position()
         const wh = node.size()
         TFAPI.sApi('save');
-        var Url = Tpflow_Server_Url+'/add/'+Tpflow_Id;
-        TFAPI.sPost(Url,{"flow_id":Tpflow_Id,'data':{'process_name':node.attrs.text.text,'style':'{"width":'+wh.width+',"height":'+wh.height+',"color":"#2d6dcc"}','process_type':node.data,'setleft':xy.y,'settop':xy.x}},true);
+        var Url = laravelflow_Server_Url +'/add/'+laravelflow_Id;
+        TFAPI.sPost(Url,{"flow_id":laravelflow_Id,'data':{'process_name':node.attrs.text.text,'style':'{"width":'+wh.width+',"height":'+wh.height+',"color":"#2d6dcc"}','process_type':node.data,'setleft':xy.y,'settop':xy.x}},true);
     })
 
     /*节点鼠标移入事件*/
@@ -180,7 +180,7 @@ const initEvents = (domName) => {
                 },
                 onClick({ view }) {
                     if(confirm("你确定删除步骤吗？")) {
-                        TFAPI.sPost(Tpflow_Server_Url+'/del/'+Tpflow_Id,{"flow_id":Tpflow_Id,"id":node.data});
+                        TFAPI.sPost(laravelflow_Server_Url +'/del/'+laravelflow_Id,{"flow_id":laravelflow_Id,"id":node.data});
                     }
                 },
             },
@@ -217,7 +217,7 @@ const initEvents = (domName) => {
         if(node.shape=='node-end'){
             layer.msg('结束节点');return;
         }
-        var url = Tpflow_Server_Url + "/att/" + node.data;
+        var url = laravelflow_Server_Url + "/att/" + node.data;
         TFAPI.lopen("属性设计", url, 50, 60);
     })
 }
