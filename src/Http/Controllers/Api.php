@@ -2,21 +2,21 @@
 
 /**
  *+------------------
- * laravelflow 1.0 系
+ * LaravelFlow 1.0 系
  *+------------------
  */
 
 declare(strict_types=1);
 
-namespace laravelflow\Http\Controllers;
+namespace LaravelFlow\Http\Controllers;
 
 define('BEASE_URL', realpath(dirname(__FILE__)));
 
-define('laravelflow_Ver', '1.0.0');
+define('LaravelFlow_Ver', '1.0.0');
 //引用适配器核心控制
-use laravelflow\service\Control;
+use LaravelFlow\Service\Control;
 //引用工具类
-use laravelflow\lib\unit;
+use LaravelFlow\Lib\Unit;
 
 use Illuminate\Http\Request;
 
@@ -29,9 +29,9 @@ class Api
 		}
 	}
 	/**
-	 * laravelflow1.0统一接口流程审批接口
+	 * LaravelFlow1.0统一接口流程审批接口
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 */
 	public function WfDo(Request $request, $act = 'index', $wf_type = '', $wf_fid = '')
 	{
@@ -66,9 +66,9 @@ class Api
 		}
 	}
 	/**
-	 * laravelflow1.0统一接口设计器
+	 * LaravelFlow1.0统一接口设计器
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * @return  返回类型
 	 */
 	public function designapi(Request $request, $act, $flow_id = '')
@@ -103,9 +103,9 @@ class Api
 		}
 	}
 	/**
-	 * laravelflow1.0统一接口 流程管理
+	 * LaravelFlow1.0统一接口 流程管理
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * @return array 返回类型
 	 */
 	public function wfapi(Request $request, $act = 'index')
@@ -157,11 +157,11 @@ class Api
 		}
 	}
 	/**
-	 * laravelflow1.0统一接口 数据接口
+	 * LaravelFlow1.0统一接口 数据接口
 	 * @param string $act 调用接口方法
 	 * @param int    $uid 用户id
 	 * @param array  $map 查询方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * @return array 返回类型
 	 */
 	public static function wfUserData($act = 'userFlow', $map = [], $field = '', $order = '', $group = '', $page = 1, $limit = 20)
@@ -171,10 +171,10 @@ class Api
 
 
 	/**
-	 * laravelflow1.0统一接口 前端权限控制中心
+	 * LaravelFlow1.0统一接口 前端权限控制中心
 	 * @param string $act 调用接口方法
 	 * @param string $data 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * @return array 返回类型
 	 */
 	public static function wfAccess($act = 'log', $data = '')

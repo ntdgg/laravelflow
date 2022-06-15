@@ -1,10 +1,10 @@
 <?php
 declare (strict_types=1);
 
-namespace laravelflow\custom\laravel;
+namespace LaravelFlow\Custom\Laravel;
 /**
  *+------------------
- * laravelflow 单据实例化类
+ * LaravelFlow 单据实例化类
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -13,7 +13,7 @@ namespace laravelflow\custom\laravel;
  */
 
 use DB;
-use laravelflow\lib\unit;
+use LaravelFlow\Lib\Unit;
 
 class AdapteeBill
 {

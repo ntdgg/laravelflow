@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 流信息处理
+ * LaravelFlow 流信息处理
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -10,10 +10,10 @@
  */
 declare (strict_types=1);
 
-namespace laravelflow\adaptive;
+namespace LaravelFlow\Adaptive;
 
-use laravelflow\lib\unit;
-use laravelflow\service\command\AutoFlow;
+use LaravelFlow\Lib\Unit;
+use LaravelFlow\Service\Command\AutoFlow;
 
 class Info
 {
@@ -23,7 +23,7 @@ class Info
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\laravelflow\\custom\\laravel\\AdapteeInfo';
+			$className = '\\LaravelFlow\\custom\\laravel\\AdapteeInfo';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeInfo';
 		}

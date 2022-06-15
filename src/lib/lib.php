@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 公共类，模板文件
+ * LaravelFlow 公共类，模板文件
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -9,14 +9,14 @@
  *+------------------
  */
 
-namespace laravelflow\lib;
+namespace LaravelFlow\Lib;
 
-use laravelflow\adaptive\Cc;
-use laravelflow\adaptive\Process;
-use laravelflow\adaptive\User;
-use laravelflow\adaptive\Bill;
+use LaravelFlow\Adaptive\Cc;
+use LaravelFlow\Adaptive\Process;
+use LaravelFlow\Adaptive\User;
+use LaravelFlow\Adaptive\Bill;
 
-class lib
+class Lib
 {
 	/**
 	 * 工作流状态信息
@@ -24,7 +24,7 @@ class lib
 	 * @param  $status 状态
 	 * @param  $type 0 Html 1 Json
 	 **/
-	public static function laravelflow_status($status = 0, $type = 0)
+	public static function LaravelFlow_status($status = 0, $type = 0)
 	{
 		$stv = [
 			-1 => '<span class="label label-danger radius" >退回修改</span>', 0 => '<span class="label radius">保存中</span>', 1 => '<span class="label radius" >流程中</span>', 2 => '<span class="label label-success radius" >审核通过</span>'
@@ -44,7 +44,7 @@ class lib
 	 * 工作流按钮权限
 	 *
 	 **/
-	public static function laravelflow_btn($wf_fid, $wf_type, $status, $flowinfo, $return = 0)
+	public static function LaravelFlow_btn($wf_fid, $wf_type, $status, $flowinfo, $return = 0)
 	{
         $btn_lang = unit::gconfig('wf_btn');
 		$urls = unit::gconfig('wf_url');
@@ -68,7 +68,7 @@ class lib
                     return '';
                 }
 
-                $btnHtml =   '<span class="btn" onclick=laravelflow.lopen(\'发起\',"' . $urls['wfdo'] . '/start/' . $wf_type . '/' . $wf_fid . '",35,30)>'.$btn_lang['start'].'</span>';
+                $btnHtml =   '<span class="btn" onclick=LaravelFlow.lopen(\'发起\',"' . $urls['wfdo'] . '/start/' . $wf_type . '/' . $wf_fid . '",35,30)>'.$btn_lang['start'].'</span>';
 
 				break;
 			case 1:
@@ -111,7 +111,7 @@ class lib
 					if ($return == 1) {
 						return ['Url' => $url['url'], 'User' => $user_name];
 					}
-                    $btnHtml =   '<span class="btn" onclick=laravelflow.lopen(\'审核单据信息：' . $wf_fid . '\',"' . $url['url'] . '",100,100)>'.$btn_lang['approve'].'[' . $user_name . ']</span>';
+                    $btnHtml =   '<span class="btn" onclick=LaravelFlow.lopen(\'审核单据信息：' . $wf_fid . '\',"' . $url['url'] . '",100,100)>'.$btn_lang['approve'].'[' . $user_name . ']</span>';
 				} else {
 					if ($return == 1) {
 						return ['Url' => '', 'User' => $user_name, 'status' => 0];
@@ -123,7 +123,7 @@ class lib
 				if ($return == 1) {
 					return ['Url' => $url['url'] . '&sup=1', 'User' => '', 'status' => 1];
 				}
-                $btnHtml =  '<span class="btn" onclick=laravelflow.lopen(\'审核单据信息：' . $wf_fid . '\',"' . $url['url'] . '&sup=1",100,100)>'.$btn_lang['sapprove'].'</span>';
+                $btnHtml =  '<span class="btn" onclick=LaravelFlow.lopen(\'审核单据信息：' . $wf_fid . '\',"' . $url['url'] . '&sup=1",100,100)>'.$btn_lang['sapprove'].'</span>';
 				break;
 			default:
                 $btnHtml = '';
@@ -139,7 +139,7 @@ class lib
 		if (!$info) {
 			$info['type'] = '';
 		}
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
 		$patch = unit::gconfig('static_url');
 		$view = <<<php
 				{$tmp['head']}
@@ -159,7 +159,7 @@ class lib
 								<textarea placeholder="" name='code' type="text/plain" style="width:100%;height:450px;display:inline-block;" id='codedata' ></textarea></td>
 							</tr><tr class='text-c' >
 							<td colspan=2>
-							<button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="laravelflow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
+							<button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="LaravelFlow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
 						</table>
 					</form>{$tmp['js']}{$tmp['form']}
 					<script  src="{$patch}lib/codemirror/codemirror.js" ></script>
@@ -206,7 +206,7 @@ php;
             $info['is_field'] = 0;
             $info['tmp'] = '';
 		}
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
 		$view = <<<php
 				{$tmp['head']}
@@ -230,7 +230,7 @@ php;
 								<textarea name='flow_desc'  datatype="*" style="width:100%;height:55px;">{$info['flow_desc']}</textarea></td>
 							</tr><tr class='text-c' >
 							<td colspan=2>
-							<button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="laravelflow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
+							<button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="LaravelFlow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
 						</table>
 					</form>{$tmp['js']}{$tmp['form']}
 			<script type="text/javascript">
@@ -249,7 +249,7 @@ php;
 	 **/
 	public static function tmp_entrust($info, $type, $user)
 	{
-		$tmp = self::commontmp('laravelflow V1.0 管理列表');
+		$tmp = self::commontmp('LaravelFlow V1.0 管理列表');
 		$urls = unit::gconfig('wf_url');
         $csr = csrf_token();
 		return <<<php
@@ -280,7 +280,7 @@ php;
 							<th>委托备注</th><td style='width:330px;text-align: left;'><textarea name='entrust_con'  datatype="*" style="width:100%;height:55px;">{$info['entrust_con']}</textarea></td></tr>
 							<tr class='text-c' >
 							<td colspan=2>
-							<button  class="button" type="submit">&nbsp;&nbsp;提交&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="laravelflow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td>
+							<button  class="button" type="submit">&nbsp;&nbsp;提交&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="LaravelFlow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td>
 							</tr><tr><td style='width:330px;text-align: left;' colspan=2>
 								注：</td></tr>
 						</table>
@@ -303,7 +303,7 @@ php;
 	public static function tmp_suser($url, $kid, $user, $type = 'user')
 	{
 
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
@@ -380,7 +380,7 @@ php;
 	 **/
 	public static function tmp_wfjk($data)
 	{
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}<meta name="csrf-token" content="{$csr}"><div class="page-container"><table class="table"><thead><tr class="text-c"><th>工作流编号</th><th >工作流类型</th><th >工作流名称</th><th >当前状态</th><th >业务办理人</th><th >接收时间</th><th >操作</th></thead></tr>{$data}</table></div>{$tmp['js']}</body></html>
@@ -391,7 +391,7 @@ php;
 	{
 		$urls = unit::gconfig('wf_url');
 		$url = $urls['wfdo'] . '/start/' . $info['wf_type'] . '/' . $info['wf_fid'];
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
@@ -403,7 +403,7 @@ php;
 			</td></tr><tr>
 			<td>审核意见：</td><td style="text-align:left"><input type="text" class="input-text" name="check_con"  datatype="*" >
 			</td></tr>
-			<tr><td colspan='2' style='text-align:center'><button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" style="background-color:#666 !important" type="button" onclick="laravelflow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
+			<tr><td colspan='2' style='text-align:center'><button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" style="background-color:#666 !important" type="button" onclick="LaravelFlow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
 		</table>
 	</form>{$tmp['js']}{$tmp['form']}
 </body>
@@ -418,11 +418,11 @@ php;
 	public static function tmp_wfok($info, $flowinfo)
 	{
 		$sup = $_GET['sup'] ?? '';
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
-		<form action="{$info['laravelflow_ok']}" method="post" name="form" id="wfform">
+		<form action="{$info['LaravelFlow_ok']}" method="post" name="form" id="wfform">
 		<input id='upload' name='art' value='' type='hidden'>
 		<input type="hidden" value="{$flowinfo['wf_mode']}" name="wf_mode" >
 		<input type="hidden" value="{$flowinfo['nexid']}" name="npid" >
@@ -453,8 +453,8 @@ php;
 				<td colspan=2 class='text-c'>
 						<input id='submit_to_save' name='submit_to_save' value='{$info['wf_submit']}' type='hidden'>
 						<button  class="button" type="submit"> 提交同意</button>
-						<a class="button" id='backbton' onclick='laravelflow.lclose()'>取消</a>
-						<a class="button" onclick=laravelflow.lopen("Upload","{$info['laravelflow_upload']}?id=upload",20,50) style="background-color: #19be6b">附件</a>
+						<a class="button" id='backbton' onclick='LaravelFlow.lclose()'>取消</a>
+						<a class="button" onclick=LaravelFlow.lopen("Upload","{$info['LaravelFlow_upload']}?id=upload",20,50) style="background-color: #19be6b">附件</a>
 				</td>
 				</tr>
 				</table>
@@ -504,11 +504,11 @@ php;
 			$op .= '<option value="' . $k . '">' . $v . '</option>';
 		}
 		$sup = $_GET['sup'] ?? '';
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
-		<form action="{$info['laravelflow_back']}" method="post" name="form" id="wfform">
+		<form action="{$info['LaravelFlow_back']}" method="post" name="form" id="wfform">
 		<input type="hidden" value="{$flowinfo['run_id']}" name="run_id" id='run_id'>
 		<input type="hidden" value="{$sup}" name="sup">
 		<input type="hidden" value="{$flowinfo['run_process']}" name="run_process">
@@ -535,7 +535,7 @@ php;
 				<td colspan=2 class='text-c'>
 						<input id='submit_to_save' name='submit_to_save' value='back' type='hidden'>
 						<button  class="button" type="submit"> 提交回退</button>
-						<a class="button" id='backbton' onclick='laravelflow.lclose()'>取消</a>
+						<a class="button" id='backbton' onclick='LaravelFlow.lclose()'>取消</a>
 				</td>
 				</tr>
 				</table>
@@ -579,7 +579,7 @@ php;
 	 **/
 	public static function tmp_wfdesc($id, $process_data, $urlApi)
 	{
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
         $data = json_decode($process_data,'true');
         $surl = $urlApi;
         $id = $id;
@@ -590,14 +590,14 @@ php;
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>laravelflow工作流引擎 V1.0</title>
+    <title>LaravelFlow工作流引擎 V1.0</title>
     <link rel="stylesheet" href="/static/work/app.css">
     <meta name="csrf-token" content="{$csr}">
 </head>
 <body>
 <div class="wrap">
     <div class="header">
-        laravelflow工作流引擎 V1.0
+        LaravelFlow工作流引擎 V1.0
     </div>
 <div class='toolbar'>
         <hr  style="margin: 0 5px;padding-top: 5px;border: none;border-bottom: solid 1px #DDD;clear: both;"/>
@@ -619,15 +619,15 @@ php;
     </div>
 </div>
 <script>
-    const laravelflow_Id = {$id};
-    const laravelflow_Server_Url = '{$surl}';
+    const LaravelFlow_Id = {$id};
+    const LaravelFlow_Server_Url = '{$surl}';
 </script>
 <script src="/static/work/jquery-1.7.2.min.js"></script>
 <script src="/static/work/lib/layer/2.4/layer.js"></script>
-<script src="/static/work/laravelflow.x6.js"></script>
+<script src="/static/work/LaravelFlow.x6.js"></script>
 <script src="/static/work/app.js"></script>
-<script src="/static/work/laravelflow.node.js"></script>
-<script src="/static/work/laravelflow.api.js"></script>
+<script src="/static/work/LaravelFlow.node.js"></script>
+<script src="/static/work/LaravelFlow.api.js"></script>
 <script>
     function resize(){
         const width=document.body.offsetWidth - 120;
@@ -660,11 +660,11 @@ str;
 			$op .= '<option value="' . $v['id'] . '">' . $v['username'] . '</option>';
 		}
 		$sup = $_GET['sup'] ?? '';
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
 		return <<<php
 		 {$tmp['head']}
-		<form action="{$info['laravelflow_sign']}" method="post" name="form" id="wfform">
+		<form action="{$info['LaravelFlow_sign']}" method="post" name="form" id="wfform">
 		<input type="hidden" value="{$flowinfo['run_id']}" name="run_id" id='run_id'>
 		<input type="hidden" value="{$sup}" name="sup">
 		<input type="hidden" value="{$flowinfo['run_process']}" name="run_process">
@@ -692,7 +692,7 @@ str;
 				<td colspan=2 class='text-c'>
 						<input id='submit_to_save' name='submit_to_save' value='{$sing}' type='hidden'>
 						<button  class="button" type="submit">会签</button>
-						<a class="button" id='backbton' onclick='laravelflow.lclose()'>取消</a>
+						<a class="button" id='backbton' onclick='LaravelFlow.lclose()'>取消</a>
 				</td>
 				</tr>
 				</table>
@@ -735,7 +735,7 @@ php;
 	 **/
 	public static function tmp_wfflow($process_data)
 	{
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
 		return <<<php
 		 {$tmp['head']}<body  style="height: 100%; overflow: hidden;margin: 0px; padding: 0px;"><div class="panel layout-panel split-center" style="width:100%; cursor: default;" > <div  style="width:100%; height: 800px;" id="flowdesign_canvas"></div></div></div></body>
 </html>
@@ -743,7 +743,7 @@ php;
 <script type="text/javascript">
 var _this = $('#flowdesign_canvas');
 $(function(){
-	laravelflow.show({$process_data});
+	LaravelFlow.show({$process_data});
 });
 </script>
 php;
@@ -755,13 +755,13 @@ php;
 	 **/
 	public static function tmp_index($url, $data, $html)
 	{
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
 		$html = <<<str
 		{head}
 		<meta name="csrf-token" content="{$csr}">
 		<div style='padding: 15px;'>
-		<a onclick="laravelflow.lopen('添加工作流','{url}',55,60)" class="button ">添加</a> <a onclick="location.reload();" class="button" style="background-color: #FFB800;">刷新</a>
+		<a onclick="LaravelFlow.lopen('添加工作流','{url}',55,60)" class="button ">添加</a> <a onclick="location.reload();" class="button" style="background-color: #FFB800;">刷新</a>
 		<table class="table" style="text-align: center">
 		    <thead><tr><th style="width: 30px">ID</th><th>流程名称</th><th>流程类型</th><th>添加时间</th><th>状态</th><th>操作</th></thead></tr>{data}
 		</table>
@@ -779,13 +779,13 @@ str;
 	 **/
 	public static function tmp_wfgl($data)
 	{
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
 		$urls = unit::gconfig('wf_url');
         $csr = csrf_token();
 		return <<<php
 	{$tmp['head']}
 	<meta name="csrf-token" content="{$csr}">
-<div class="page-container"><div style='float: left;width:80px'><a onclick="laravelflow.lopen('添加委托授权','{$urls['wfapi']}/dladd','75','40')" class="button ">委托代理</a> <hr/><a onclick="location.reload();" class="button ">刷新页面</a></div>
+<div class="page-container"><div style='float: left;width:80px'><a onclick="LaravelFlow.lopen('添加委托授权','{$urls['wfapi']}/dladd','75','40')" class="button ">委托代理</a> <hr/><a onclick="location.reload();" class="button ">刷新页面</a></div>
 <div style='float: left;width:calc(100% - 80px);'><table class="table" ><thead><tr><th>ID</th><th>授权名称</th> <th>委托类型</th><th>授权关系</th><th>起止时间</th><th>委托备注</th><th>操作</th></tr></thead>{$data}</table></div></div>
 {$tmp['js']}</body></html>
 php;
@@ -808,29 +808,29 @@ php;
 			}
 		}
 		if ($flowinfo['sing_st'] == 0) {
-			$html = '<a class="button" onclick=laravelflow.lopen("提交工作流","' . $info['laravelflow_ok'] . '",45,42) style="background-color: #19be6b">√ 同意</a> ';
+			$html = '<a class="button" onclick=LaravelFlow.lopen("提交工作流","' . $info['LaravelFlow_ok'] . '",45,42) style="background-color: #19be6b">√ 同意</a> ';
 			if ($flowinfo['status']['is_back'] != 2) {
-				$html .= '<a class="button"  onclick=laravelflow.lopen("工作流回退","' . $info['laravelflow_back'] . '",45,42) style="background-color: #c9302c;">↺ 驳回</a> ';
+				$html .= '<a class="button"  onclick=LaravelFlow.lopen("工作流回退","' . $info['LaravelFlow_back'] . '",45,42) style="background-color: #c9302c;">↺ 驳回</a> ';
 			}
 			if ($flowinfo['status']['is_sing'] != 2) {
-				$html .= '<a class="button"  onclick=laravelflow.lopen("工作流会签","' . $info['laravelflow_sign'] . '&ssing=sing",45,42) style="background-color: #f37b1d;">⇅ 会签</a>';
+				$html .= '<a class="button"  onclick=LaravelFlow.lopen("工作流会签","' . $info['LaravelFlow_sign'] . '&ssing=sing",45,42) style="background-color: #f37b1d;">⇅ 会签</a>';
 			}
 		} else {
-			$html = '<a class="button" style="background-color: #19be6b" onclick=laravelflow.lopen("会签提交","' . $info['laravelflow_ok'] . '&submit=sok",45,42)>↷ 会签提交</a> <a class="button" style="background-color: #c9302c;"  onclick=laravelflow.lopen("会签回退","' . $info['laravelflow_ok'] . '&submit=sback",45,42)>↶ 会签回退</a> <a class="button" style="background-color: #f37b1d;" onclick=laravelflow.lopen("工作流会签","' . $info['laravelflow_sign'] . '&ssing=ssing",45,42)>⇅ 再会签</a>';
+			$html = '<a class="button" style="background-color: #19be6b" onclick=LaravelFlow.lopen("会签提交","' . $info['LaravelFlow_ok'] . '&submit=sok",45,42)>↷ 会签提交</a> <a class="button" style="background-color: #c9302c;"  onclick=LaravelFlow.lopen("会签回退","' . $info['LaravelFlow_ok'] . '&submit=sback",45,42)>↶ 会签回退</a> <a class="button" style="background-color: #f37b1d;" onclick=LaravelFlow.lopen("工作流会签","' . $info['LaravelFlow_sign'] . '&ssing=ssing",45,42)>⇅ 再会签</a>';
 		}
-		$html .= ' <a class="button" onclick=laravelflow.lopen("审批历史","' . $info['laravelflow_log'] . '",50,30)>✤ 审批历史</a> ';
-		$tmp = self::commontmp('laravelflow V1.0 ');
+		$html .= ' <a class="button" onclick=LaravelFlow.lopen("审批历史","' . $info['LaravelFlow_log'] . '",50,30)>✤ 审批历史</a> ';
+		$tmp = self::commontmp('LaravelFlow V1.0 ');
 
 		return <<<php
 {$tmp['head']}
 <div class="page-container" style='width:100%;padding: 0px;'>
-<div class='laravelflowController'>
+<div class='LaravelFlowController'>
 {$html}
 </div>
-<div class='laravelflowForm' >
-	<div class='laravelflowHead'>单据信息</div>
+<div class='LaravelFlowForm' >
+	<div class='LaravelFlowHead'>单据信息</div>
 	<div style='width:100%;overflow-y:scroll; height:100%;'>
-		<iframe src="{$url}" id="iframepage" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" onLoad="laravelflow.SetHeight()"></iframe>
+		<iframe src="{$url}" id="iframepage" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" onLoad="LaravelFlow.SetHeight()"></iframe>
 	</div>
 </div>
 {$tmp['js']}
@@ -879,7 +879,7 @@ php;
         if (class_exists($wf_class)) {
             $wf_action_select = (new $wf_class())->info($table);
         }
-        $tmp = self::commontmp('laravelflow V1.0 管理列表');
+        $tmp = self::commontmp('LaravelFlow V1.0 管理列表');
         //return view(BEASE_URL.'/template/att.html',['urls'=>$urls,'one'=>$one,'wf_action'=>$wf_action,'process_type'=>$process_type,'from_html'=>$from_html,'condition'=>$condition,'wf_mode'=>$wf_mode,'process_to_html'=>$process_to_html,'tmp'=>$tmp,'wf_action_select'=>$wf_action_select]);
         $style ='';
         if(($one['process_type'] == 'node-cc')or($one['process_type'] == 'node-msg')){
@@ -892,7 +892,7 @@ php;
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>laravelflow工作流引擎 V1.0</title>
+    <title>LaravelFlow工作流引擎 V1.0</title>
     <link rel="stylesheet" href="/static/work/app.css">
     <link rel="stylesheet" type="text/css" href="/static/work/workflow.5.0.css?V1.0"/>
 </head>
@@ -938,7 +938,7 @@ php;
                         <tr id="node-process" {$style}>
                             <th>步骤模式</th>
                             <td colspan='3'>
-                                <select name="wf_mode" id="wf_mode_id" datatype="*" nullmsg="请选择步骤模式" onchange="laravelflow.onchange(this,'wf_mode');" class="smalls">
+                                <select name="wf_mode" id="wf_mode_id" datatype="*" nullmsg="请选择步骤模式" onchange="LaravelFlow.onchange(this,'wf_mode');" class="smalls">
                                     {$condition}
                                 </select>
                             </td>
@@ -962,7 +962,7 @@ php;
                         <tr id="node-user">
                             <th>办理人员</th>
                             <td colspan='3'>
-                                <select class="smalls" name="auto_person" id="auto_person_id" datatype="*" nullmsg="请选择办理人员或者角色！" onchange="laravelflow.onchange(this,'auto_person');" style="float: left;">
+                                <select class="smalls" name="auto_person" id="auto_person_id" datatype="*" nullmsg="请选择办理人员或者角色！" onchange="LaravelFlow.onchange(this,'auto_person');" style="float: left;">
                                     <option value="">请选择</option>
                                     {$process_type}
                                     <option value="2">协同人员</option>
@@ -972,25 +972,25 @@ php;
                                 </select>
                                 <div style="margin-left: 100px;">
                                     <div class="hide auto_person" id="auto_person_2">
-                                        <a class="button" onclick="laravelflow.lopen('办理人','{$urls['designapi']}/super_user/auto_xt?type_mode=user','60','95')">指定人员</a>
+                                        <a class="button" onclick="LaravelFlow.lopen('办理人','{$urls['designapi']}/super_user/auto_xt?type_mode=user','60','95')">指定人员</a>
                                         <input type="hidden" name="auto_xt_ids" id="auto_xt_ids" value="{$one['auto_xt_ids']}">
                                         <input type="hidden" name="auto_xt_text" id="auto_xt_text" value="{$one['auto_xt_text']}">
                                         <span id='auto_xt_html'>{$one['auto_xt_text']}</span>
                                     </div>
                                     <div class="hide auto_person" id="auto_person_3">
-                                        <a class="button" onclick="laravelflow.lopen('办理人','{$urls['designapi']}/super_user/range_user?type_mode=user','60','95')">自由选择</a>
+                                        <a class="button" onclick="LaravelFlow.lopen('办理人','{$urls['designapi']}/super_user/range_user?type_mode=user','60','95')">自由选择</a>
                                         <input type="hidden" name="range_user_ids" id="range_user_ids" value="{$one['range_user_ids']}" datatype="*" nullmsg="请选择办理人员！">
                                         <input type="hidden" name="range_user_text" id="range_user_text" value="{$one['range_user_text']}">
                                         <span id='range_user_html'>{$one['range_user_text']}</span>
                                     </div>
                                     <div class="hide auto_person" id="auto_person_4">
-                                        <a class="button" onclick="laravelflow.lopen('办理人','{$urls['designapi']}/super_user/auto_sponsor?type_mode=user','60','95')">指定人员</a>
+                                        <a class="button" onclick="LaravelFlow.lopen('办理人','{$urls['designapi']}/super_user/auto_sponsor?type_mode=user','60','95')">指定人员</a>
                                         <input type="hidden" name="auto_sponsor_ids" id="auto_sponsor_ids" value="{$one['auto_sponsor_ids']}">
                                         <input  type="hidden" name="auto_sponsor_text" id="auto_sponsor_text" value="{$one['auto_sponsor_text']}">
                                         <span id='auto_sponsor_html'>{$one['auto_sponsor_text']}</span>
                                     </div>
                                     <div class="hide auto_person" id="auto_person_5">
-                                        <a class="button" onclick="laravelflow.lopen('指定角色','{$urls['designapi']}/super_user/?type_mode=role','60','95')">指定角色</a>
+                                        <a class="button" onclick="LaravelFlow.lopen('指定角色','{$urls['designapi']}/super_user/?type_mode=role','60','95')">指定角色</a>
                                         <input type="hidden" name="auto_role_ids" id="auto_role_ids" value="{$one['auto_role_ids']}">
                                         <span id='auto_role_html'>{$one['auto_role_text']}</span>
                                         <input  type="hidden" name="auto_role_text" id="auto_role_text" value="{$one['auto_role_text']}">
@@ -1036,7 +1036,7 @@ php;
 </div>
 <script src="/static/work/jquery-1.7.2.min.js"></script>
 <script src="/static/work/lib/layer/2.4/layer.js"></script>
-<script src="/static/work/laravelflow.api.js"></script>
+<script src="/static/work/LaravelFlow.api.js"></script>
 <script src="/static/work/workflow.5.0.js"></script>
 <script type="text/javascript" src="/static/work/lib/Validform/5.3.2/Validform.min.js" ></script>
 <script type="text/javascript">
@@ -1081,7 +1081,7 @@ php;
             ajaxPost:true,
             showAllError:true,
             callback:function(ret){
-                laravelflow.common_return(ret);
+                LaravelFlow.common_return(ret);
             }
         });
     });
@@ -1119,7 +1119,7 @@ php;
 						ajaxPost:true,
 						showAllError:true,
 						callback:function(ret){
-							laravelflow.common_return(ret);
+							LaravelFlow.common_return(ret);
 						}
 					});
 			});

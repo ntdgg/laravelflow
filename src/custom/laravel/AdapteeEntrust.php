@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 节点事务处理
+ * LaravelFlow 节点事务处理
  *+------------------
  * Copyright (c) 2006~2020 http://cojz8.cn All rights reserved.
  *+------------------
@@ -10,7 +10,7 @@
  */
 declare (strict_types=1);
 
-namespace laravelflow\custom\laravel;
+namespace LaravelFlow\Custom\Laravel;
 
 use DB;
 

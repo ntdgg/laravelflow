@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 统一标准接口------代理模式数据库操作统一接口
+ * LaravelFlow 统一标准接口------代理模式数据库操作统一接口
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -10,9 +10,9 @@
  */
 declare (strict_types=1);
 
-namespace laravelflow\adaptive;
+namespace LaravelFlow\Adaptive;
 
-use laravelflow\lib\unit;
+use LaravelFlow\Lib\Unit;
 
 class Log
 {
@@ -22,7 +22,7 @@ class Log
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\laravelflow\\custom\\laravel\\AdapteeLog';
+			$className = '\\LaravelFlow\\custom\\laravel\\AdapteeLog';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeLog';
 		}

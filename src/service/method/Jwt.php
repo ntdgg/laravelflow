@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 核心控制器
+ * LaravelFlow 核心控制器
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -10,20 +10,20 @@
  */
 declare (strict_types=1);
 
-namespace laravelflow\service\method;
+namespace LaravelFlow\Service\Method;
 
-use laravelflow\adaptive\Bill;
-use laravelflow\lib\unit;
-use laravelflow\lib\lib;
-use laravelflow\adaptive\Info;
-use laravelflow\adaptive\Flow;
-use laravelflow\adaptive\Process;
-use laravelflow\adaptive\Run;
-use laravelflow\adaptive\Log;
-use laravelflow\adaptive\Entrust;
-use laravelflow\adaptive\User;
+use LaravelFlow\Adaptive\Bill;
+use LaravelFlow\Lib\Unit;
+use LaravelFlow\Lib\Lib;
+use LaravelFlow\Adaptive\Info;
+use LaravelFlow\Adaptive\Flow;
+use LaravelFlow\Adaptive\Process;
+use LaravelFlow\Adaptive\Run;
+use LaravelFlow\Adaptive\Log;
+use LaravelFlow\Adaptive\Entrust;
+use LaravelFlow\Adaptive\User;
 
-use laravelflow\service\TaskService;
+use LaravelFlow\Service\TaskService;
 
 class Jwt
 {
@@ -31,7 +31,7 @@ class Jwt
 	 * 工作流程统一接口
 	 *
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * Info    获取流程信息
 	 * start   发起审批流
 	 * endflow 审批流终止
@@ -82,11 +82,11 @@ class Jwt
 				'wf_fid' => $wf_fid,
 				'wf_type' => $wf_type,
 				'wf_submit' => $data['submit'],
-				'laravelflow_ok' => $urls['wfdo'] . '?act=do&wf_op=ok&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
-				'laravelflow_back' => $urls['wfdo'] . '?act=do&wf_op=back&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
-				'laravelflow_sign' => $urls['wfdo'] . '?act=do&wf_op=sign&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
-				'laravelflow_flow' => $urls['wfdo'] . '?act=do&wf_op=flow&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
-				'laravelflow_upload' => unit::gconfig('wf_upload_file')
+				'LaravelFlow_ok' => $urls['wfdo'] . '?act=do&wf_op=ok&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
+				'LaravelFlow_back' => $urls['wfdo'] . '?act=do&wf_op=back&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
+				'LaravelFlow_sign' => $urls['wfdo'] . '?act=do&wf_op=sign&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
+				'LaravelFlow_flow' => $urls['wfdo'] . '?act=do&wf_op=flow&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
+				'LaravelFlow_upload' => unit::gconfig('wf_upload_file')
 			];
 			if ($wf_op == 'check') {
 				return ['info' => $info, 'Flow' => self::WfCenter('Info', $wf_fid, $wf_type)];
@@ -166,9 +166,9 @@ class Jwt
 	}
 
 	/**
-	 * laravelflow 4.0统一接口 流程管理中心
+	 * LaravelFlow 4.0统一接口 流程管理中心
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * welcome 调用版权声明接口
 	 * check   调用逻辑检查接口
 	 * add     新增步骤接口
@@ -187,7 +187,7 @@ class Jwt
 		if ($act == 'wfjk') {
 			$data = Info::worklist();
 			foreach ($data as $k => $v) {
-				$data[$k]['btn'] = lib::laravelflow_btn($v['from_id'], $v['from_table'], 100, self::WfCenter('Info', $v['from_id'], $v['from_table']));
+				$data[$k]['btn'] = lib::LaravelFlow_btn($v['from_id'], $v['from_table'], 100, self::WfCenter('Info', $v['from_id'], $v['from_table']));
 			}
 			return ['Url' => unit::gconfig('wf_url'), 'List' => $data];
 		}
@@ -220,9 +220,9 @@ class Jwt
 	}
 
 	/**
-	 * laravelflow 4.0 工作流代理接口
+	 * LaravelFlow 4.0 工作流代理接口
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * index 列表调用
 	 * add   添加代理授权
 	 */
@@ -246,9 +246,9 @@ class Jwt
 	}
 
 	/**
-	 * laravelflow 4.0统一接口设计器
+	 * LaravelFlow 4.0统一接口设计器
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * welcome 调用版权声明接口
 	 * check   调用逻辑检查接口
 	 * add     新增步骤接口
@@ -265,7 +265,7 @@ class Jwt
 		$urls = unit::gconfig('wf_url');
 		//流程添加，编辑，查看，删除
 		if ($act == 'welcome') {
-			return '<br/><br/><style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; }h1{ font-size: 40px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 35px }</style><div style="padding: 24px 48px;"> <h1>\﻿ (•◡•) / </h1><p> laravelflow V1.0正式版<br/><span style="font-size:19px;">PHP开源工作流引擎系统</span></p><span style="font-size:15px;">[ ©2018-2020 Guoguo <a href="https://www.cojz8.com/">laravelflow</a> 本版权不可删除！ ]</span></div>';
+			return '<br/><br/><style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; }h1{ font-size: 40px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 35px }</style><div style="padding: 24px 48px;"> <h1>\﻿ (•◡•) / </h1><p> LaravelFlow V1.0正式版<br/><span style="font-size:19px;">PHP开源工作流引擎系统</span></p><span style="font-size:15px;">[ ©2018-2020 Guoguo <a href="https://www.cojz8.com/">LaravelFlow</a> 本版权不可删除！ ]</span></div>';
 		}
 		if ($act == 'wfdesc') {
 			$one = Flow::getWorkflow($flow_id);
@@ -319,9 +319,9 @@ class Jwt
 	}
 
 	/**
-	 * laravelflow 4.0统一接口
+	 * LaravelFlow 4.0统一接口
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * log  历史日志消息
 	 * btn  权限判断
 	 * status  状态判断
@@ -332,11 +332,11 @@ class Jwt
 			return Log::FlowLog($data['id'], $data['type'], 'Json');
 		}
 		if ($act == 'btn') {
-			$btn = Lib::laravelflow_btn($data['id'], $data['type'], $data['status'], self::WfCenter('Info', $data['id'], $data['type'], $data['status']), 1);
+			$btn = Lib::LaravelFlow_btn($data['id'], $data['type'], $data['status'], self::WfCenter('Info', $data['id'], $data['type'], $data['status']), 1);
 			return $btn;
 		}
 		if ($act == 'status') {
-			return Lib::laravelflow_status($data['status'], 1);
+			return Lib::LaravelFlow_status($data['status'], 1);
 		}
 		return $act . '参数出错';
 	}

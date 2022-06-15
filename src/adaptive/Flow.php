@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 流信息处理
+ * LaravelFlow 流信息处理
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -10,9 +10,9 @@
  */
 declare (strict_types=1);
 
-namespace laravelflow\adaptive;
+namespace LaravelFlow\Adaptive;
 
-use laravelflow\lib\unit;
+use LaravelFlow\Lib\Unit;
 
 class Flow
 {
@@ -21,7 +21,7 @@ class Flow
 	public function __construct()
 	{
 		if (unit::gconfig('wf_db_mode') == 1) {
-			$className = '\\laravelflow\\custom\\laravel\\AdapteeFlow';
+			$className = '\\LaravelFlow\\custom\\laravel\\AdapteeFlow';
 		} else {
 			$className = unit::gconfig('wf_db_namespace') . 'AdapteeFlow';
 		}
@@ -174,7 +174,7 @@ class Flow
                 'size'=>['width'=>(int)$style['width'],'height'=>(int)$style['height']],
                 'attrs'=>['text'=>['text'=>$value['process_name']]],
                 'shape'=>$process_type,
-                'id'=>'laravelflow-'.$value['id'],
+                'id'=>'LaravelFlow-'.$value['id'],
                 'data'=>$value['id'],
             ];
             if($value['process_to']!=''){
@@ -183,8 +183,8 @@ class Flow
                     $x62[] = [
                         'shape'=>'link_node',
                         'router'=>['name'=>'manhattan'],
-                        'source'=>['cell'=>'laravelflow-'.$value['id'],'port'=>'b1'],
-                        'target'=>['cell'=>'laravelflow-'.$vv,'port'=>'t1'],
+                        'source'=>['cell'=>'LaravelFlow-'.$value['id'],'port'=>'b1'],
+                        'target'=>['cell'=>'LaravelFlow-'.$vv,'port'=>'t1'],
                         'labels'=>[['attrs'=>['label'=>['text'=>$value['id'].'-'.$vv]]]],
                         'data'=>$value['id']
                     ];
@@ -314,8 +314,8 @@ class Flow
         foreach($data as $k=>$v){
             if(isset($v['target']['cell'])){
                 if($v['shape']=='link_node' || $v['shape']=='edge'){
-                    if($id==str_replace("laravelflow-","",$v['source']['cell'] ?? '')){
-                        $iis[] = str_replace("laravelflow-","",$v['target']['cell']);
+                    if($id==str_replace("LaravelFlow-","",$v['source']['cell'] ?? '')){
+                        $iis[] = str_replace("LaravelFlow-","",$v['target']['cell']);
                     }
                 }
             }

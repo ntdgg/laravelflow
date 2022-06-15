@@ -14,13 +14,13 @@
   },
   "autoload": {
     "psr-4": {
-      "laravelflow\\": "src"
+      "LaravelFlow\\": "src/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "laravelflow\\ServiceProvider"
+        "LaravelFlow\\LaravelFlowServiceProvider"
       ]
     }
   }

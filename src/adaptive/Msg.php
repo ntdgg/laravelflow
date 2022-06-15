@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 消息节点数据
+ * LaravelFlow 消息节点数据
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -10,9 +10,9 @@
  */
 declare (strict_types=1);
 
-namespace laravelflow\adaptive;
+namespace LaravelFlow\Adaptive;
 
-use laravelflow\lib\unit;
+use LaravelFlow\Lib\Unit;
 
 class Msg
 {
@@ -22,7 +22,7 @@ class Msg
     public function __construct()
     {
         if (unit::gconfig('wf_db_mode') == 1) {
-            $className = '\\laravelflow\\custom\\laravel\\AdapteeMsg';
+            $className = '\\LaravelFlow\\custom\\laravel\\AdapteeMsg';
         } else {
             $className = unit::gconfig('wf_db_namespace') . 'AdapteeMsg';
         }

@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 绩效信息
+ * LaravelFlow 绩效信息
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -10,9 +10,9 @@
  */
 declare (strict_types=1);
 
-namespace laravelflow\adaptive;
+namespace LaravelFlow\Adaptive;
 
-use laravelflow\lib\unit;
+use LaravelFlow\Lib\Unit;
 
 class Kpi
 {
@@ -22,7 +22,7 @@ class Kpi
     public function __construct()
     {
         if (unit::gconfig('wf_db_mode') == 1) {
-            $className = '\\laravelflow\\custom\\laravel\\AdapteeKpi';
+            $className = '\\LaravelFlow\\custom\\laravel\\AdapteeKpi';
         } else {
             $className = unit::gconfig('wf_db_namespace') . 'AdapteeKpi';
         }

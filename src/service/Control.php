@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 核心控制器
+ * LaravelFlow 核心控制器
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -10,9 +10,9 @@
  */
 declare (strict_types = 1);
 
-namespace laravelflow\service;
+namespace LaravelFlow\Service;
 
-use laravelflow\lib\unit;
+use LaravelFlow\Lib\Unit;
 
 
 Class Control{
@@ -20,9 +20,9 @@ Class Control{
 	protected $mode ;
     public function  __construct(){
 		if(unit::gconfig('view_return')==1){
-			$className = '\\laravelflow\\service\\method\\Tpl';
+			$className = '\\LaravelFlow\\service\\method\\Tpl';
 		}else{
-			$className = '\\laravelflow\\service\\method\\Jwt';
+			$className = '\\LaravelFlow\\service\\method\\Jwt';
 		}
 		$this->mode = new $className();
     }
@@ -31,7 +31,7 @@ Class Control{
 	  *
       * @access static
       * @param string $act 调用接口方法
-	  * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	  * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	  * Info    获取流程信息
 	  * start   发起审批流
 	  * endflow 审批流终止
@@ -41,9 +41,9 @@ Class Control{
 		return (new Control())->mode->WfCenter($act,$wf_fid,$wf_type,$data,$post);
 	}
 	/**
-	 * laravelflow1.0统一接口 流程管理中心
+	 * LaravelFlow1.0统一接口 流程管理中心
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * welcome 调用版权声明接口
 	 * check   调用逻辑检查接口
 	 * add     新增步骤接口
@@ -58,9 +58,9 @@ Class Control{
 		return (new Control())->mode->WfFlowCenter($act,$data);
 	}
 	/**
-	 * laravelflow1.0 工作流代理接口
+	 * LaravelFlow1.0 工作流代理接口
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * index 列表调用
 	 * add   添加代理授权
 	 */
@@ -68,9 +68,9 @@ Class Control{
 		return (new Control())->mode->WfEntrustCenter($act,$data);
 	}
 	/**
-	 * laravelflow1.0统一接口设计器
+	 * LaravelFlow1.0统一接口设计器
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * welcome 调用版权声明接口
 	 * check   调用逻辑检查接口
 	 * add     新增步骤接口
@@ -87,9 +87,9 @@ Class Control{
 
 	}
 	/**
-	 * laravelflow1.0统一接口
+	 * LaravelFlow1.0统一接口
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * log  历史日志消息
 	 * btn  权限判断
 	 * status  状态判断
@@ -98,9 +98,9 @@ Class Control{
 		echo (new Control())->mode->WfAccess($act,$data);
 	}
 	/**
-	 * laravelflow1.0统一接口
+	 * LaravelFlow1.0统一接口
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * log  历史日志消息
 	 * btn  权限判断
 	 * status  状态判断
@@ -109,7 +109,7 @@ Class Control{
 		return (new Control())->mode->wfUserData($act,$map,$field,$order,$group,$page,$limit);
 	}
     /**
-     * laravelflow 6.0统一接口
+     * LaravelFlow 6.0统一接口
      * @param string $act 调用接口方法
      */
     static function wfMysend($page,$limit){

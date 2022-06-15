@@ -2,7 +2,7 @@
 
 declare (strict_types=1);
 
-namespace laravelflow\custom\laravel;
+namespace LaravelFlow\Custom\Laravel;
 
 use DB;
 

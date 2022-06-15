@@ -2,7 +2,7 @@
 
 /**
  *+------------------
- * laravelflow 工作流日志消息
+ * LaravelFlow 工作流日志消息
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -11,7 +11,7 @@
  */
 declare (strict_types=1);
 
-namespace laravelflow\custom\laravel;
+namespace LaravelFlow\Custom\Laravel;
 
 use DB;
 

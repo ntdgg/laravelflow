@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 公共类，模板文件
+ * LaravelFlow 公共类，模板文件
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -10,12 +10,12 @@
  */
 declare (strict_types=1);
 
-namespace laravelflow\lib;
+namespace LaravelFlow\Lib;
 
 use Illuminate\Http\Request;
 
 
-class unit
+class Unit
 {
 
     public static function get_param($key){
@@ -104,7 +104,7 @@ class unit
 	 */
 	public static function gconfig($key)
 	{
-		$file = dirname(dirname(__DIR__) . DIRECTORY_SEPARATOR, 4) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'laravelflow.php';
+		$file = dirname(dirname(__DIR__) . DIRECTORY_SEPARATOR, 4) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'LaravelFlow.php';
 		if (!file_exists($file)) {
 			echo 'sorry,config no find!';
 			exit;

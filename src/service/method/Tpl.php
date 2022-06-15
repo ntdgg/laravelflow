@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 核心控制器
+ * LaravelFlow 核心控制器
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -10,23 +10,23 @@
  */
 declare (strict_types=1);
 
-namespace laravelflow\service\method;
+namespace LaravelFlow\Service\Method;
 
-use laravelflow\adaptive\Cc;
-use laravelflow\adaptive\Event;
-use laravelflow\lib\unit;
-use laravelflow\lib\lib;
+use LaravelFlow\Adaptive\Cc;
+use LaravelFlow\Adaptive\Event;
+use LaravelFlow\Lib\Unit;
+use LaravelFlow\Lib\Lib;
 
-use laravelflow\adaptive\Info;
-use laravelflow\adaptive\Flow;
-use laravelflow\adaptive\Process;
-use laravelflow\adaptive\Run;
-use laravelflow\adaptive\Log;
-use laravelflow\adaptive\Entrust;
-use laravelflow\adaptive\User;
-use laravelflow\adaptive\Bill;
+use LaravelFlow\Adaptive\Info;
+use LaravelFlow\Adaptive\Flow;
+use LaravelFlow\Adaptive\Process;
+use LaravelFlow\Adaptive\Run;
+use LaravelFlow\Adaptive\Log;
+use LaravelFlow\Adaptive\Entrust;
+use LaravelFlow\Adaptive\User;
+use LaravelFlow\Adaptive\Bill;
 
-use laravelflow\service\TaskService;
+use LaravelFlow\Service\TaskService;
 
 
 class Tpl
@@ -35,7 +35,7 @@ class Tpl
 	 * 工作流程统一接口
 	 *
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * Info    获取流程信息
 	 * start   发起审批流
 	 * endflow 审批流终止
@@ -93,12 +93,12 @@ class Tpl
 				'wf_fid' => $wf_fid,
 				'wf_type' => $wf_type,
 				'wf_submit' => $data['submit'],
-				'laravelflow_ok' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=ok&sup=' . $sup,
-				'laravelflow_back' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=back&sup=' . $sup,
-				'laravelflow_sign' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=sign&sup=' . $sup,
-				'laravelflow_flow' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=flow&sup=' . $sup,
-				'laravelflow_log' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=log&sup=' . $sup,
-				'laravelflow_upload' => unit::gconfig('wf_upload_file')
+				'LaravelFlow_ok' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=ok&sup=' . $sup,
+				'LaravelFlow_back' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=back&sup=' . $sup,
+				'LaravelFlow_sign' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=sign&sup=' . $sup,
+				'LaravelFlow_flow' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=flow&sup=' . $sup,
+				'LaravelFlow_log' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=log&sup=' . $sup,
+				'LaravelFlow_upload' => unit::gconfig('wf_upload_file')
 			];
 			if ($wf_op == 'check') {
 				return lib::tmp_check($info, self::WfCenter('Info', $wf_fid, $wf_type));
@@ -218,9 +218,9 @@ class Tpl
 	}
 
 	/**
-	 * laravelflow1.0统一接口 流程管理中心
+	 * LaravelFlow1.0统一接口 流程管理中心
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * welcome 调用版权声明接口
 	 * check   调用逻辑检查接口
 	 * add     新增步骤接口
@@ -250,14 +250,14 @@ class Tpl
 				if ($v['edit'] == '') {
 					$url_edit = $urls['wfapi'] . '/add?id=' . $v['id'];
 					$url_desc = $urls['designapi'] . '/wfdesc/' . $v['id'];
-					$btn = "<a class='button' onclick=laravelflow.lopen('修改','" . $url_edit . "','55','60')> 修改</a> <a class='button' onclick=laravelflow.lopen('设计','" . $url_desc . "',100,100)> 设计</a> ";
+					$btn = "<a class='button' onclick=LaravelFlow.lopen('修改','" . $url_edit . "','55','60')> 修改</a> <a class='button' onclick=LaravelFlow.lopen('设计','" . $url_desc . "',100,100)> 设计</a> ";
 				} else {
 					$btn = "<a class='btn  radius size-S'> 运行中....</a>";
 				}
 				if ($v['status'] == 0) {
-					$btn .= "<a class='button' onclick=laravelflow.wfconfirm('" . $urls['wfapi'] . '/add' . "',{'id':" . $v['id'] . ",'status':1},'您确定要禁用该工作流吗？')> 禁用</a>";
+					$btn .= "<a class='button' onclick=LaravelFlow.wfconfirm('" . $urls['wfapi'] . '/add' . "',{'id':" . $v['id'] . ",'status':1},'您确定要禁用该工作流吗？')> 禁用</a>";
 				} else {
-					$btn .= "<a class='button' onclick=laravelflow.wfconfirm('" . $urls['wfapi'] . '/add' . "',{'id':" . $v['id'] . ",'status':0},'您确定要启用该工作流吗？')> 启用</a>";
+					$btn .= "<a class='button' onclick=LaravelFlow.wfconfirm('" . $urls['wfapi'] . '/add' . "',{'id':" . $v['id'] . ",'status':0},'您确定要启用该工作流吗？')> 启用</a>";
 				}
 				$tr .= '<tr><td>' . $v['id'] . '</td><td>' . $v['flow_name'] . '</td><td>' .($type[$v['type']] ?? 'Err') . '</td><td>' . date('Y/m/d H:i', $v['add_time']) . '</td><td>' . $status[$v['status']] . '</td><td>' . $btn . '</td></tr>';
 			}
@@ -269,7 +269,7 @@ class Tpl
 			foreach ($data as $k => $v) {
 				$status = ['未审核', '已审核'];
 
-				$html .= '<tr class="text-c"><td>' . $v['id'] . '</td><td>' . $v['from_table'] . '</td><td>' . $v['flow_name'] . '</td><td>' . $status[$v['status']] . '</td><td>' . $v['flow_name'] . '</td><td>' . date("Y-m-d H:i", $v['dateline']) . '</td><td><a  onclick=laravelflow.wfconfirm("' . $urls['wfapi'] . '/wfend",{"id":' . $v['id'] . '},"您确定要终止该工作流吗？");>终止</a>  |  ' . lib::laravelflow_btn($v['from_id'], $v['from_table'], 100, self::WfCenter('Info', $v['from_id'], $v['from_table'])) . '</td></tr>';
+				$html .= '<tr class="text-c"><td>' . $v['id'] . '</td><td>' . $v['from_table'] . '</td><td>' . $v['flow_name'] . '</td><td>' . $status[$v['status']] . '</td><td>' . $v['flow_name'] . '</td><td>' . date("Y-m-d H:i", $v['dateline']) . '</td><td><a  onclick=LaravelFlow.wfconfirm("' . $urls['wfapi'] . '/wfend",{"id":' . $v['id'] . '},"您确定要终止该工作流吗？");>终止</a>  |  ' . lib::LaravelFlow_btn($v['from_id'], $v['from_table'], 100, self::WfCenter('Info', $v['from_id'], $v['from_table'])) . '</td></tr>';
 			}
 			return lib::tmp_wfjk($html);
 		}
@@ -351,9 +351,9 @@ class Tpl
 	}
 
 	/**
-	 * laravelflow1.0 工作流代理接口
+	 * LaravelFlow1.0 工作流代理接口
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * index 列表调用
 	 * add   添加代理授权
 	 */
@@ -364,7 +364,7 @@ class Tpl
 			$list = Entrust::lists();
 			$html = '';
 			foreach ($list as $k => $v) {
-				$btn = "<a class='button' onclick=laravelflow.lopen('修改','" . $urls['wfapi'] . '/dladd?id=' . $v['id'] . "','65','60')> 修改</a> ";
+				$btn = "<a class='button' onclick=LaravelFlow.lopen('修改','" . $urls['wfapi'] . '/dladd?id=' . $v['id'] . "','65','60')> 修改</a> ";
 				$sq = "步骤授权";
 				if ($v['flow_id'] == 0) {
 					$sq = "全局授权";
@@ -400,9 +400,9 @@ class Tpl
 	}
 
 	/**
-	 * laravelflow1.0统一接口设计器
+	 * LaravelFlow1.0统一接口设计器
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * welcome 调用版权声明接口
 	 * check   调用逻辑检查接口
 	 * add     新增步骤接口
@@ -419,7 +419,7 @@ class Tpl
 		$urls = unit::gconfig('wf_url');
 		//流程添加，编辑，查看，删除
 		if ($act == 'welcome') {
-			return '<br/><br/><style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; }h1{ font-size: 40px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 26px }</style><div style="padding: 24px 48px;"> <h1>\﻿ (•◡•) / </h1><p> laravelflow V1.0正式版<br/><span style="font-size:16px;">PHP优秀的开源工作流引擎</span></p><span style="font-size:13px;">[ ©2018-2022 Guoguo <a href="https://www.cojz8.com/">laravelflow</a>  ]</span></div>';
+			return '<br/><br/><style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; }h1{ font-size: 40px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 26px }</style><div style="padding: 24px 48px;"> <h1>\﻿ (•◡•) / </h1><p> LaravelFlow V1.0正式版<br/><span style="font-size:16px;">PHP优秀的开源工作流引擎</span></p><span style="font-size:13px;">[ ©2018-2022 Guoguo <a href="https://www.cojz8.com/">LaravelFlow</a>  ]</span></div>';
 		}
 		if ($act == 'wfdesc') {
 			$one = Flow::getWorkflow($flow_id);
@@ -478,9 +478,9 @@ class Tpl
 	}
 
 	/**
-	 * laravelflow1.0统一接口
+	 * LaravelFlow1.0统一接口
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * log  历史日志消息
 	 * btn  权限判断
 	 * status  状态判断
@@ -496,18 +496,18 @@ class Tpl
             if($data['status']==1){
                 $info = self::WfCenter('Info', $data['id'], $data['type'], $data['status']);
             }
-			return (new lib())::laravelflow_btn($data['id'], $data['type'], $data['status'], $info);
+			return (new lib())::LaravelFlow_btn($data['id'], $data['type'], $data['status'], $info);
 		}
 		if ($act == 'status') {
-			return (new lib())::laravelflow_status($data['status']);
+			return (new lib())::LaravelFlow_status($data['status']);
 		}
 		return $act . '参数出错';
 	}
 
 	/**
-	 * laravelflow1.0统一接口
+	 * LaravelFlow1.0统一接口
 	 * @param string $act 调用接口方法
-	 * 调用 laravelflow\adaptive\Control 的核心适配器进行API接口的调用
+	 * 调用 LaravelFlow\Adaptive\Control 的核心适配器进行API接口的调用
 	 * userFlow  用户流程数据
 	 * userData  用户数据分组查询
 	 */

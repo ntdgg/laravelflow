@@ -1,7 +1,7 @@
 <?php
 /**
  *+------------------
- * laravelflow 工作流引擎抄送类
+ * LaravelFlow 工作流引擎抄送类
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -10,9 +10,9 @@
  */
 declare (strict_types=1);
 
-namespace laravelflow\adaptive;
+namespace LaravelFlow\Adaptive;
 
-use laravelflow\lib\unit;
+use LaravelFlow\Lib\Unit;
 
 class Cc
 {
@@ -22,7 +22,7 @@ class Cc
     public function __construct()
     {
         if (unit::gconfig('wf_db_mode') == 1) {
-            $className = '\\laravelflow\\custom\\laravel\\AdapteeCc';
+            $className = '\\LaravelFlow\\custom\\laravel\\AdapteeCc';
         } else {
             $className = unit::gconfig('wf_db_namespace') . 'AdapteeCc';
         }
@@ -76,7 +76,7 @@ class Cc
         if(!$find){
             return '';
         }
-        return '<span style="color: #f66f6a;" class="btn" onclick=laravelflow.cc('.$find['id'].')>签阅</span>';
+        return '<span style="color: #f66f6a;" class="btn" onclick=LaravelFlow.cc('.$find['id'].')>签阅</span>';
     }
     /**
      * 查找是否有抄送数据

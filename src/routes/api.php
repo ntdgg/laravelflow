@@ -1,7 +1,7 @@
 <?php
 
 Route::group(["prefix" => "wf"], function () {
-    Route::controller(laravelflow\Http\Controllers\Api::class)->group(function () {
+    Route::controller(LaravelFlow\Http\Controllers\Api::class)->group(function () {
         // 设计器接口
         Route::any('designapi/{act}/{flow_id?}', 'designapi');
         // 审批流程接口
