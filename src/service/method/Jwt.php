@@ -50,17 +50,17 @@ class Jwt
                 return '';
             }
             $sup = $_GET['sup'] ?? '';
-            $userinfo = ['uid' => unit::getuserinfo('uid'), 'role' => unit::getuserinfo('role')];
+            $userinfo = ['uid' => Unit::getuserinfo('uid'), 'role' => Unit::getuserinfo('role')];
             return Info::workflowInfo($wf_fid, $wf_type, $userinfo, $sup);
         }
         //流程发起
         if ($act == 'start') {
             if ($data != '') {
-                $flow = (new TaskService())->StartTask($data['wf_id'], $data['wf_fid'], $data['check_con'], unit::getuserinfo('uid'));
+                $flow = (new TaskService())->StartTask($data['wf_id'], $data['wf_fid'], $data['check_con'], Unit::getuserinfo('uid'));
                 if ($flow['code'] == 1) {
-                    return unit::msg_return('Success!');
+                    return Unit::msg_return('Success!');
                 } else {
-                    return unit::msg_return($flow['msg'], 1);
+                    return Unit::msg_return($flow['msg'], 1);
                 }
             }
             $flow = Flow::getWorkflowByType($wf_type);
@@ -77,7 +77,7 @@ class Jwt
         }
         //流程审批
         if ($act == 'do') {
-            $urls = unit::gconfig('wf_url');
+            $urls = Unit::gconfig('wf_url');
             $sup = $_GET['sup'] ?? '';
             $wf_op = $data['wf_op'];
             $info = [
@@ -88,18 +88,18 @@ class Jwt
                 'LaravelFlow_back' => $urls['wfdo'] . '?act=do&wf_op=back&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
                 'LaravelFlow_sign' => $urls['wfdo'] . '?act=do&wf_op=sign&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
                 'LaravelFlow_flow' => $urls['wfdo'] . '?act=do&wf_op=flow&wf_type=' . $wf_type . '&wf_fid=' . $wf_fid . '&sup=' . $sup,
-                'LaravelFlow_upload' => unit::gconfig('wf_upload_file')
+                'LaravelFlow_upload' => Unit::gconfig('wf_upload_file')
             ];
             if ($wf_op == 'check') {
                 return ['info' => $info, 'Flow' => self::WfCenter('Info', $wf_fid, $wf_type)];
             }
             if ($wf_op == 'ok') {
                 if ($post != '') {
-                    $flowinfo = (new TaskService())->Runing($post, unit::getuserinfo('uid'));
+                    $flowinfo = (new TaskService())->Runing($post, Unit::getuserinfo('uid'));
                     if ($flowinfo['code'] == '0') {
-                        return unit::msg_return('Success!');
+                        return Unit::msg_return('Success!');
                     } else {
-                        return unit::msg_return($flowinfo['msg'], 1);
+                        return Unit::msg_return($flowinfo['msg'], 1);
                     }
                 }
                 return ['info' => $info, 'Flow' => self::WfCenter('Info', $wf_fid, $wf_type)];
@@ -107,22 +107,22 @@ class Jwt
             if ($wf_op == 'back') {
                 if ($post != '') {
                     $post['btodo'] = Run::getprocessinfo($post['wf_backflow'], $post['run_id']);
-                    $flowinfo = (new TaskService())->Runing($post, unit::getuserinfo('uid'));
+                    $flowinfo = (new TaskService())->Runing($post, Unit::getuserinfo('uid'));
                     if ($flowinfo['code'] == '0') {
-                        return unit::msg_return('Success!');
+                        return Unit::msg_return('Success!');
                     } else {
-                        return unit::msg_return($flowinfo['msg'], 1);
+                        return Unit::msg_return($flowinfo['msg'], 1);
                     }
                 }
                 return ['info' => $info, 'Flow' => self::WfCenter('Info', $wf_fid, $wf_type)];
             }
             if ($wf_op == 'sign') {
                 if ($post != '') {
-                    $flowinfo = (new TaskService())->Runing($post, unit::getuserinfo('uid'));
+                    $flowinfo = (new TaskService())->Runing($post, Unit::getuserinfo('uid'));
                     if ($flowinfo['code'] == '0') {
-                        return unit::msg_return('Success!');
+                        return Unit::msg_return('Success!');
                     } else {
-                        return unit::msg_return($flowinfo['msg'], 1);
+                        return Unit::msg_return($flowinfo['msg'], 1);
                     }
                 }
                 return ['info' => $info, 'Flow' => self::WfCenter('Info', $wf_fid, $wf_type), 'submit' => $data['ssing']];
@@ -145,24 +145,24 @@ class Jwt
         }
         //超级接口
         if ($act == 'endflow') {
-            $data = (new TaskService())->EndTask(unit::getuserinfo('uid'), $data['bill_table'], $data['bill_id']);
+            $data = (new TaskService())->EndTask(Unit::getuserinfo('uid'), $data['bill_table'], $data['bill_id']);
             if ($data['code'] == '-1') {
-                return unit::msg_return($data['msg'], 1);
+                return Unit::msg_return($data['msg'], 1);
             }
-            return unit::msg_return('Success!');
+            return Unit::msg_return('Success!');
         }
         if ($act == 'cancelflow') {
-            if (is_object(unit::LoadClass($data['bill_table'], $data['bill_id']))) {
-                $BillWork = (unit::LoadClass($data['bill_table'], $data['bill_id']))->cancel();
+            if (is_object(Unit::LoadClass($data['bill_table'], $data['bill_id']))) {
+                $BillWork = (Unit::LoadClass($data['bill_table'], $data['bill_id']))->cancel();
                 if ($BillWork['code'] == -1) {
                     return $BillWork;
                 }
             }
             $bill_update = Bill::updatebill($data['bill_table'], $data['bill_id'], 0);
             if (!$bill_update) {
-                return unit::msg_return($data['msg'], 1);
+                return Unit::msg_return($data['msg'], 1);
             }
-            return unit::msg_return('Success!');
+            return Unit::msg_return('Success!');
         }
         return $act . '参数出错';
     }
@@ -184,22 +184,22 @@ class Jwt
     function WfFlowCenter($act, $data = '')
     {
         if ($act == 'index') {
-            return ['Url' => unit::gconfig('wf_url'), 'Type' => Info::get_wftype(), 'List' => Flow::GetFlow()];
+            return ['Url' => Unit::gconfig('wf_url'), 'Type' => Info::get_wftype(), 'List' => Flow::GetFlow()];
         }
         if ($act == 'wfjk') {
             $data = Info::worklist();
             foreach ($data as $k => $v) {
-                $data[$k]['btn'] = lib::LaravelFlow_btn($v['from_id'], $v['from_table'], 100, self::WfCenter('Info', $v['from_id'], $v['from_table']));
+                $data[$k]['btn'] = Lib::LaravelFlow_btn($v['from_id'], $v['from_table'], 100, self::WfCenter('Info', $v['from_id'], $v['from_table']));
             }
-            return ['Url' => unit::gconfig('wf_url'), 'List' => $data];
+            return ['Url' => Unit::gconfig('wf_url'), 'List' => $data];
         }
         if ($act == 'wfend') {
-            return (new TaskService())->doSupEnd($data, unit::getuserinfo('uid'));
+            return (new TaskService())->doSupEnd($data, Unit::getuserinfo('uid'));
         }
         if ($act == 'add') {
             if ($data != '' && !is_numeric($data)) {
                 if ($data['id'] == '') {
-                    $data['uid'] = unit::getuserinfo('uid');
+                    $data['uid'] = Unit::getuserinfo('uid');
                     $data['add_time'] = time();
                     unset($data['id']);
                     $ret = Flow::AddFlow($data);
@@ -207,16 +207,16 @@ class Jwt
                     $ret = Flow::EditFlow($data);
                 }
                 if ($ret['code'] == 0) {
-                    return unit::msg_return('操作成功！');
+                    return Unit::msg_return('操作成功！');
                 } else {
-                    return unit::msg_return($ret['data'], 1);
+                    return Unit::msg_return($ret['data'], 1);
                 }
             }
-            return ['Url' => unit::gconfig('wf_url'), 'Type' => Info::get_wftype(), 'Info' => Flow::getWorkflow($data)];
+            return ['Url' => Unit::gconfig('wf_url'), 'Type' => Info::get_wftype(), 'Info' => Flow::getWorkflow($data)];
         }
         if ($act == 'verUpdate') {
             Flow::verUpdate();
-            return unit::msg_return('版本更新成功！');
+            return Unit::msg_return('版本更新成功！');
         }
         return $act . '参数出错';
     }
@@ -237,12 +237,12 @@ class Jwt
             if ($data != '' && !is_numeric($data)) {
                 $ret = Entrust::Add($data);
                 if ($ret['code'] == 0) {
-                    return unit::msg_return('发布成功！');
+                    return Unit::msg_return('发布成功！');
                 } else {
-                    return unit::msg_return($ret['data'], 1);
+                    return Unit::msg_return($ret['data'], 1);
                 }
             }
-            return ['Info' => Entrust::find($data), 'Type' => Process::get_userprocess(unit::getuserinfo('uid'), unit::getuserinfo('role')), 'user' => User::GetUser()];
+            return ['Info' => Entrust::find($data), 'Type' => Process::get_userprocess(Unit::getuserinfo('uid'), Unit::getuserinfo('role')), 'user' => User::GetUser()];
         }
         return $act . '参数出错';
     }
@@ -264,7 +264,7 @@ class Jwt
      */
     function WfDescCenter($act, $flow_id = '', $data = '')
     {
-        $urls = unit::gconfig('wf_url');
+        $urls = Unit::gconfig('wf_url');
         //流程添加，编辑，查看，删除
         if ($act == 'welcome') {
             return '<br/><br/><style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; }h1{ font-size: 40px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 35px }</style><div style="padding: 24px 48px;"> <h1>\﻿ (•◡•) / </h1><p> LaravelFlow V1.0正式版<br/><span style="font-size:19px;">PHP开源工作流引擎系统</span></p><span style="font-size:15px;">[ ©2018-2020 Guoguo <a href="https://www.cojz8.com/">LaravelFlow</a> 本版权不可删除！ ]</span></div>';

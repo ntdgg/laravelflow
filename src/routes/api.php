@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(["prefix" => "wf"], function () {
     Route::controller(LaravelFlow\Http\Controllers\Api::class)->group(function () {
         // 设计器接口

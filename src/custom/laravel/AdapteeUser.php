@@ -21,7 +21,7 @@ class AdapteeUser
 {
     public static function config($type = 'user')
     {
-        return unit::gconfig($type);
+        return Unit::gconfig($type);
     }
 
     /**

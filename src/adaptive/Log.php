@@ -23,10 +23,10 @@ class Log
 
     public function __construct()
     {
-        if (unit::gconfig('wf_db_mode') == 1) {
+        if (Unit::gconfig('wf_db_mode') == 1) {
             $className = '\\LaravelFlow\\custom\\laravel\\AdapteeLog';
         } else {
-            $className = unit::gconfig('wf_db_namespace') . 'AdapteeLog';
+            $className = Unit::gconfig('wf_db_namespace') . 'AdapteeLog';
         }
         $this->mode = new $className();
     }
@@ -96,8 +96,8 @@ class Log
             $config['art'] = '';
         }
         //用户审批完成后的校验
-        if (is_object(unit::LoadClass($config['wf_type'], $config['wf_fid']))) {
-            $BillWork = (unit::LoadClass($config['wf_type'], $config['wf_fid'], $run_id))->after($btn);
+        if (is_object(Unit::LoadClass($config['wf_type'], $config['wf_fid']))) {
+            $BillWork = (Unit::LoadClass($config['wf_type'], $config['wf_fid'], $run_id))->after($btn);
             if ($BillWork['code'] == -1) {
                 return $BillWork;
             }
@@ -125,7 +125,7 @@ class Log
     static function AddLog($from, $con, $file = '')
     {
         $run_log_data = array(
-            'uid' => unit::getuserinfo('uid'),
+            'uid' => Unit::getuserinfo('uid'),
             'from_id' => $from['wf_fid'],
             'from_table' => $from['wf_type'],
             'run_id' => $from['run_id'],

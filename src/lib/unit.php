@@ -41,7 +41,7 @@ class Unit
     public static function return_msg($data)
     {
 
-        $className = unit::gconfig('return_msg');
+        $className = Unit::gconfig('return_msg');
         if ($className == '') {
             if ($_SERVER['REQUEST_METHOD'] == 'JSON' || $_SERVER['REQUEST_METHOD'] == 'POST') {
                 return json_encode($data);
@@ -66,7 +66,7 @@ class Unit
      */
     public static function LoadClass($class, $id, $run_id = '', $data = '')
     {
-        $className = unit::gconfig('wf_work_namespace') . str_replace('_', '', $class);
+        $className = Unit::gconfig('wf_work_namespace') . str_replace('_', '', $class);
         if (!class_exists($className)) {
             return -1;
         }
@@ -79,10 +79,10 @@ class Unit
      **/
     public static function getuserinfo($key = '')
     {
-        if (unit::gconfig('gateway_mode') == 1) {
+        if (Unit::gconfig('gateway_mode') == 1) {
             $user_info = ['uid' => session(self::gconfig('user_id')), 'role' => session(self::gconfig('role_id'))];
         } else {
-            $className = unit::gconfig('gateway_action');
+            $className = Unit::gconfig('gateway_action');
             if (!class_exists($className)) {
                 return -1;
             }

@@ -56,8 +56,8 @@ class TaskService
             return ['msg' => '流程设计出错，未找到第一步流程，请联系管理员！', 'code' => '-1'];
         }
         //加入流程步骤判断
-        if (is_object(unit::LoadClass($wf_type, $wf_fid))) {
-            $BillWork = (unit::LoadClass($wf_type, $wf_fid))->before('Start');
+        if (is_object(Unit::LoadClass($wf_type, $wf_fid))) {
+            $BillWork = (Unit::LoadClass($wf_type, $wf_fid))->before('Start');
             if ($BillWork['code'] == -1) {
                 return $BillWork;
             }
@@ -100,8 +100,8 @@ class TaskService
         $config['sing_st'] = $run['is_sing']; //业务是否为会签模式
         $wf_actionid = $config['submit_to_save'];
         //用户提交审批前的校验
-        if (is_object(unit::LoadClass($config['wf_type'], $config['wf_fid']))) {
-            $BillWork = (unit::LoadClass($config['wf_type'], $config['wf_fid'], $config['run_id'], $config))->before($wf_actionid);
+        if (is_object(Unit::LoadClass($config['wf_type'], $config['wf_fid']))) {
+            $BillWork = (Unit::LoadClass($config['wf_type'], $config['wf_fid'], $config['run_id'], $config))->before($wf_actionid);
             if ($BillWork['code'] == -1) {
                 return $BillWork;
             }
@@ -135,8 +135,8 @@ class TaskService
     {
         //终止权限校验
         //1、所有人均可终止；2、单据发起人可以终止；3、指定uid可以终止；
-        $wf_access_control = unit::gconfig('wf_access_control');
-        $wf_access_control_uid = unit::gconfig('wf_access_control_uid');
+        $wf_access_control = Unit::gconfig('wf_access_control');
+        $wf_access_control_uid = Unit::gconfig('wf_access_control_uid');
         if ($wf_access_control == 2) {
             $log = Log::RunLog($bill_id, $bill_table); //读取到log记录
             foreach ($log as $k => $v) {

@@ -23,10 +23,10 @@ class Msg
 
     public function __construct()
     {
-        if (unit::gconfig('wf_db_mode') == 1) {
+        if (Unit::gconfig('wf_db_mode') == 1) {
             $className = '\\LaravelFlow\\custom\\laravel\\AdapteeMsg';
         } else {
-            $className = unit::gconfig('wf_db_namespace') . 'AdapteeMsg';
+            $className = Unit::gconfig('wf_db_namespace') . 'AdapteeMsg';
         }
         $this->mode = new $className();
     }
@@ -40,7 +40,7 @@ class Msg
     {
         $info = self::findWhere($map);
         if ($info) {
-            $msg_api = unit::gconfig('msg_api') ?? '';
+            $msg_api = Unit::gconfig('msg_api') ?? '';
             if (class_exists($msg_api)) {
                 (new $msg_api())->node_msg($info['run_id'], $info['process_msgid']);
             }

@@ -24,10 +24,10 @@ class Info
 
     public function __construct()
     {
-        if (unit::gconfig('wf_db_mode') == 1) {
+        if (Unit::gconfig('wf_db_mode') == 1) {
             $className = '\\LaravelFlow\\custom\\laravel\\AdapteeInfo';
         } else {
-            $className = unit::gconfig('wf_db_namespace') . 'AdapteeInfo';
+            $className = Unit::gconfig('wf_db_namespace') . 'AdapteeInfo';
         }
         $this->mode = new $className();
     }
@@ -138,7 +138,7 @@ class Info
             return false;
         }
         //加入消息接口Api
-        $msg_api = unit::gconfig('msg_api') ?? '';
+        $msg_api = Unit::gconfig('msg_api') ?? '';
         if (class_exists($msg_api)) {
             (new $msg_api())->send($process_id);;
         }
@@ -244,7 +244,7 @@ class Info
                     $workflow['nexid'] = $workflow['process']['process_to']; //下一步骤
                 }
                 $workflow['run_process'] = $info['id']; //运行的run_process步骤ID
-                $workflow['npi'] = unit::nexnexprocessinfo($workflow['status']['wf_mode'], $workflow['nexprocess']); //显示下一步骤的信息
+                $workflow['npi'] = Unit::nexnexprocessinfo($workflow['status']['wf_mode'], $workflow['nexprocess']); //显示下一步骤的信息
             }
         }
 

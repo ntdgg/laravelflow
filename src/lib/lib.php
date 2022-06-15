@@ -46,18 +46,18 @@ class Lib
      **/
     public static function LaravelFlow_btn($wf_fid, $wf_type, $status, $flowinfo, $return = 0)
     {
-        $btn_lang = unit::gconfig('wf_btn');
-        $urls = unit::gconfig('wf_url');
-        $thisuser = ['thisuid' => unit::getuserinfo('uid'), 'thisrole' => unit::getuserinfo('role')];
+        $btn_lang = Unit::gconfig('wf_btn');
+        $urls = Unit::gconfig('wf_url');
+        $thisuser = ['thisuid' => Unit::getuserinfo('uid'), 'thisrole' => Unit::getuserinfo('role')];
         $url = ['url' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid];
         $ccHtml = Cc::ccStatus($wf_type, $wf_fid);
         switch ($status) {
             case 0:
-                $start_flow = (array)unit::gconfig('start_flow'); // Guoke 2021/11/26 16:55 修复空数据下报错
+                $start_flow = (array)Unit::gconfig('start_flow'); // Guoke 2021/11/26 16:55 修复空数据下报错
                 $btn_access = true;
                 if (in_array($wf_type, $start_flow)) {
                     $uid = Bill::getbillvalue($wf_type, $wf_fid, 'uid');
-                    if ($uid != unit::getuserinfo('uid')) {
+                    if ($uid != Unit::getuserinfo('uid')) {
                         $btn_access = false;
                     }
                 }
@@ -140,7 +140,7 @@ class Lib
             $info['type'] = '';
         }
         $tmp = self::commontmp('LaravelFlow V1.0 ');
-        $patch = unit::gconfig('static_url');
+        $patch = Unit::gconfig('static_url');
         $view = <<<php
 				{$tmp['head']}
 				<link rel="stylesheet" type="text/css" href="{$patch}lib/codemirror/codemirror.css" />
@@ -250,7 +250,7 @@ php;
     public static function tmp_entrust($info, $type, $user)
     {
         $tmp = self::commontmp('LaravelFlow V1.0 管理列表');
-        $urls = unit::gconfig('wf_url');
+        $urls = Unit::gconfig('wf_url');
         $csr = csrf_token();
         return <<<php
 				{$tmp['head']}
@@ -389,7 +389,7 @@ php;
 
     public static function tmp_wfstart($info, $flow)
     {
-        $urls = unit::gconfig('wf_url');
+        $urls = Unit::gconfig('wf_url');
         $url = $urls['wfdo'] . '/start/' . $info['wf_type'] . '/' . $info['wf_fid'];
         $tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
@@ -778,7 +778,7 @@ str;
     public static function tmp_wfgl($data)
     {
         $tmp = self::commontmp('LaravelFlow V1.0 ');
-        $urls = unit::gconfig('wf_url');
+        $urls = Unit::gconfig('wf_url');
         $csr = csrf_token();
         return <<<php
 	{$tmp['head']}
@@ -797,12 +797,12 @@ php;
     {
         if (strpos($flowinfo['status']['wf_action'], '@') !== false) {
             $urldata = explode("@", $flowinfo['status']['wf_action']);
-            $url = url(unit::gconfig('int_url') . '/' . $urldata[0] . '/' . $urldata[1], ['id' => $info['wf_fid'], $urldata[2] => $urldata[3]]) . ($urldata[4] ?? '');
+            $url = url(Unit::gconfig('int_url') . '/' . $urldata[0] . '/' . $urldata[1], ['id' => $info['wf_fid'], $urldata[2] => $urldata[3]]) . ($urldata[4] ?? '');
         } else {
             if (strpos($flowinfo['status']['wf_action'], '/') !== false) {
-                $url = url(unit::gconfig('int_url') . '/' . $flowinfo['status']['wf_action'], ['id' => $info['wf_fid']]);
+                $url = url(Unit::gconfig('int_url') . '/' . $flowinfo['status']['wf_action'], ['id' => $info['wf_fid']]);
             } else {
-                $url = url(unit::gconfig('int_url') . '/' . $info['wf_type'] . '/' . $flowinfo['status']['wf_action'], ['id' => $info['wf_fid']]);
+                $url = url(Unit::gconfig('int_url') . '/' . $info['wf_type'] . '/' . $flowinfo['status']['wf_action'], ['id' => $info['wf_fid']]);
             }
         }
         if ($flowinfo['sing_st'] == 0) {
@@ -843,7 +843,7 @@ php;
      **/
     public static function tmp_wfatt($one, $from, $process_to_list, $table = '')
     {
-        $urls = unit::gconfig('wf_url');
+        $urls = Unit::gconfig('wf_url');
         $wf_action = $one['wf_action'] ?? 'view';
         if ($one['process_type'] != 'node-start') {
             $process_type = '<option value="3">自由选择</option>';
@@ -873,7 +873,7 @@ php;
 
         /*6.0.2增加方法接口*/
         $wf_action_select = '';
-        $wf_class = unit::gconfig('wf_action') ?? '';
+        $wf_class = Unit::gconfig('wf_action') ?? '';
         if (class_exists($wf_class)) {
             $wf_action_select = (new $wf_class())->info($table);
         }
@@ -1095,7 +1095,7 @@ php;
      **/
     static function commontmp($title)
     {
-        $patch = unit::gconfig('static_url');
+        $patch = Unit::gconfig('static_url');
         $css = '<link rel="stylesheet" type="text/css" href="' . $patch . 'workflow.5.0.css?V1.0"/>';
         $js = '<script type="text/javascript" src="' . $patch . 'jquery-1.7.2.min.js" ></script>
 	<script type="text/javascript" src="' . $patch . 'jsPlumb-1.3.16-all-min.js"></script>

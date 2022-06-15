@@ -23,10 +23,10 @@ class Cc
 
     public function __construct()
     {
-        if (unit::gconfig('wf_db_mode') == 1) {
+        if (Unit::gconfig('wf_db_mode') == 1) {
             $className = '\\LaravelFlow\\custom\\laravel\\AdapteeCc';
         } else {
-            $className = unit::gconfig('wf_db_namespace') . 'AdapteeCc';
+            $className = Unit::gconfig('wf_db_namespace') . 'AdapteeCc';
         }
         $this->mode = new $className();
     }
@@ -38,16 +38,16 @@ class Cc
      */
     public static function ccCheck($id)
     {
-        $info = self::findWhere([['status', '=', 0], ['id', '=', $id], ['auto_ids', 'find in set', unit::getuserinfo('uid')]]); //查找需要确认的
+        $info = self::findWhere([['status', '=', 0], ['id', '=', $id], ['auto_ids', 'find in set', Unit::getuserinfo('uid')]]); //查找需要确认的
         if (!$info) {
-            return unit::msg_return('对不起，找不到需要签阅的单据', 1);
+            return Unit::msg_return('对不起，找不到需要签阅的单据', 1);
         }
-        $thisuid = unit::getuserinfo('uid');
+        $thisuid = Unit::getuserinfo('uid');
 
         $ids = explode(',', $info['auto_ids']); //确认人员数组
 
         if (!in_array($thisuid, $ids)) {
-            return unit::msg_return('对不起，您已经确认了！', 1);
+            return Unit::msg_return('对不起，您已经确认了！', 1);
         }
         $newids = array_diff($ids, (array)$thisuid);
         if (count($newids) >= 1) {
@@ -60,12 +60,12 @@ class Cc
             ];
         }
         if (!self::update($update)) {
-            return unit::msg_return('对不起，签阅失败，您可以联系管理员确认原因！！', 1);
+            return Unit::msg_return('对不起，签阅失败，您可以联系管理员确认原因！！', 1);
         }
         if (!Log::AddLog(['wf_fid' => $info['from_id'], 'wf_type' => $info['from_table'], 'run_id' => $info['run_id']], '签阅成功')) {
-            return unit::msg_return('对不起，日志记录失败，您可以联系管理员确认原因！！', 1);
+            return Unit::msg_return('对不起，日志记录失败，您可以联系管理员确认原因！！', 1);
         }
-        return unit::msg_return('操作成功');
+        return Unit::msg_return('操作成功');
     }
     /**
      * 查询抄送信息
@@ -74,7 +74,7 @@ class Cc
      */
     public static function ccStatus($table, $id)
     {
-        $find = self::findWhere([['status', '=', 0], ['from_id', '=', $id], ['from_table', '=', $table], ['auto_ids', 'find in set', unit::getuserinfo('uid')]]);
+        $find = self::findWhere([['status', '=', 0], ['from_id', '=', $id], ['from_table', '=', $table], ['auto_ids', 'find in set', Unit::getuserinfo('uid')]]);
         if (!$find) {
             return '';
         }

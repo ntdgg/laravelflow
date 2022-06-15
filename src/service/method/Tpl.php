@@ -54,17 +54,17 @@ class Tpl
                 return '';
             }
             $sup = $_GET['sup'] ?? '';
-            $userinfo = ['uid' => unit::getuserinfo('uid'), 'role' => unit::getuserinfo('role')];
+            $userinfo = ['uid' => Unit::getuserinfo('uid'), 'role' => Unit::getuserinfo('role')];
             return Info::workflowInfo($wf_fid, $wf_type, $userinfo, $sup);
         }
         //流程发起
         if ($act == 'start') {
             if ($data != '') {
-                $flow = (new TaskService())->StartTask($data['wf_id'], $data['wf_fid'], $data['check_con'], unit::getuserinfo('uid'));
+                $flow = (new TaskService())->StartTask($data['wf_id'], $data['wf_fid'], $data['check_con'], Unit::getuserinfo('uid'));
                 if ($flow['code'] == 1) {
-                    return unit::msg_return('Success!');
+                    return Unit::msg_return('Success!');
                 } else {
-                    return unit::msg_return($flow['msg'], 1);
+                    return Unit::msg_return($flow['msg'], 1);
                 }
             }
             $flow = Flow::getWorkflowByType($wf_type);
@@ -81,14 +81,14 @@ class Tpl
             foreach ($flow as $k => $v) {
                 $op .= '<option value="' . $v['id'] . '">' . $v['flow_name'] . '</option>';
             }
-            return lib::tmp_wfstart(['wf_type' => $wf_type, 'wf_fid' => $wf_fid], $op);
+            return Lib::tmp_wfstart(['wf_type' => $wf_type, 'wf_fid' => $wf_fid], $op);
         }
         if ($act == 'entCc') {
             return Cc::ccCheck($wf_fid);
         }
         //流程审批
         if ($act == 'do') {
-            $urls = unit::gconfig('wf_url');
+            $urls = Unit::gconfig('wf_url');
             $sup = $_GET['sup'] ?? '';
             $wf_op = $data['wf_op'];
             $info = [
@@ -100,15 +100,15 @@ class Tpl
                 'LaravelFlow_sign' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=sign&sup=' . $sup,
                 'LaravelFlow_flow' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=flow&sup=' . $sup,
                 'LaravelFlow_log' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid . '?wf_op=log&sup=' . $sup,
-                'LaravelFlow_upload' => unit::gconfig('wf_upload_file')
+                'LaravelFlow_upload' => Unit::gconfig('wf_upload_file')
             ];
             if ($wf_op == 'check') {
-                return lib::tmp_check($info, self::WfCenter('Info', $wf_fid, $wf_type));
+                return Lib::tmp_check($info, self::WfCenter('Info', $wf_fid, $wf_type));
             }
             /*对审批提交执行人进行权限校验*/
             if ($wf_op == 'ok' || $wf_op == 'back' || $wf_op == 'sign') {
                 $flowinfo = self::WfCenter('Info', $wf_fid, $wf_type);
-                $thisuser = ['thisuid' => unit::getuserinfo('uid'), 'thisrole' => unit::getuserinfo('role')];
+                $thisuser = ['thisuid' => Unit::getuserinfo('uid'), 'thisrole' => Unit::getuserinfo('role')];
                 $st = 0;
                 if ($flowinfo != -1) {
                     if ($flowinfo['sing_st'] == 0) {
@@ -133,7 +133,7 @@ class Tpl
                     }
                 }
                 if ($post != '' && $st == 0) {
-                    return unit::msg_return('对不起，您没有权限审核！', 1);
+                    return Unit::msg_return('对不起，您没有权限审核！', 1);
                 }
                 if ($st == 0) {
                     return '<script>var index = parent.layer.getFrameIndex(window.name);parent.layer.msg("对不起，您没有审核权限!");setTimeout("parent.layer.close(index)",1000);</script>';
@@ -142,37 +142,37 @@ class Tpl
 
             if ($wf_op == 'ok') {
                 if ($post != '') {
-                    $flowinfo = (new TaskService())->Runing($post, unit::getuserinfo('uid'));
+                    $flowinfo = (new TaskService())->Runing($post, Unit::getuserinfo('uid'));
                     if ($flowinfo['code'] == '0') {
-                        return unit::msg_return('Success!');
+                        return Unit::msg_return('Success!');
                     } else {
-                        return unit::msg_return($flowinfo['msg'], 1);
+                        return Unit::msg_return($flowinfo['msg'], 1);
                     }
                 }
-                return lib::tmp_wfok($info, self::WfCenter('Info', $wf_fid, $wf_type));
+                return Lib::tmp_wfok($info, self::WfCenter('Info', $wf_fid, $wf_type));
             }
             if ($wf_op == 'back') {
                 if ($post != '') {
                     $post['btodo'] = Run::getprocessinfo($post['wf_backflow'], $post['run_id']);
-                    $flowinfo = (new TaskService())->Runing($post, unit::getuserinfo('uid'));
+                    $flowinfo = (new TaskService())->Runing($post, Unit::getuserinfo('uid'));
                     if ($flowinfo['code'] == '0') {
-                        return unit::msg_return('Success!');
+                        return Unit::msg_return('Success!');
                     } else {
-                        return unit::msg_return($flowinfo['msg'], 1);
+                        return Unit::msg_return($flowinfo['msg'], 1);
                     }
                 }
-                return lib::tmp_wfback($info, self::WfCenter('Info', $wf_fid, $wf_type));
+                return Lib::tmp_wfback($info, self::WfCenter('Info', $wf_fid, $wf_type));
             }
             if ($wf_op == 'sign') {
                 if ($post != '') {
-                    $flowinfo = (new TaskService())->Runing($post, unit::getuserinfo('uid'));
+                    $flowinfo = (new TaskService())->Runing($post, Unit::getuserinfo('uid'));
                     if ($flowinfo['code'] == '0') {
-                        return unit::msg_return('Success!');
+                        return Unit::msg_return('Success!');
                     } else {
-                        return unit::msg_return($flowinfo['msg'], 1);
+                        return Unit::msg_return($flowinfo['msg'], 1);
                     }
                 }
-                return lib::tmp_wfsign($info, self::WfCenter('Info', $wf_fid, $wf_type), $data['ssing']);
+                return Lib::tmp_wfsign($info, self::WfCenter('Info', $wf_fid, $wf_type), $data['ssing']);
             }
             //调用当前审批流的审批流程图
             if ($wf_op == 'flow') {
@@ -180,13 +180,13 @@ class Tpl
                 $run_info = Run::FindRunId($flowinfo['run_id']);
                 $flow_id = intval($run_info['flow_id']);
                 if ($flow_id <= 0) {
-                    return unit::msg_return('参数有误，请返回重试!', 1);
+                    return Unit::msg_return('参数有误，请返回重试!', 1);
                 }
                 $one = Flow::getWorkflow($flow_id);
                 if (!$one) {
-                    return unit::msg_return('参数有误，请返回重试!', 1);
+                    return Unit::msg_return('参数有误，请返回重试!', 1);
                 }
-                return lib::tmp_wfflow(Flow::ProcessAll($flow_id));
+                return Lib::tmp_wfflow(Flow::ProcessAll($flow_id));
             }
             if ($wf_op == 'log') {
                 return Log::FlowLog($wf_fid, $wf_type);
@@ -194,15 +194,15 @@ class Tpl
         }
         //超级接口
         if ($act == 'endflow') {
-            $data = (new TaskService())->EndTask(unit::getuserinfo('uid'), $data['bill_table'], $data['bill_id']);
+            $data = (new TaskService())->EndTask(Unit::getuserinfo('uid'), $data['bill_table'], $data['bill_id']);
             if ($data['code'] == '-1') {
-                return unit::msg_return($data['msg'], 1);
+                return Unit::msg_return($data['msg'], 1);
             }
-            return unit::msg_return('Success!');
+            return Unit::msg_return('Success!');
         }
         if ($act == 'cancelflow') {
-            if (is_object(unit::LoadClass($data['bill_table'], $data['bill_id']))) {
-                $BillWork = (unit::LoadClass($data['bill_table'], $data['bill_id']))->cancel();
+            if (is_object(Unit::LoadClass($data['bill_table'], $data['bill_id']))) {
+                $BillWork = (Unit::LoadClass($data['bill_table'], $data['bill_id']))->cancel();
 
                 if ($BillWork['code'] == -1) {
                     return $BillWork;
@@ -210,9 +210,9 @@ class Tpl
             }
             $bill_update = Bill::updatebill($data['bill_table'], $data['bill_id'], 0);
             if (!$bill_update) {
-                return unit::msg_return($data['msg'], 1);
+                return Unit::msg_return($data['msg'], 1);
             }
-            return unit::msg_return('Success!');
+            return Unit::msg_return('Success!');
         }
         return $act . '参数出错';
     }
@@ -233,7 +233,7 @@ class Tpl
      */
     function WfFlowCenter($act, $data = '')
     {
-        $urls = unit::gconfig('wf_url');
+        $urls = Unit::gconfig('wf_url');
         if ($act == 'index') {
             $type = [];
             foreach (Info::get_wftype() as $k => $v) {
@@ -261,7 +261,7 @@ class Tpl
                 }
                 $tr .= '<tr><td>' . $v['id'] . '</td><td>' . $v['flow_name'] . '</td><td>' . ($type[$v['type']] ?? 'Err') . '</td><td>' . date('Y/m/d H:i', $v['add_time']) . '</td><td>' . $status[$v['status']] . '</td><td>' . $btn . '</td></tr>';
             }
-            return lib::tmp_index($urls['wfapi'] . '/add', $tr, $html);
+            return Lib::tmp_index($urls['wfapi'] . '/add', $tr, $html);
         }
         if ($act == 'wfjk') {
             $data = Info::worklist();
@@ -269,17 +269,17 @@ class Tpl
             foreach ($data as $k => $v) {
                 $status = ['未审核', '已审核'];
 
-                $html .= '<tr class="text-c"><td>' . $v['id'] . '</td><td>' . $v['from_table'] . '</td><td>' . $v['flow_name'] . '</td><td>' . $status[$v['status']] . '</td><td>' . $v['flow_name'] . '</td><td>' . date("Y-m-d H:i", $v['dateline']) . '</td><td><a  onclick=LaravelFlow.wfconfirm("' . $urls['wfapi'] . '/wfend",{"id":' . $v['id'] . '},"您确定要终止该工作流吗？");>终止</a>  |  ' . lib::LaravelFlow_btn($v['from_id'], $v['from_table'], 100, self::WfCenter('Info', $v['from_id'], $v['from_table'])) . '</td></tr>';
+                $html .= '<tr class="text-c"><td>' . $v['id'] . '</td><td>' . $v['from_table'] . '</td><td>' . $v['flow_name'] . '</td><td>' . $status[$v['status']] . '</td><td>' . $v['flow_name'] . '</td><td>' . date("Y-m-d H:i", $v['dateline']) . '</td><td><a  onclick=LaravelFlow.wfconfirm("' . $urls['wfapi'] . '/wfend",{"id":' . $v['id'] . '},"您确定要终止该工作流吗？");>终止</a>  |  ' . Lib::LaravelFlow_btn($v['from_id'], $v['from_table'], 100, self::WfCenter('Info', $v['from_id'], $v['from_table'])) . '</td></tr>';
             }
-            return lib::tmp_wfjk($html);
+            return Lib::tmp_wfjk($html);
         }
         if ($act == 'wfend') {
-            return (new TaskService())->doSupEnd($data, unit::getuserinfo('uid'));
+            return (new TaskService())->doSupEnd($data, Unit::getuserinfo('uid'));
         }
         if ($act == 'add') {
             if ($data != '' && !is_numeric($data)) {
                 if ($data['id'] == '') {
-                    $data['uid'] = unit::getuserinfo('uid');
+                    $data['uid'] = Unit::getuserinfo('uid');
                     $data['add_time'] = time();
                     unset($data['id']);
                     $ret = Flow::AddFlow($data);
@@ -287,9 +287,9 @@ class Tpl
                     $ret = Flow::EditFlow($data);
                 }
                 if ($ret['code'] == 0) {
-                    return unit::msg_return('操作成功！');
+                    return Unit::msg_return('操作成功！');
                 } else {
-                    return unit::msg_return($ret['data'], 1);
+                    return Unit::msg_return($ret['data'], 1);
                 }
             }
             $info = Flow::getWorkflow($data); //获取工作流详情
@@ -297,7 +297,7 @@ class Tpl
             foreach (Info::get_wftype() as $k => $v) {
                 $type .= '<option value="' . $v['name'] . '">' . $v['title'] . '</option>';
             }
-            return lib::tmp_add($urls['wfapi'] . '/add', $info, $type);
+            return Lib::tmp_add($urls['wfapi'] . '/add', $info, $type);
         }
         if ($act == 'event') {
             if ($data != '' && !is_numeric($data)) {
@@ -307,9 +307,9 @@ class Tpl
                 if (isset($data['code'])) {
                     $ret =  Event::save($data);
                     if ($ret['code'] == 0) {
-                        return unit::msg_return('操作成功！');
+                        return Unit::msg_return('操作成功！');
                     } else {
-                        return unit::msg_return($ret['data'], 1);
+                        return Unit::msg_return($ret['data'], 1);
                     }
                 }
             }
@@ -318,33 +318,33 @@ class Tpl
             foreach (Info::get_wftype() as $k => $v) {
                 $type .= '<option value="' . $v['name'] . '">' . $v['title'] . '</option>';
             }
-            return lib::tmp_event($urls['wfapi'] . '?act=event', $info, $type);
+            return Lib::tmp_event($urls['wfapi'] . '?act=event', $info, $type);
         }
         if ($act == 'del') {
             if ($data != '' && !is_numeric($data)) {
                 //判断当前是否有运行流程
                 $ret = Run::FindRun(['flow_id' => $data['id'], 'status' => 0], 'status');
                 if ($ret && $ret['status'] == 0) {
-                    return unit::msg_return('流程运行中，无法删除!', 1);
+                    return Unit::msg_return('流程运行中，无法删除!', 1);
                 }
                 $del_flow = Flow::del($data['id']);
                 if (!$del_flow) {
-                    return unit::msg_return('删除流程信息失败！!', 1);
+                    return Unit::msg_return('删除流程信息失败！!', 1);
                 }
                 $find_pro = Process::SearchFlowProcess(['flow_id' => $data['id']]);
                 if (count($find_pro) > 0) {
                     //删除步骤
                     $del_pro = Process::DelFlowProcess(['flow_id' => $data['id']]);
                     if (!$del_pro) {
-                        return unit::msg_return('删除步骤信息失败，请手动删除！!', 1);
+                        return Unit::msg_return('删除步骤信息失败，请手动删除！!', 1);
                     }
                 }
-                return unit::msg_return('操作成功！');
+                return Unit::msg_return('操作成功！');
             }
         }
         if ($act == 'verUpdate') {
             Flow::verUpdate();
-            return json(unit::msg_return('版本更新成功！'));
+            return json(Unit::msg_return('版本更新成功！'));
         }
         return $act . '参数出错';
     }
@@ -358,7 +358,7 @@ class Tpl
      */
     function WfEntrustCenter($act, $data = '')
     {
-        $urls = unit::gconfig('wf_url');
+        $urls = Unit::gconfig('wf_url');
         if ($act == 'index') {
             $list = Entrust::lists();
             $html = '';
@@ -370,20 +370,20 @@ class Tpl
                 }
                 $html .= '<tr><td>' . $v['id'] . '</td><td>' . $v['entrust_title'] . '</td><td>' . $sq . '</td><td>' . $v['old_name'] . '=>' . $v['entrust_name'] . '</td><td>' . date('Y/m/d H:i', $v['entrust_stime']) . '~' . date('Y/m/d H:i', $v['entrust_etime']) . '</td><td>' . $v['entrust_con'] . '</td><td>' . $btn . '</td></tr>';
             }
-            return lib::tmp_wfgl($html);
+            return Lib::tmp_wfgl($html);
         }
         if ($act == 'add') {
             if ($data != '' && !is_numeric($data)) {
                 $ret = Entrust::Add($data);
                 if ($ret['code'] == 0) {
-                    return unit::msg_return('发布成功！');
+                    return Unit::msg_return('发布成功！');
                 } else {
-                    return unit::msg_return($ret['data'], 1);
+                    return Unit::msg_return($ret['data'], 1);
                 }
             }
             $info = Entrust::find($data);
             //获取全部跟自己相关的步骤
-            $data = Process::get_userprocess(unit::getuserinfo('uid'), unit::getuserinfo('role'));
+            $data = Process::get_userprocess(Unit::getuserinfo('uid'), Unit::getuserinfo('role'));
             $type = '';
             foreach ($data as $k => $v) {
                 $type .= '<option value="' . $v['id'] . '@' . $v['flow_id'] . '">[' . $v['flow_name'] . ']' . $v['process_name'] . '</option>';
@@ -393,7 +393,7 @@ class Tpl
             foreach ($user as $k2 => $v2) {
                 $user_html .= '<option value="' . $v2['id'] . '@' . $v2['username'] . '">' . $v2['username'] . '</option>';
             }
-            return lib::tmp_entrust($info, $type, $user_html);
+            return Lib::tmp_entrust($info, $type, $user_html);
         }
         return $act . '参数出错';
     }
@@ -415,7 +415,7 @@ class Tpl
      */
     function WfDescCenter($act, $flow_id = '', $data = '')
     {
-        $urls = unit::gconfig('wf_url');
+        $urls = Unit::gconfig('wf_url');
         //流程添加，编辑，查看，删除
         if ($act == 'welcome') {
             return '<br/><br/><style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; }h1{ font-size: 40px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 26px }</style><div style="padding: 24px 48px;"> <h1>\﻿ (•◡•) / </h1><p> LaravelFlow V1.0正式版<br/><span style="font-size:16px;">PHP优秀的开源工作流引擎</span></p><span style="font-size:13px;">[ ©2018-2022 Guoguo <a href="https://www.cojz8.com/">LaravelFlow</a>  ]</span></div>';
@@ -425,7 +425,7 @@ class Tpl
             if (!$one) {
                 return '未找到数据，请返回重试!';
             }
-            return lib::tmp_wfdesc($one['id'], Flow::ProcessAll($flow_id), $urls['designapi']);
+            return Lib::tmp_wfdesc($one['id'], Flow::ProcessAll($flow_id), $urls['designapi']);
         }
         if ($act == 'save') {
             return Flow::ProcessLink($flow_id, $data);
@@ -452,7 +452,7 @@ class Tpl
         if ($act == 'att') {
             $info = Flow::ProcessAttView($data);
             $one = Flow::getWorkflow($info['info']['flow_id']);
-            return lib::tmp_wfatt($info['info'], $info['from'], $info['process_to_list'], $one['type']);
+            return Lib::tmp_wfatt($info['info'], $info['from'], $info['process_to_list'], $one['type']);
         }
         if ($act == 'super_user') {
             if ($data['type_mode'] == 'user') {
@@ -461,14 +461,14 @@ class Tpl
                 foreach ($info as $k => $v) {
                     $user .= '<option value="' . $v['id'] . '">' . $v['username'] . '</option>';
                 }
-                return lib::tmp_suser($urls['designapi'] . '/super_user?type_mode=super_get', $data['kid'], $user);
+                return Lib::tmp_suser($urls['designapi'] . '/super_user?type_mode=super_get', $data['kid'], $user);
             } elseif ($data['type_mode'] == 'role') {
                 $info = User::GetRole();
                 $user = '';
                 foreach ($info as $k => $v) {
                     $user .= '<option value="' . $v['id'] . '">' . $v['username'] . '</option>';
                 }
-                return lib::tmp_suser($urls['designapi'] . '/super_user?type_mode=super_get', 'auto_role', $user, 'role');
+                return Lib::tmp_suser($urls['designapi'] . '/super_user?type_mode=super_get', 'auto_role', $user, 'role');
             } else {
                 return ['data' => User::AjaxGet(trim($data['type']), $data['key']), 'code' => 1, 'msg' => '查询成功！'];
             }
@@ -517,13 +517,13 @@ class Tpl
         }
         if ($act == 'userFlow') {
             // Guoke 2021/11/26 15:40 扩展多用户组的支持
-            $roles = unit::getuserinfo('role');
+            $roles = Unit::getuserinfo('role');
             $tmpRaw = $p = '';
             foreach ((array)$roles as $v) {
                 $tmpRaw .= "$p FIND_IN_SET('$v',f.sponsor_ids)";
                 $p = ' or';
             }
-            $mapRaw = '(f.auto_person != 5 and FIND_IN_SET(' . unit::getuserinfo('uid') . ",f.sponsor_ids)) or (f.auto_person=5 and ($tmpRaw))";
+            $mapRaw = '(f.auto_person != 5 and FIND_IN_SET(' . Unit::getuserinfo('uid') . ",f.sponsor_ids)) or (f.auto_person=5 and ($tmpRaw))";
             $data = Run::dataRunProcess($map, $mapRaw, $field, $order, $group, $page, $limit);
         }
         return ['code' => 1, 'msg' => '查询成功', 'data' => $data];
@@ -531,7 +531,7 @@ class Tpl
 
     function wfMysend($page, $limit)
     {
-        $data = Run::dataRunMy(unit::getuserinfo('uid'), $page, $limit);
+        $data = Run::dataRunMy(Unit::getuserinfo('uid'), $page, $limit);
         return ['code' => 1, 'msg' => '查询成功', 'data' => $data['data'], 'count' => $data['count']];
     }
 }

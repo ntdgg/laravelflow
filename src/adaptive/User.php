@@ -23,10 +23,10 @@ class User
 
     public function __construct()
     {
-        if (unit::gconfig('wf_db_mode') == 1) {
+        if (Unit::gconfig('wf_db_mode') == 1) {
             $className = '\\LaravelFlow\\custom\\laravel\\AdapteeUser';
         } else {
-            $className = unit::gconfig('wf_db_namespace') . 'AdapteeUser';
+            $className = Unit::gconfig('wf_db_namespace') . 'AdapteeUser';
         }
         $this->mode = new $className();
     }

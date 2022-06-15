@@ -23,10 +23,10 @@ class Process
 
     public function __construct()
     {
-        if (unit::gconfig('wf_db_mode') == 1) {
+        if (Unit::gconfig('wf_db_mode') == 1) {
             $className = '\\LaravelFlow\\custom\\laravel\\AdapteeProcess';
         } else {
-            $className = unit::gconfig('wf_db_namespace') . 'AdapteeProcess';
+            $className = Unit::gconfig('wf_db_namespace') . 'AdapteeProcess';
         }
         $this->mode = new $className();
     }
@@ -163,7 +163,7 @@ class Process
         foreach ($nex_pid as $k => $v) {
             $has_msg = (new Process())->mode->find($v);
             if ($has_msg['process_type'] == 'node-msg') {
-                Msg::add(['uid' => unit::getuserinfo('uid'), 'run_id' => $run_id, 'process_id' => $info['id'], 'process_msgid' => $v, 'add_time' => time(), 'uptime' => time()]);
+                Msg::add(['uid' => Unit::getuserinfo('uid'), 'run_id' => $run_id, 'process_id' => $info['id'], 'process_msgid' => $v, 'add_time' => time(), 'uptime' => time()]);
                 unset($nex_pid[$k]);
             }
             /*如果有抄送节点，将信息传递给抄送节点*/
@@ -185,7 +185,7 @@ class Process
                     $run = Run::FindRunId($run_id);
                     $user_id = Bill::getbillvalue($run['from_table'], $run['from_id'], $has_msg['work_text']);
                 }
-                Cc::add(['from_id' => $wf_fid, 'from_table' => $wf_type, 'uid' => unit::getuserinfo('uid'), 'run_id' => $run_id, 'user_ids' => $user_id, 'auto_ids' => $user_id, 'auto_person' => $has_msg['auto_person'], 'process_id' => $info['id'], 'process_ccid' => $v, 'add_time' => time(), 'uptime' => time()]);
+                Cc::add(['from_id' => $wf_fid, 'from_table' => $wf_type, 'uid' => Unit::getuserinfo('uid'), 'run_id' => $run_id, 'user_ids' => $user_id, 'auto_ids' => $user_id, 'auto_person' => $has_msg['auto_person'], 'process_id' => $info['id'], 'process_ccid' => $v, 'add_time' => time(), 'uptime' => time()]);
                 unset($nex_pid[$k]);
             }
         }

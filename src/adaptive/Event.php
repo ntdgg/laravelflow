@@ -23,17 +23,17 @@ class Event
 
     public function __construct()
     {
-        if (unit::gconfig('wf_db_mode') == 1) {
+        if (Unit::gconfig('wf_db_mode') == 1) {
             $className = '\\LaravelFlow\\custom\\laravel\\AdapteeEvent';
         } else {
-            $className = unit::gconfig('wf_db_namespace') . 'AdapteeEvent';
+            $className = Unit::gconfig('wf_db_namespace') . 'AdapteeEvent';
         }
         $this->mode = new $className();
     }
 
     static function save($data)
     {
-        $ret = (new Event())->mode->save($data, unit::getuserinfo('uid'));
+        $ret = (new Event())->mode->save($data, Unit::getuserinfo('uid'));
         if ($ret['code'] == 0) {
             return self::CreatePHP($data);
         }
@@ -63,7 +63,7 @@ class Event
         $after = $function['after'] ?? self::tpl('after');
         $cancel = $function['cancel'] ?? self::tpl('cancel');
         $template = file_get_contents(BEASE_URL . "/adaptive/Event.tpl");
-        $namespace = stripslashes(unit::gconfig('wf_work_namespace'));
+        $namespace = stripslashes(Unit::gconfig('wf_work_namespace'));
 
         $str = str_replace(
             ["[namespace]", "[class]", "[before]", "[after]", '[cancel]'],
@@ -75,7 +75,7 @@ class Event
         }
         /*尝试一下代码错误*/
         try {
-            $className = unit::gconfig('wf_work_namespace') . $class;
+            $className = Unit::gconfig('wf_work_namespace') . $class;
             new $className(1, 1);
         } catch (\Throwable $e) {
             return ['code' => 1, 'data' => '错误代码：' . $e->getMessage() . '<br/>错误行号：' . $e->getLine() . '<br/>错误文件：' . $e->getFile()];

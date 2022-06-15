@@ -56,8 +56,8 @@ class AutoFlow
     }
     public function autoRun($run_process_id, $wfrun)
     {
-        $uid = unit::getuserinfo('uid');
-        $userinfo = ['uid' => unit::getuserinfo('uid'), 'role' => unit::getuserinfo('role')];
+        $uid = Unit::getuserinfo('uid');
+        $userinfo = ['uid' => Unit::getuserinfo('uid'), 'role' => Unit::getuserinfo('role')];
         $info = Info::workflowInfo($wfrun['from_id'], $wfrun['from_table'], $userinfo); //查找查找步骤信息
         $npid = $info['nexid'];
         $run_id = $info['run_id'];

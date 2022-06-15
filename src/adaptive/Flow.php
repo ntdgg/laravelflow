@@ -22,10 +22,10 @@ class Flow
 
     public function __construct()
     {
-        if (unit::gconfig('wf_db_mode') == 1) {
+        if (Unit::gconfig('wf_db_mode') == 1) {
             $className = '\\LaravelFlow\\custom\\laravel\\AdapteeFlow';
         } else {
-            $className = unit::gconfig('wf_db_namespace') . 'AdapteeFlow';
+            $className = Unit::gconfig('wf_db_namespace') . 'AdapteeFlow';
         }
         $this->mode = new $className();
     }
@@ -380,7 +380,7 @@ class Flow
             'out_condition' => json_encode($out_condition)
         ];
         if (isset($datas["process_to"])) {
-            $data['process_to'] = unit::ids_parse($datas['process_to']);
+            $data['process_to'] = Unit::ids_parse($datas['process_to']);
         }
         $ret = Process::EditFlowProcess([['id', '=', $datas['process_id']]], $data);
         if ($ret !== false) {
@@ -408,7 +408,7 @@ class Flow
         $one['process_tos'] = $one['process_to'];
         $one['process_to'] = $one['process_to'] == '' ? array() : explode(',', $one['process_to']);
         $one['style'] = json_decode($one['style'], true);
-        $one['out_condition'] = unit::parse_out_condition($one['out_condition'], ''); //json
+        $one['out_condition'] = Unit::parse_out_condition($one['out_condition'], ''); //json
         $process_to_list = Process::SearchFlowProcess([['id', 'in', $one['process_tos']], ['is_del', '=', 0], ['process_type', 'not in', ['node-msg', 'node-cc']]], 'id,process_name,process_type');
         foreach ($process_to_list as $k => $v) {
             if ((count($one['out_condition']) > 1)) {

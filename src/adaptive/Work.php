@@ -23,10 +23,10 @@ class Work
 
     public function __construct()
     {
-        if (unit::gconfig('wf_db_mode') == 1) {
+        if (Unit::gconfig('wf_db_mode') == 1) {
             $className = '\\LaravelFlow\\custom\\laravel\\AdapteeWork';
         } else {
-            $className = unit::gconfig('wf_db_namespace') . 'AdapteeWork';
+            $className = Unit::gconfig('wf_db_namespace') . 'AdapteeWork';
         }
         $this->mode = new $className();
     }

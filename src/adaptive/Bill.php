@@ -23,10 +23,10 @@ class Bill
 
     public function __construct($type = 'Bill')
     {
-        if (unit::gconfig('wf_bill_mode') == 1) {
+        if (Unit::gconfig('wf_bill_mode') == 1) {
             $className = '\\LaravelFlow\\custom\\laravel\\Adaptee' . $type;
         } else {
-            $className = unit::gconfig('wf_bill_namespace') . $type;
+            $className = Unit::gconfig('wf_bill_namespace') . $type;
         }
         $this->mode = new $className();
     }

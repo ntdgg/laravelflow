@@ -23,10 +23,10 @@ class Entrust
 
     public function __construct()
     {
-        if (unit::gconfig('wf_db_mode') == 1) {
+        if (Unit::gconfig('wf_db_mode') == 1) {
             $className = '\\LaravelFlow\\custom\\laravel\\AdapteeEntrust';
         } else {
-            $className = unit::gconfig('wf_db_namespace') . 'AdapteeEntrust';
+            $className = Unit::gconfig('wf_db_namespace') . 'AdapteeEntrust';
         }
         $this->mode = new $className();
     }

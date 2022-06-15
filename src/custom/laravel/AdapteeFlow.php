@@ -60,8 +60,8 @@ class AdapteeFlow
 
     function get_db_column_comment($table_name = '', $field = true, $table_schema = '')
     {
-        $table_schema = empty($table_schema) ? unit::gconfig('database') : $table_schema;
-        $table_name = unit::gconfig('prefix') . $table_name;
+        $table_schema = empty($table_schema) ? Unit::gconfig('database') : $table_schema;
+        $table_name = Unit::gconfig('prefix') . $table_name;
         $fieldName = $field === true ? 'allField' : $field;
         $cacheKeyName = 'db_' . $table_schema . '_' . $table_name . '_' . $fieldName;
         $param = [

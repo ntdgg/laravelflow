@@ -24,7 +24,7 @@ class Api
 {
     public function  __construct()
     {
-        if (unit::getuserinfo() == -1) {
+        if (Unit::getuserinfo() == -1) {
             die('Access Error!');
         }
     }
@@ -36,9 +36,9 @@ class Api
     public function WfDo(Request $request, $act = 'index', $wf_type = '', $wf_fid = '')
     {
         if ($act == 'start') {
-            if (unit::is_post()) {
+            if (Unit::is_post()) {
                 $data = $request->input();
-                return unit::return_msg(Control::WfCenter($act, $wf_fid, $wf_type, $data));
+                return Unit::return_msg(Control::WfCenter($act, $wf_fid, $wf_type, $data));
             } else {
                 return Control::WfCenter($act, $wf_fid, $wf_type);
             }
@@ -46,17 +46,17 @@ class Api
         if ($act == 'endflow' || $act == 'cancelflow') {
             $bill_table =  $request->query('bill_table') ?? '';
             $bill_id =  $request->query('bill_id') ?? '';
-            return unit::return_msg(Control::WfCenter($act, '', '', ['bill_table' => $bill_table, 'bill_id' => $bill_id]));
+            return Unit::return_msg(Control::WfCenter($act, '', '', ['bill_table' => $bill_table, 'bill_id' => $bill_id]));
         }
         if ($act == 'do') {
             $wf_op =  $request->query('wf_op') ?? 'check';
             $ssing =  $request->query('ssing') ?? 'sing';
             $submit =  $request->query('submit') ?? 'ok';
-            if (unit::is_post()) {
+            if (Unit::is_post()) {
                 $post = $request->input();
-                return unit::return_msg(Control::WfCenter($act, $wf_fid, $wf_type, ['wf_op' => $wf_op, 'ssing' => $ssing, 'submit' => $submit], $post));
+                return Unit::return_msg(Control::WfCenter($act, $wf_fid, $wf_type, ['wf_op' => $wf_op, 'ssing' => $ssing, 'submit' => $submit], $post));
             } else {
-                return unit::return_msg(Control::WfCenter($act, $wf_fid, $wf_type, ['wf_op' => $wf_op, 'ssing' => $ssing, 'submit' => $submit]));
+                return Unit::return_msg(Control::WfCenter($act, $wf_fid, $wf_type, ['wf_op' => $wf_op, 'ssing' => $ssing, 'submit' => $submit]));
             }
         }
         /*用户确认抄送*/
@@ -74,32 +74,32 @@ class Api
     public function designapi(Request $request, $act, $flow_id = '')
     {
         if ($act == 'welcome' || $act == 'check' || $act == 'delAll' || $act == 'wfdesc') {
-            return unit::return_msg(Control::WfDescCenter($act, $flow_id));
+            return Unit::return_msg(Control::WfDescCenter($act, $flow_id));
         }
         if ($act == 'add') {
             $data = $request->input('data');
-            return unit::return_msg(Control::WfDescCenter($act, $flow_id, $data));
+            return Unit::return_msg(Control::WfDescCenter($act, $flow_id, $data));
         }
         if ($act == 'save') {
             $data = $request->input('process_info');
-            return unit::return_msg(Control::WfDescCenter($act, $flow_id, $data));
+            return Unit::return_msg(Control::WfDescCenter($act, $flow_id, $data));
         }
         if ($act == 'del') {
             $data = $request->input('id');
-            return unit::return_msg(Control::WfDescCenter($act, $flow_id, $data));
+            return Unit::return_msg(Control::WfDescCenter($act, $flow_id, $data));
         }
         if ($act == 'att') {
-            return unit::return_msg(Control::WfDescCenter($act, '', $flow_id));
+            return Unit::return_msg(Control::WfDescCenter($act, '', $flow_id));
         }
         if ($act == 'saveatt') {
             $data = $request->input();
-            return unit::return_msg(Control::WfDescCenter($act, '', $data));
+            return Unit::return_msg(Control::WfDescCenter($act, '', $data));
         }
         if ($act == 'super_user') {
             $type_mode = $request->input('type_mode');
             $key = $request->input('key');
             $type = $request->input('type');
-            return unit::return_msg(Control::WfDescCenter($act, '', ['kid' => $flow_id, 'type_mode' => $type_mode, 'key' => $key, 'type' => $type]));
+            return Unit::return_msg(Control::WfDescCenter($act, '', ['kid' => $flow_id, 'type_mode' => $type_mode, 'key' => $key, 'type' => $type]));
         }
     }
     /**
@@ -117,28 +117,28 @@ class Api
             return Control::WfEntrustCenter('index');
         }
         if ($act == 'event') {
-            if (unit::is_post()) {
+            if (Unit::is_post()) {
                 $data = $request->input();
-                return unit::return_msg(Control::WfFlowCenter($act, $data));
+                return Unit::return_msg(Control::WfFlowCenter($act, $data));
             } else {
                 $data = input('id') ?? -1;
-                return unit::return_msg(Control::WfFlowCenter($act, $data));
+                return Unit::return_msg(Control::WfFlowCenter($act, $data));
             }
         }
         if ($act == 'add') {
-            if (unit::is_post()) {
+            if (Unit::is_post()) {
                 $data = $request->input();
                 unset($data['_token'], $data['s']);
-                return unit::return_msg(Control::WfFlowCenter($act, $data));
+                return Unit::return_msg(Control::WfFlowCenter($act, $data));
             } else {
                 $data = $request->query('id') ?? -1;
-                return unit::return_msg(Control::WfFlowCenter($act, $data));
+                return Unit::return_msg(Control::WfFlowCenter($act, $data));
             }
         }
         if ($act == 'del') {
-            if (unit::is_post()) {
+            if (Unit::is_post()) {
                 $data = input('post.');
-                return unit::return_msg(Control::WfFlowCenter($act, $data));
+                return Unit::return_msg(Control::WfFlowCenter($act, $data));
             }
         }
         if ($act == 'wfend') {
@@ -146,7 +146,7 @@ class Api
             return Control::WfFlowCenter($act, $id);
         }
         if ($act == 'dladd') {
-            if (unit::is_post()) {
+            if (Unit::is_post()) {
                 $data = $request->input();
                 unset($data['_token'], $data['s']);
                 return Control::WfEntrustCenter('add', $data);

@@ -23,7 +23,7 @@ class Control
     protected $mode;
     public function  __construct()
     {
-        if (unit::gconfig('view_return') == 1) {
+        if (Unit::gconfig('view_return') == 1) {
             $className = '\\LaravelFlow\\service\\method\\Tpl';
         } else {
             $className = '\\LaravelFlow\\service\\method\\Jwt';
