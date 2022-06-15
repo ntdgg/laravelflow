@@ -1,4 +1,5 @@
 <?php
+
 /**
  *+------------------
  * LaravelFlow 工作流回退
@@ -8,7 +9,8 @@
  * Author: guoguo(1838188896@qq.com)
  *+------------------
  */
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace LaravelFlow\Service\Command;
 
@@ -22,21 +24,21 @@ use LaravelFlow\Adaptive\Run;
 
 class EndFlow
 {
-	/**
-	 * @param $pid
-	 * @param $run_id
-	 * @return bool|void
-	 */
-	public static function doTask($pid,$run_id)
-	{
-		if($pid==''){
-			return 0;
-		}
-		$process = Process::GetProcessInfo($pid,$run_id);
-		if($process['process_type']=='node-end'){
-			return 1;
-		}else{
-			return 0;
-		}
-	}
+    /**
+     * @param $pid
+     * @param $run_id
+     * @return bool|void
+     */
+    public static function doTask($pid, $run_id)
+    {
+        if ($pid == '') {
+            return 0;
+        }
+        $process = Process::GetProcessInfo($pid, $run_id);
+        if ($process['process_type'] == 'node-end') {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

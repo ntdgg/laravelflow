@@ -9,7 +9,8 @@
  * Author: guoguo(1838188896@qq.com)
  *+------------------
  */
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace LaravelFlow\Custom\Laravel;
 
@@ -31,12 +32,10 @@ class AdapteeMsg
     }
     function update($map)
     {
-        return DB::table('wf_run_process_msg')->where($map)->update(['status'=>2,'uptime'=>time()]);
+        return DB::table('wf_run_process_msg')->where($map)->update(['status' => 2, 'uptime' => time()]);
     }
     function findWhere($map)
     {
         return (array)DB::table('wf_run_process_msg')->where($map)->first();
     }
-
-
 }

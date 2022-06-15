@@ -1,4 +1,5 @@
 <?php
+
 /**
  *+------------------
  * LaravelFlow 用户信息
@@ -8,7 +9,8 @@
  * Author: guoguo(1838188896@qq.com)
  *+------------------
  */
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace LaravelFlow\Custom\Laravel;
 
@@ -17,20 +19,22 @@ use LaravelFlow\Lib\Unit;
 
 class AdapteeUser
 {
-	public static function config($type = 'user')
-	{
-		return unit::gconfig($type);
-	}
+    public static function config($type = 'user')
+    {
+        return unit::gconfig($type);
+    }
 
-	/**
-	 * 获取用户列表
-	 *
-	 */
-	function GetUser()
-	{
+    /**
+     * 获取用户列表
+     *
+     */
+    function GetUser()
+    {
         $config = self::config();
-		return DB::table($config['db'])->select($config['field'])->get()->map(function ($value) {return (array)$value;})->toArray();
-	}
+        return DB::table($config['db'])->select($config['field'])->get()->map(function ($value) {
+            return (array)$value;
+        })->toArray();
+    }
 
     /**
      * 获取用户列表
@@ -39,54 +43,59 @@ class AdapteeUser
     function searchRoleIds($role)
     {
         $config = self::config();
-        return DB::table($config['db'])->where('role','in',$role)->pluck('id')->toArray();
+        return DB::table($config['db'])->where('role', 'in', $role)->pluck('id')->toArray();
     }
 
-	/**
-	 * 获取角色列表
-	 *
-	 */
-	function GetRole()
-	{
-		$config = self::config('role');
-        return DB::table($config['db'])->select($config['field'])->get()->map(function ($value) {return (array)$value;})->toArray();
-	}
+    /**
+     * 获取角色列表
+     *
+     */
+    function GetRole()
+    {
+        $config = self::config('role');
+        return DB::table($config['db'])->select($config['field'])->get()->map(function ($value) {
+            return (array)$value;
+        })->toArray();
+    }
 
-	/**
-	 * 获取AJAX信息
-	 *
-	 */
-	function AjaxGet($type, $keyword)
-	{
-		if ($type == 'user') {
-			$config = self::config();
-			$map[] = [$config['searchwhere'], 'like', '%' . $keyword . '%'];
-            return DB::table($config['db'])->select($config['field'])->where($map)->get()->map(function ($value) {return (array)$value;})->toArray();
-		} else {
-			$config = self::config('role');
-			$map[] = [$config['searchwhere'], 'like', '%' . $keyword . '%'];
-            return DB::table($config['db'])->select($config['field'])->where($map)->get()->map(function ($value) {return (array)$value;})->toArray();
-		}
-	}
+    /**
+     * 获取AJAX信息
+     *
+     */
+    function AjaxGet($type, $keyword)
+    {
+        if ($type == 'user') {
+            $config = self::config();
+            $map[] = [$config['searchwhere'], 'like', '%' . $keyword . '%'];
+            return DB::table($config['db'])->select($config['field'])->where($map)->get()->map(function ($value) {
+                return (array)$value;
+            })->toArray();
+        } else {
+            $config = self::config('role');
+            $map[] = [$config['searchwhere'], 'like', '%' . $keyword . '%'];
+            return DB::table($config['db'])->select($config['field'])->where($map)->get()->map(function ($value) {
+                return (array)$value;
+            })->toArray();
+        }
+    }
 
-	/**
-	 * 查询用户消息
-	 *
-	 */
-	function GetUserInfo($id)
-	{
-		$config = self::config();
-		return DB::table($config['db'])->where($config['key'], $id)->select($config['field'])->find();
-	}
+    /**
+     * 查询用户消息
+     *
+     */
+    function GetUserInfo($id)
+    {
+        $config = self::config();
+        return DB::table($config['db'])->where($config['key'], $id)->select($config['field'])->find();
+    }
 
-	/**
-	 * 查询用户名称
-	 *
-	 */
-	function GetUserName($uid)
-	{
-		$config = self::config();
-		return DB::table($config['db'])->where($config['key'], $uid)->value($config['getfield']);
-	}
-
+    /**
+     * 查询用户名称
+     *
+     */
+    function GetUserName($uid)
+    {
+        $config = self::config();
+        return DB::table($config['db'])->where($config['key'], $uid)->value($config['getfield']);
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *+------------------
  * LaravelFlow 消息节点数据
@@ -8,7 +9,8 @@
  * Author: guoguo(1838188896@qq.com)
  *+------------------
  */
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace LaravelFlow\Adaptive;
 
@@ -37,10 +39,10 @@ class Msg
     public static function find($map)
     {
         $info = self::findWhere($map);
-        if($info){
+        if ($info) {
             $msg_api = unit::gconfig('msg_api') ?? '';
             if (class_exists($msg_api)) {
-                (new $msg_api())->node_msg($info['run_id'],$info['process_msgid']);
+                (new $msg_api())->node_msg($info['run_id'], $info['process_msgid']);
             }
             /*更
             /*更新执行消息节点*/
@@ -75,11 +77,8 @@ class Msg
      */
     public static function add($data)
     {
-        if(!self::findWhere([['run_id','=',$data['run_id']],['process_id','=',$data['process_id']],['process_msgid','=',$data['process_msgid']]]))
-        {
+        if (!self::findWhere([['run_id', '=', $data['run_id']], ['process_id', '=', $data['process_id']], ['process_msgid', '=', $data['process_msgid']]])) {
             return (new Msg())->mode->add($data);
         }
     }
-
-
 }

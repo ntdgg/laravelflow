@@ -9,7 +9,8 @@
  * Author: guoguo(1838188896@qq.com)
  *+------------------
  */
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace LaravelFlow\Custom\Laravel;
 
@@ -18,23 +19,23 @@ use DB;
 class AdapteeLog
 {
 
-	/**
-	 * 工作流审批日志记录
-	 *
-	 **/
-	function AddrunLog($data)
-	{
-		$ret = DB::table('wf_run_log')->insertGetId($data);
-		if (!$ret) {
-			return false;
-		}
-		return $ret;
-	}
+    /**
+     * 工作流审批日志记录
+     *
+     **/
+    function AddrunLog($data)
+    {
+        $ret = DB::table('wf_run_log')->insertGetId($data);
+        if (!$ret) {
+            return false;
+        }
+        return $ret;
+    }
 
-	function SearchRunLog($wf_fid, $wf_type)
-	{
-		return DB::table('wf_run_log')->where('from_id', $wf_fid)->where('from_table', $wf_type)->orderBy('id','DESC')->get()->map(function ($value) {return (array)$value;})->toArray();
-	}
-
-
+    function SearchRunLog($wf_fid, $wf_type)
+    {
+        return DB::table('wf_run_log')->where('from_id', $wf_fid)->where('from_table', $wf_type)->orderBy('id', 'DESC')->get()->map(function ($value) {
+            return (array)$value;
+        })->toArray();
+    }
 }

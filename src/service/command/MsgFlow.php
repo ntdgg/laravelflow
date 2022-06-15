@@ -1,4 +1,5 @@
 <?php
+
 /**
  *+------------------
  * LaravelFlow 普通提交工作流
@@ -8,7 +9,8 @@
  * Author: guoguo(1838188896@qq.com)
  *+------------------
  */
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace LaravelFlow\Service\Command;
 
@@ -31,6 +33,5 @@ class MsgFlow
      */
     public function do()
     {
-
     }
 }
