@@ -1,7 +1,8 @@
 <?php
+
 /**
  *+------------------
- * laravelflow 公共类，模板文件
+ * LaravelFlow 公共类，模板文件
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
@@ -9,139 +10,138 @@
  *+------------------
  */
 
-namespace laravelflow\lib;
+namespace LaravelFlow\Lib;
 
-use laravelflow\adaptive\Cc;
-use laravelflow\adaptive\Process;
-use laravelflow\adaptive\User;
-use laravelflow\adaptive\Bill;
+use LaravelFlow\Adaptive\Cc;
+use LaravelFlow\Adaptive\Process;
+use LaravelFlow\Adaptive\User;
+use LaravelFlow\Adaptive\Bill;
 
-class lib
+class Lib
 {
-	/**
-	 * 工作流状态信息
-	 *
-	 * @param  $status 状态
-	 * @param  $type 0 Html 1 Json
-	 **/
-	public static function laravelflow_status($status = 0, $type = 0)
-	{
-		$stv = [
-			-1 => '<span class="label label-danger radius" >退回修改</span>', 0 => '<span class="label radius">保存中</span>', 1 => '<span class="label radius" >流程中</span>', 2 => '<span class="label label-success radius" >审核通过</span>'
-		];
-		$st = [
-			-1 => '退回修改', 0 => '保存中', 1 => '流程中', 2 => '审核通过'
-		];
-		if ($type == 0) {
-			return $stv[$status] ?? 'ERR';
-		} else {
-			return $st[$status] ?? 'ERR';
-		}
+    /**
+     * 工作流状态信息
+     *
+     * @param  $status 状态
+     * @param  $type 0 Html 1 Json
+     **/
+    public static function LaravelFlow_status($status = 0, $type = 0)
+    {
+        $stv = [
+            -1 => '<span class="label label-danger radius" >退回修改</span>', 0 => '<span class="label radius">保存中</span>', 1 => '<span class="label radius" >流程中</span>', 2 => '<span class="label label-success radius" >审核通过</span>'
+        ];
+        $st = [
+            -1 => '退回修改', 0 => '保存中', 1 => '流程中', 2 => '审核通过'
+        ];
+        if ($type == 0) {
+            return $stv[$status] ?? 'ERR';
+        } else {
+            return $st[$status] ?? 'ERR';
+        }
+    }
 
-	}
-
-	/**
-	 * 工作流按钮权限
-	 *
-	 **/
-	public static function laravelflow_btn($wf_fid, $wf_type, $status, $flowinfo, $return = 0)
-	{
-        $btn_lang = unit::gconfig('wf_btn');
-		$urls = unit::gconfig('wf_url');
-		$thisuser = ['thisuid' => unit::getuserinfo('uid'), 'thisrole' => unit::getuserinfo('role')];
-		$url = ['url' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid];
-        $ccHtml = Cc::ccStatus($wf_type,$wf_fid);
-		switch ($status) {
-			case 0:
-                $start_flow = (array)unit::gconfig('start_flow');// Guoke 2021/11/26 16:55 修复空数据下报错
-                $btn_access = true ;
+    /**
+     * 工作流按钮权限
+     *
+     **/
+    public static function LaravelFlow_btn($wf_fid, $wf_type, $status, $flowinfo, $return = 0)
+    {
+        $btn_lang = Unit::gconfig('wf_btn');
+        $urls = Unit::gconfig('wf_url');
+        $thisuser = ['thisuid' => Unit::getuserinfo('uid'), 'thisrole' => Unit::getuserinfo('role')];
+        $url = ['url' => $urls['wfdo'] . '/do/' . $wf_type . '/' . $wf_fid];
+        $ccHtml = Cc::ccStatus($wf_type, $wf_fid);
+        switch ($status) {
+            case 0:
+                $start_flow = (array)Unit::gconfig('start_flow'); // Guoke 2021/11/26 16:55 修复空数据下报错
+                $btn_access = true;
                 if (in_array($wf_type, $start_flow)) {
-                    $uid = Bill::getbillvalue($wf_type,$wf_fid,'uid');
-                    if($uid != unit::getuserinfo('uid')){
-                        $btn_access=false;
+                    $uid = Bill::getbillvalue($wf_type, $wf_fid, 'uid');
+                    if ($uid != Unit::getuserinfo('uid')) {
+                        $btn_access = false;
                     }
                 }
-				if ($return == 1) {
-					return ['Url' => $urls['wfdo'] . '/start/' . $wf_type . '/' . $wf_fid, 'User' => '', 'status' => 1];
-				}
-				if(!$btn_access){
+                if ($return == 1) {
+                    return ['Url' => $urls['wfdo'] . '/start/' . $wf_type . '/' . $wf_fid, 'User' => '', 'status' => 1];
+                }
+                if (!$btn_access) {
                     return '';
                 }
 
-                $btnHtml =   '<span class="btn" onclick=laravelflow.lopen(\'发起\',"' . $urls['wfdo'] . '/start/' . $wf_type . '/' . $wf_fid . '",35,30)>'.$btn_lang['start'].'</span>';
+                $btnHtml =   '<span class="btn" onclick=LaravelFlow.lopen(\'发起\',"' . $urls['wfdo'] . '/start/' . $wf_type . '/' . $wf_fid . '",35,30)>' . $btn_lang['start'] . '</span>';
 
-				break;
-			case 1:
-				$st = 0;
-				$user_name = '';
-				if ($flowinfo != -1) {
-					if (!isset($flowinfo['status'])) {
-						if ($return == 1) {
-							return ['Url' => '', 'User' => '', 'status' => -1];
-						}
+                break;
+            case 1:
+                $st = 0;
+                $user_name = '';
+                if ($flowinfo != -1) {
+                    if (!isset($flowinfo['status'])) {
+                        if ($return == 1) {
+                            return ['Url' => '', 'User' => '', 'status' => -1];
+                        }
                         $btnHtml =   '<span class="btn" onclick=javascript:alert("提示：当前流程故障，请联系管理员重置流程！")>Info:Flow Err</span>';
-					}
-					if ($flowinfo['sing_st'] == 0) {
-						$user = explode(",", $flowinfo['status']['sponsor_ids']);
-						$user_name = $flowinfo['status']['sponsor_text'];
-						if ($flowinfo['status']['auto_person'] == 2 ||$flowinfo['status']['auto_person'] == 3 || $flowinfo['status']['auto_person'] == 4 || $flowinfo['status']['auto_person'] == 6) {
-							if (in_array($thisuser['thisuid'], $user)) {
-								$st = 1;
-							}
-						}
-						if ($flowinfo['status']['auto_person'] == 5) {
-							if(!empty(array_intersect((array)$thisuser['thisrole'], $user))){// Guoke 2021/11/26 13:30 扩展多多用户组的支持
-								$st = 1;
-							}
-						}
-					} else {
-						if ($flowinfo['sing_info']['uid'] == $thisuser['thisuid']) {
-							$st = 1;
-						} else {
-							$user_name = $flowinfo['sing_info']['uid'];
-						}
-					}
-				} else {
-					if ($return == 1) {
-						return ['Url' => '', 'User' => '', 'status' => 0];
-					}
-                    $btnHtml =   '<span class="btn">'.$btn_lang['noaccess'].'</span>';
-				}
-				if ($st == 1) {
-					if ($return == 1) {
-						return ['Url' => $url['url'], 'User' => $user_name];
-					}
-                    $btnHtml =   '<span class="btn" onclick=laravelflow.lopen(\'审核单据信息：' . $wf_fid . '\',"' . $url['url'] . '",100,100)>'.$btn_lang['approve'].'[' . $user_name . ']</span>';
-				} else {
-					if ($return == 1) {
-						return ['Url' => '', 'User' => $user_name, 'status' => 0];
-					}
-                    $btnHtml =   '<span class="btn">'.$btn_lang['noaccess'].'[' . $user_name . ']</span>';
-				}
-				break;
-			case 100:
-				if ($return == 1) {
-					return ['Url' => $url['url'] . '&sup=1', 'User' => '', 'status' => 1];
-				}
-                $btnHtml =  '<span class="btn" onclick=laravelflow.lopen(\'审核单据信息：' . $wf_fid . '\',"' . $url['url'] . '&sup=1",100,100)>'.$btn_lang['sapprove'].'</span>';
-				break;
-			default:
+                    }
+                    if ($flowinfo['sing_st'] == 0) {
+                        $user = explode(",", $flowinfo['status']['sponsor_ids']);
+                        $user_name = $flowinfo['status']['sponsor_text'];
+                        if ($flowinfo['status']['auto_person'] == 2 || $flowinfo['status']['auto_person'] == 3 || $flowinfo['status']['auto_person'] == 4 || $flowinfo['status']['auto_person'] == 6) {
+                            if (in_array($thisuser['thisuid'], $user)) {
+                                $st = 1;
+                            }
+                        }
+                        if ($flowinfo['status']['auto_person'] == 5) {
+                            if (!empty(array_intersect((array)$thisuser['thisrole'], $user))) { // Guoke 2021/11/26 13:30 扩展多多用户组的支持
+                                $st = 1;
+                            }
+                        }
+                    } else {
+                        if ($flowinfo['sing_info']['uid'] == $thisuser['thisuid']) {
+                            $st = 1;
+                        } else {
+                            $user_name = $flowinfo['sing_info']['uid'];
+                        }
+                    }
+                } else {
+                    if ($return == 1) {
+                        return ['Url' => '', 'User' => '', 'status' => 0];
+                    }
+                    $btnHtml =   '<span class="btn">' . $btn_lang['noaccess'] . '</span>';
+                }
+                if ($st == 1) {
+                    if ($return == 1) {
+                        return ['Url' => $url['url'], 'User' => $user_name];
+                    }
+                    $btnHtml =   '<span class="btn" onclick=LaravelFlow.lopen(\'审核单据信息：' . $wf_fid . '\',"' . $url['url'] . '",100,100)>' . $btn_lang['approve'] . '[' . $user_name . ']</span>';
+                } else {
+                    if ($return == 1) {
+                        return ['Url' => '', 'User' => $user_name, 'status' => 0];
+                    }
+                    $btnHtml =   '<span class="btn">' . $btn_lang['noaccess'] . '[' . $user_name . ']</span>';
+                }
+                break;
+            case 100:
+                if ($return == 1) {
+                    return ['Url' => $url['url'] . '&sup=1', 'User' => '', 'status' => 1];
+                }
+                $btnHtml =  '<span class="btn" onclick=LaravelFlow.lopen(\'审核单据信息：' . $wf_fid . '\',"' . $url['url'] . '&sup=1",100,100)>' . $btn_lang['sapprove'] . '</span>';
+                break;
+            default:
                 $btnHtml = '';
-		}
-        return $btnHtml.$ccHtml;
-	}
-	/**
-	 * 添加流程模板
-	 *
-	 **/
-	public static function tmp_event($url, $info, $type)
-	{
-		if (!$info) {
-			$info['type'] = '';
-		}
-		$tmp = self::commontmp('laravelflow V1.0 ');
-		$patch = unit::gconfig('static_url');
-		$view = <<<php
+        }
+        return $btnHtml . $ccHtml;
+    }
+    /**
+     * 添加流程模板
+     *
+     **/
+    public static function tmp_event($url, $info, $type)
+    {
+        if (!$info) {
+            $info['type'] = '';
+        }
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
+        $patch = Unit::gconfig('static_url');
+        $view = <<<php
 				{$tmp['head']}
 				<link rel="stylesheet" type="text/css" href="{$patch}lib/codemirror/codemirror.css" />
 				<link rel="stylesheet" type="text/css" href="{$patch}lib/codemirror/dracula.css" />
@@ -159,7 +159,7 @@ class lib
 								<textarea placeholder="" name='code' type="text/plain" style="width:100%;height:450px;display:inline-block;" id='codedata' ></textarea></td>
 							</tr><tr class='text-c' >
 							<td colspan=2>
-							<button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="laravelflow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
+							<button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="LaravelFlow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
 						</table>
 					</form>{$tmp['js']}{$tmp['form']}
 					<script  src="{$patch}lib/codemirror/codemirror.js" ></script>
@@ -187,28 +187,28 @@ class lib
     });
 			</script>
 php;
-		return $view;
-	}
-	/**
-	 * 添加流程模板
-	 *
-	 **/
-	public static function tmp_add($url, $info, $type)
-	{
-		if (!$info) {
-			$info['id'] = '';
-			$info['flow_name'] = '';
-			$info['sort_order'] = '';
-			$info['flow_desc'] = '';
-			$info['type'] = '';
+        return $view;
+    }
+    /**
+     * 添加流程模板
+     *
+     **/
+    public static function tmp_add($url, $info, $type)
+    {
+        if (!$info) {
+            $info['id'] = '';
+            $info['flow_name'] = '';
+            $info['sort_order'] = '';
+            $info['flow_desc'] = '';
+            $info['type'] = '';
             $info['field_name'] = '';
             $info['field_value'] = '';
             $info['is_field'] = 0;
             $info['tmp'] = '';
-		}
-		$tmp = self::commontmp('laravelflow V1.0 ');
+        }
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
-		$view = <<<php
+        $view = <<<php
 				{$tmp['head']}
 				<form action="{$url}" method="post" name="form" id="form" style="padding: 10px;">
 				<input type="hidden" name="id" value="{$info['id']}">
@@ -230,7 +230,7 @@ php;
 								<textarea name='flow_desc'  datatype="*" style="width:100%;height:55px;">{$info['flow_desc']}</textarea></td>
 							</tr><tr class='text-c' >
 							<td colspan=2>
-							<button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="laravelflow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
+							<button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="LaravelFlow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
 						</table>
 					</form>{$tmp['js']}{$tmp['form']}
 			<script type="text/javascript">
@@ -240,19 +240,19 @@ php;
 			});
 			</script>
 php;
-		return $view;
-	}
+        return $view;
+    }
 
-	/**
-	 * 添加代理会签模板
-	 *
-	 **/
-	public static function tmp_entrust($info, $type, $user)
-	{
-		$tmp = self::commontmp('laravelflow V1.0 管理列表');
-		$urls = unit::gconfig('wf_url');
+    /**
+     * 添加代理会签模板
+     *
+     **/
+    public static function tmp_entrust($info, $type, $user)
+    {
+        $tmp = self::commontmp('LaravelFlow V1.0 管理列表');
+        $urls = Unit::gconfig('wf_url');
         $csr = csrf_token();
-		return <<<php
+        return <<<php
 				{$tmp['head']}
 				<form action="{$urls['wfapi']}/dladd" method="post" name="form" id="form">
 				<input type="hidden" name="id" value="{$info['id']}">
@@ -280,7 +280,7 @@ php;
 							<th>委托备注</th><td style='width:330px;text-align: left;'><textarea name='entrust_con'  datatype="*" style="width:100%;height:55px;">{$info['entrust_con']}</textarea></td></tr>
 							<tr class='text-c' >
 							<td colspan=2>
-							<button  class="button" type="submit">&nbsp;&nbsp;提交&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="laravelflow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td>
+							<button  class="button" type="submit">&nbsp;&nbsp;提交&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" type="button" onclick="LaravelFlow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td>
 							</tr><tr><td style='width:330px;text-align: left;' colspan=2>
 								注：</td></tr>
 						</table>
@@ -294,18 +294,18 @@ php;
 			});
 			</script>
 php;
-	}
+    }
 
-	/**
-	 * 用户角色选择模板
-	 *
-	 **/
-	public static function tmp_suser($url, $kid, $user, $type = 'user')
-	{
+    /**
+     * 用户角色选择模板
+     *
+     **/
+    public static function tmp_suser($url, $kid, $user, $type = 'user')
+    {
 
-		$tmp = self::commontmp('laravelflow V1.0 ');
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
-		return <<<php
+        return <<<php
 		 {$tmp['head']}
 <article class="page-container">
 <table class="table table-bordered table-bg">
@@ -372,28 +372,28 @@ php;
     });
 </script>
 php;
-	}
+    }
 
-	/**
-	 * 工作流监控模板
-	 *
-	 **/
-	public static function tmp_wfjk($data)
-	{
-		$tmp = self::commontmp('laravelflow V1.0 ');
+    /**
+     * 工作流监控模板
+     *
+     **/
+    public static function tmp_wfjk($data)
+    {
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
-		return <<<php
+        return <<<php
 		 {$tmp['head']}<meta name="csrf-token" content="{$csr}"><div class="page-container"><table class="table"><thead><tr class="text-c"><th>工作流编号</th><th >工作流类型</th><th >工作流名称</th><th >当前状态</th><th >业务办理人</th><th >接收时间</th><th >操作</th></thead></tr>{$data}</table></div>{$tmp['js']}</body></html>
 php;
-	}
+    }
 
-	public static function tmp_wfstart($info, $flow)
-	{
-		$urls = unit::gconfig('wf_url');
-		$url = $urls['wfdo'] . '/start/' . $info['wf_type'] . '/' . $info['wf_fid'];
-		$tmp = self::commontmp('laravelflow V1.0 ');
+    public static function tmp_wfstart($info, $flow)
+    {
+        $urls = Unit::gconfig('wf_url');
+        $url = $urls['wfdo'] . '/start/' . $info['wf_type'] . '/' . $info['wf_fid'];
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
-		return <<<php
+        return <<<php
 		 {$tmp['head']}
 		<form action="{$url}" method="post" name="form" id="form">
 		<input type='hidden' value="{$info['wf_fid']}" name='wf_fid'>
@@ -403,26 +403,26 @@ php;
 			</td></tr><tr>
 			<td>审核意见：</td><td style="text-align:left"><input type="text" class="input-text" name="check_con"  datatype="*" >
 			</td></tr>
-			<tr><td colspan='2' style='text-align:center'><button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" style="background-color:#666 !important" type="button" onclick="laravelflow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
+			<tr><td colspan='2' style='text-align:center'><button  class="button" type="submit">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>&nbsp;&nbsp;<button  class="button" style="background-color:#666 !important" type="button" onclick="LaravelFlow.lclose()">&nbsp;&nbsp;取消&nbsp;&nbsp;</button></td></tr>
 		</table>
 	</form>{$tmp['js']}{$tmp['form']}
 </body>
 </html>
 php;
-	}
+    }
 
-	/**
-	 * 工作流提交模板
-	 *
-	 **/
-	public static function tmp_wfok($info, $flowinfo)
-	{
-		$sup = $_GET['sup'] ?? '';
-		$tmp = self::commontmp('laravelflow V1.0 ');
+    /**
+     * 工作流提交模板
+     *
+     **/
+    public static function tmp_wfok($info, $flowinfo)
+    {
+        $sup = $_GET['sup'] ?? '';
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
-		return <<<php
+        return <<<php
 		 {$tmp['head']}
-		<form action="{$info['laravelflow_ok']}" method="post" name="form" id="wfform">
+		<form action="{$info['LaravelFlow_ok']}" method="post" name="form" id="wfform">
 		<input id='upload' name='art' value='' type='hidden'>
 		<input type="hidden" value="{$flowinfo['wf_mode']}" name="wf_mode" >
 		<input type="hidden" value="{$flowinfo['nexid']}" name="npid" >
@@ -453,8 +453,8 @@ php;
 				<td colspan=2 class='text-c'>
 						<input id='submit_to_save' name='submit_to_save' value='{$info['wf_submit']}' type='hidden'>
 						<button  class="button" type="submit"> 提交同意</button>
-						<a class="button" id='backbton' onclick='laravelflow.lclose()'>取消</a>
-						<a class="button" onclick=laravelflow.lopen("Upload","{$info['laravelflow_upload']}?id=upload",20,50) style="background-color: #19be6b">附件</a>
+						<a class="button" id='backbton' onclick='LaravelFlow.lclose()'>取消</a>
+						<a class="button" onclick=LaravelFlow.lopen("Upload","{$info['LaravelFlow_upload']}?id=upload",20,50) style="background-color: #19be6b">附件</a>
 				</td>
 				</tr>
 				</table>
@@ -490,25 +490,25 @@ $(function(){
 </body>
 </html>
 php;
-	}
+    }
 
-	/**
-	 * 工作流回退模板
-	 *
-	 **/
-	public static function tmp_wfback($info, $flowinfo)
-	{
-		$preprocess = Process::GetPreProcessInfo($flowinfo['run_process']);
-		$op = '';
-		foreach ($preprocess as $k => $v) {
-			$op .= '<option value="' . $k . '">' . $v . '</option>';
-		}
-		$sup = $_GET['sup'] ?? '';
-		$tmp = self::commontmp('laravelflow V1.0 ');
+    /**
+     * 工作流回退模板
+     *
+     **/
+    public static function tmp_wfback($info, $flowinfo)
+    {
+        $preprocess = Process::GetPreProcessInfo($flowinfo['run_process']);
+        $op = '';
+        foreach ($preprocess as $k => $v) {
+            $op .= '<option value="' . $k . '">' . $v . '</option>';
+        }
+        $sup = $_GET['sup'] ?? '';
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
-		return <<<php
+        return <<<php
 		 {$tmp['head']}
-		<form action="{$info['laravelflow_back']}" method="post" name="form" id="wfform">
+		<form action="{$info['LaravelFlow_back']}" method="post" name="form" id="wfform">
 		<input type="hidden" value="{$flowinfo['run_id']}" name="run_id" id='run_id'>
 		<input type="hidden" value="{$sup}" name="sup">
 		<input type="hidden" value="{$flowinfo['run_process']}" name="run_process">
@@ -535,7 +535,7 @@ php;
 				<td colspan=2 class='text-c'>
 						<input id='submit_to_save' name='submit_to_save' value='back' type='hidden'>
 						<button  class="button" type="submit"> 提交回退</button>
-						<a class="button" id='backbton' onclick='laravelflow.lclose()'>取消</a>
+						<a class="button" id='backbton' onclick='LaravelFlow.lclose()'>取消</a>
 				</td>
 				</tr>
 				</table>
@@ -571,16 +571,16 @@ $(function(){
 </body>
 </html>
 php;
-	}
+    }
 
-	/**
-	 * 工作流设计模板
-	 *
-	 **/
-	public static function tmp_wfdesc($id, $process_data, $urlApi)
-	{
-		$tmp = self::commontmp('laravelflow V1.0 ');
-        $data = json_decode($process_data,'true');
+    /**
+     * 工作流设计模板
+     *
+     **/
+    public static function tmp_wfdesc($id, $process_data, $urlApi)
+    {
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
+        $data = json_decode($process_data, 'true');
         $surl = $urlApi;
         $id = $id;
         $x6 = json_encode($data['x6']);
@@ -590,14 +590,14 @@ php;
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>laravelflow工作流引擎 V1.0</title>
+    <title>LaravelFlow工作流引擎 V1.0</title>
     <link rel="stylesheet" href="/static/work/app.css">
     <meta name="csrf-token" content="{$csr}">
 </head>
 <body>
 <div class="wrap">
     <div class="header">
-        laravelflow工作流引擎 V1.0
+        LaravelFlow工作流引擎 V1.0
     </div>
 <div class='toolbar'>
         <hr  style="margin: 0 5px;padding-top: 5px;border: none;border-bottom: solid 1px #DDD;clear: both;"/>
@@ -619,15 +619,15 @@ php;
     </div>
 </div>
 <script>
-    const laravelflow_Id = {$id};
-    const laravelflow_Server_Url = '{$surl}';
+    const LaravelFlow_Id = {$id};
+    const LaravelFlow_Server_Url = '{$surl}';
 </script>
 <script src="/static/work/jquery-1.7.2.min.js"></script>
 <script src="/static/work/lib/layer/2.4/layer.js"></script>
-<script src="/static/work/laravelflow.x6.js"></script>
+<script src="/static/work/LaravelFlow.x6.js"></script>
 <script src="/static/work/app.js"></script>
-<script src="/static/work/laravelflow.node.js"></script>
-<script src="/static/work/laravelflow.api.js"></script>
+<script src="/static/work/LaravelFlow.node.js"></script>
+<script src="/static/work/LaravelFlow.api.js"></script>
 <script>
     function resize(){
         const width=document.body.offsetWidth - 120;
@@ -644,27 +644,25 @@ php;
 </body>
 </html>
 str;
+    }
 
-
-	}
-
-	/**
-	 * 工作流会签模板
-	 *
-	 **/
-	public static function tmp_wfsign($info, $flowinfo, $sing)
-	{
-		$UserDb = User::GetUser();
-		$op = '';
-		foreach ($UserDb as $k => $v) {
-			$op .= '<option value="' . $v['id'] . '">' . $v['username'] . '</option>';
-		}
-		$sup = $_GET['sup'] ?? '';
-		$tmp = self::commontmp('laravelflow V1.0 ');
+    /**
+     * 工作流会签模板
+     *
+     **/
+    public static function tmp_wfsign($info, $flowinfo, $sing)
+    {
+        $UserDb = User::GetUser();
+        $op = '';
+        foreach ($UserDb as $k => $v) {
+            $op .= '<option value="' . $v['id'] . '">' . $v['username'] . '</option>';
+        }
+        $sup = $_GET['sup'] ?? '';
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
-		return <<<php
+        return <<<php
 		 {$tmp['head']}
-		<form action="{$info['laravelflow_sign']}" method="post" name="form" id="wfform">
+		<form action="{$info['LaravelFlow_sign']}" method="post" name="form" id="wfform">
 		<input type="hidden" value="{$flowinfo['run_id']}" name="run_id" id='run_id'>
 		<input type="hidden" value="{$sup}" name="sup">
 		<input type="hidden" value="{$flowinfo['run_process']}" name="run_process">
@@ -692,7 +690,7 @@ str;
 				<td colspan=2 class='text-c'>
 						<input id='submit_to_save' name='submit_to_save' value='{$sing}' type='hidden'>
 						<button  class="button" type="submit">会签</button>
-						<a class="button" id='backbton' onclick='laravelflow.lclose()'>取消</a>
+						<a class="button" id='backbton' onclick='LaravelFlow.lclose()'>取消</a>
 				</td>
 				</tr>
 				</table>
@@ -727,41 +725,41 @@ $(function(){
 </body>
 </html>
 php;
-	}
+    }
 
-	/**
-	 * 工作流程模板
-	 *
-	 **/
-	public static function tmp_wfflow($process_data)
-	{
-		$tmp = self::commontmp('laravelflow V1.0 ');
-		return <<<php
+    /**
+     * 工作流程模板
+     *
+     **/
+    public static function tmp_wfflow($process_data)
+    {
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
+        return <<<php
 		 {$tmp['head']}<body  style="height: 100%; overflow: hidden;margin: 0px; padding: 0px;"><div class="panel layout-panel split-center" style="width:100%; cursor: default;" > <div  style="width:100%; height: 800px;" id="flowdesign_canvas"></div></div></div></body>
 </html>
 {$tmp['js']}
 <script type="text/javascript">
 var _this = $('#flowdesign_canvas');
 $(function(){
-	laravelflow.show({$process_data});
+	LaravelFlow.show({$process_data});
 });
 </script>
 php;
-	}
+    }
 
-	/**
-	 * 工作流列表模板
-	 *
-	 **/
-	public static function tmp_index($url, $data, $html)
-	{
-		$tmp = self::commontmp('laravelflow V1.0 ');
+    /**
+     * 工作流列表模板
+     *
+     **/
+    public static function tmp_index($url, $data, $html)
+    {
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
         $csr = csrf_token();
-		$html = <<<str
+        $html = <<<str
 		{head}
 		<meta name="csrf-token" content="{$csr}">
 		<div style='padding: 15px;'>
-		<a onclick="laravelflow.lopen('添加工作流','{url}',55,60)" class="button ">添加</a> <a onclick="location.reload();" class="button" style="background-color: #FFB800;">刷新</a>
+		<a onclick="LaravelFlow.lopen('添加工作流','{url}',55,60)" class="button ">添加</a> <a onclick="location.reload();" class="button" style="background-color: #FFB800;">刷新</a>
 		<table class="table" style="text-align: center">
 		    <thead><tr><th style="width: 30px">ID</th><th>流程名称</th><th>流程类型</th><th>添加时间</th><th>状态</th><th>操作</th></thead></tr>{data}
 		</table>
@@ -770,120 +768,120 @@ php;
 		</body>
 		</html>
 str;
-		return str_ireplace(['{head}','{url}','{data}','{js}'], [$tmp['head'],$url,$data,$tmp['js']], $html);
-	}
+        return str_ireplace(['{head}', '{url}', '{data}', '{js}'], [$tmp['head'], $url, $data, $tmp['js']], $html);
+    }
 
-	/**
-	 * 工作流管理模板
-	 *
-	 **/
-	public static function tmp_wfgl($data)
-	{
-		$tmp = self::commontmp('laravelflow V1.0 ');
-		$urls = unit::gconfig('wf_url');
+    /**
+     * 工作流管理模板
+     *
+     **/
+    public static function tmp_wfgl($data)
+    {
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
+        $urls = Unit::gconfig('wf_url');
         $csr = csrf_token();
-		return <<<php
+        return <<<php
 	{$tmp['head']}
 	<meta name="csrf-token" content="{$csr}">
-<div class="page-container"><div style='float: left;width:80px'><a onclick="laravelflow.lopen('添加委托授权','{$urls['wfapi']}/dladd','75','40')" class="button ">委托代理</a> <hr/><a onclick="location.reload();" class="button ">刷新页面</a></div>
+<div class="page-container"><div style='float: left;width:80px'><a onclick="LaravelFlow.lopen('添加委托授权','{$urls['wfapi']}/dladd','75','40')" class="button ">委托代理</a> <hr/><a onclick="location.reload();" class="button ">刷新页面</a></div>
 <div style='float: left;width:calc(100% - 80px);'><table class="table" ><thead><tr><th>ID</th><th>授权名称</th> <th>委托类型</th><th>授权关系</th><th>起止时间</th><th>委托备注</th><th>操作</th></tr></thead>{$data}</table></div></div>
 {$tmp['js']}</body></html>
 php;
-	}
+    }
 
-	/**
-	 * 工作流审批模板
-	 *
-	 **/
-	public static function tmp_check($info, $flowinfo)
-	{
-		if (strpos($flowinfo['status']['wf_action'], '@') !== false) {
-			$urldata = explode("@", $flowinfo['status']['wf_action']);
-			$url = url(unit::gconfig('int_url') . '/' . $urldata[0] . '/' . $urldata[1], ['id' => $info['wf_fid'], $urldata[2] => $urldata[3]]).($urldata[4] ?? '');
-		} else {
-			if (strpos($flowinfo['status']['wf_action'], '/') !== false) {
-				$url = url(unit::gconfig('int_url') . '/' . $flowinfo['status']['wf_action'], ['id' => $info['wf_fid']]);
-			}else{
-				$url = url(unit::gconfig('int_url') . '/' . $info['wf_type'] . '/' . $flowinfo['status']['wf_action'], ['id' => $info['wf_fid']]);
-			}
-		}
-		if ($flowinfo['sing_st'] == 0) {
-			$html = '<a class="button" onclick=laravelflow.lopen("提交工作流","' . $info['laravelflow_ok'] . '",45,42) style="background-color: #19be6b">√ 同意</a> ';
-			if ($flowinfo['status']['is_back'] != 2) {
-				$html .= '<a class="button"  onclick=laravelflow.lopen("工作流回退","' . $info['laravelflow_back'] . '",45,42) style="background-color: #c9302c;">↺ 驳回</a> ';
-			}
-			if ($flowinfo['status']['is_sing'] != 2) {
-				$html .= '<a class="button"  onclick=laravelflow.lopen("工作流会签","' . $info['laravelflow_sign'] . '&ssing=sing",45,42) style="background-color: #f37b1d;">⇅ 会签</a>';
-			}
-		} else {
-			$html = '<a class="button" style="background-color: #19be6b" onclick=laravelflow.lopen("会签提交","' . $info['laravelflow_ok'] . '&submit=sok",45,42)>↷ 会签提交</a> <a class="button" style="background-color: #c9302c;"  onclick=laravelflow.lopen("会签回退","' . $info['laravelflow_ok'] . '&submit=sback",45,42)>↶ 会签回退</a> <a class="button" style="background-color: #f37b1d;" onclick=laravelflow.lopen("工作流会签","' . $info['laravelflow_sign'] . '&ssing=ssing",45,42)>⇅ 再会签</a>';
-		}
-		$html .= ' <a class="button" onclick=laravelflow.lopen("审批历史","' . $info['laravelflow_log'] . '",50,30)>✤ 审批历史</a> ';
-		$tmp = self::commontmp('laravelflow V1.0 ');
+    /**
+     * 工作流审批模板
+     *
+     **/
+    public static function tmp_check($info, $flowinfo)
+    {
+        if (strpos($flowinfo['status']['wf_action'], '@') !== false) {
+            $urldata = explode("@", $flowinfo['status']['wf_action']);
+            $url = url(Unit::gconfig('int_url') . '/' . $urldata[0] . '/' . $urldata[1], ['id' => $info['wf_fid'], $urldata[2] => $urldata[3]]) . ($urldata[4] ?? '');
+        } else {
+            if (strpos($flowinfo['status']['wf_action'], '/') !== false) {
+                $url = url(Unit::gconfig('int_url') . '/' . $flowinfo['status']['wf_action'], ['id' => $info['wf_fid']]);
+            } else {
+                $url = url(Unit::gconfig('int_url') . '/' . $info['wf_type'] . '/' . $flowinfo['status']['wf_action'], ['id' => $info['wf_fid']]);
+            }
+        }
+        if ($flowinfo['sing_st'] == 0) {
+            $html = '<a class="button" onclick=LaravelFlow.lopen("提交工作流","' . $info['LaravelFlow_ok'] . '",45,42) style="background-color: #19be6b">√ 同意</a> ';
+            if ($flowinfo['status']['is_back'] != 2) {
+                $html .= '<a class="button"  onclick=LaravelFlow.lopen("工作流回退","' . $info['LaravelFlow_back'] . '",45,42) style="background-color: #c9302c;">↺ 驳回</a> ';
+            }
+            if ($flowinfo['status']['is_sing'] != 2) {
+                $html .= '<a class="button"  onclick=LaravelFlow.lopen("工作流会签","' . $info['LaravelFlow_sign'] . '&ssing=sing",45,42) style="background-color: #f37b1d;">⇅ 会签</a>';
+            }
+        } else {
+            $html = '<a class="button" style="background-color: #19be6b" onclick=LaravelFlow.lopen("会签提交","' . $info['LaravelFlow_ok'] . '&submit=sok",45,42)>↷ 会签提交</a> <a class="button" style="background-color: #c9302c;"  onclick=LaravelFlow.lopen("会签回退","' . $info['LaravelFlow_ok'] . '&submit=sback",45,42)>↶ 会签回退</a> <a class="button" style="background-color: #f37b1d;" onclick=LaravelFlow.lopen("工作流会签","' . $info['LaravelFlow_sign'] . '&ssing=ssing",45,42)>⇅ 再会签</a>';
+        }
+        $html .= ' <a class="button" onclick=LaravelFlow.lopen("审批历史","' . $info['LaravelFlow_log'] . '",50,30)>✤ 审批历史</a> ';
+        $tmp = self::commontmp('LaravelFlow V1.0 ');
 
-		return <<<php
+        return <<<php
 {$tmp['head']}
 <div class="page-container" style='width:100%;padding: 0px;'>
-<div class='laravelflowController'>
+<div class='LaravelFlowController'>
 {$html}
 </div>
-<div class='laravelflowForm' >
-	<div class='laravelflowHead'>单据信息</div>
+<div class='LaravelFlowForm' >
+	<div class='LaravelFlowHead'>单据信息</div>
 	<div style='width:100%;overflow-y:scroll; height:100%;'>
-		<iframe src="{$url}" id="iframepage" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" onLoad="laravelflow.SetHeight()"></iframe>
+		<iframe src="{$url}" id="iframepage" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" onLoad="LaravelFlow.SetHeight()"></iframe>
 	</div>
 </div>
 {$tmp['js']}
 </body>
 </html>
 php;
-	}
+    }
 
-	/**
-	 * 步骤属性模板
-	 *
-	 **/
-	public static function tmp_wfatt($one, $from, $process_to_list,$table='')
-	{
-		$urls = unit::gconfig('wf_url');
-		$wf_action = $one['wf_action'] ?? 'view';
-		if ($one['process_type'] != 'node-start') {
-			$process_type = '<option value="3">自由选择</option>';
-		} else {
-			$process_type = '';
-		}
-		if ($one['wf_mode'] != '1') {
-			$wf_mode = 'class="hide"';
-		} else {
-			$wf_mode = '';
-		}
-		$process_to_html = '';
-		foreach ($process_to_list as $k => $v) {
-			if (in_array($v['id'], $one['process_to'])) {
-				$process_to_html .= '<tr><td style="width: 50px;">' . $v['process_name'] . $v['id'] . '</td><td><table class="table table-condensed"><tr><td><textarea name="process_in_set_' . $v['id'] . '"  type="text/plain" style="width:100%;height:60px;">' . $v['condition'] . '</textarea>
+    /**
+     * 步骤属性模板
+     *
+     **/
+    public static function tmp_wfatt($one, $from, $process_to_list, $table = '')
+    {
+        $urls = Unit::gconfig('wf_url');
+        $wf_action = $one['wf_action'] ?? 'view';
+        if ($one['process_type'] != 'node-start') {
+            $process_type = '<option value="3">自由选择</option>';
+        } else {
+            $process_type = '';
+        }
+        if ($one['wf_mode'] != '1') {
+            $wf_mode = 'class="hide"';
+        } else {
+            $wf_mode = '';
+        }
+        $process_to_html = '';
+        foreach ($process_to_list as $k => $v) {
+            if (in_array($v['id'], $one['process_to'])) {
+                $process_to_html .= '<tr><td style="width: 50px;">' . $v['process_name'] . $v['id'] . '</td><td><table class="table table-condensed"><tr><td><textarea name="process_in_set_' . $v['id'] . '"  type="text/plain" style="width:100%;height:60px;">' . $v['condition'] . '</textarea>
 			Tip:填写必须符合SQL语句规范 详见：AdapteeBill::checkbill Where</td></tr></table></td></tr>';
-			}
-		}
-		$from_html = '';
-		foreach ($from as $k => $v) {
-			$from_html .= '<option value="' . $k . '">' . $v . '</option>';
-		}
+            }
+        }
+        $from_html = '';
+        foreach ($from as $k => $v) {
+            $from_html .= '<option value="' . $k . '">' . $v . '</option>';
+        }
         $condition = '<option value="0">单线模式（流程为直线型单一办理模式）</option><option value="1">转出模式（符合执行）</option><option value="2">同步模式（均需办理）</option>';
-        if(count($process_to_list) <= 1){
+        if (count($process_to_list) <= 1) {
             $condition = '<option value="0">单线模式（流程为直线型单一办理模式）</option>';
         }
 
         /*6.0.2增加方法接口*/
         $wf_action_select = '';
-        $wf_class = unit::gconfig('wf_action') ?? '';
+        $wf_class = Unit::gconfig('wf_action') ?? '';
         if (class_exists($wf_class)) {
             $wf_action_select = (new $wf_class())->info($table);
         }
-        $tmp = self::commontmp('laravelflow V1.0 管理列表');
+        $tmp = self::commontmp('LaravelFlow V1.0 管理列表');
         //return view(BEASE_URL.'/template/att.html',['urls'=>$urls,'one'=>$one,'wf_action'=>$wf_action,'process_type'=>$process_type,'from_html'=>$from_html,'condition'=>$condition,'wf_mode'=>$wf_mode,'process_to_html'=>$process_to_html,'tmp'=>$tmp,'wf_action_select'=>$wf_action_select]);
-        $style ='';
-        if(($one['process_type'] == 'node-cc')or($one['process_type'] == 'node-msg')){
-            $style ='style="display: none"';
+        $style = '';
+        if (($one['process_type'] == 'node-cc') or ($one['process_type'] == 'node-msg')) {
+            $style = 'style="display: none"';
         }
         $csr = csrf_token();
         //dump($one);exit;
@@ -892,7 +890,7 @@ php;
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>laravelflow工作流引擎 V1.0</title>
+    <title>LaravelFlow工作流引擎 V1.0</title>
     <link rel="stylesheet" href="/static/work/app.css">
     <link rel="stylesheet" type="text/css" href="/static/work/workflow.5.0.css?V1.0"/>
 </head>
@@ -938,7 +936,7 @@ php;
                         <tr id="node-process" {$style}>
                             <th>步骤模式</th>
                             <td colspan='3'>
-                                <select name="wf_mode" id="wf_mode_id" datatype="*" nullmsg="请选择步骤模式" onchange="laravelflow.onchange(this,'wf_mode');" class="smalls">
+                                <select name="wf_mode" id="wf_mode_id" datatype="*" nullmsg="请选择步骤模式" onchange="LaravelFlow.onchange(this,'wf_mode');" class="smalls">
                                     {$condition}
                                 </select>
                             </td>
@@ -962,7 +960,7 @@ php;
                         <tr id="node-user">
                             <th>办理人员</th>
                             <td colspan='3'>
-                                <select class="smalls" name="auto_person" id="auto_person_id" datatype="*" nullmsg="请选择办理人员或者角色！" onchange="laravelflow.onchange(this,'auto_person');" style="float: left;">
+                                <select class="smalls" name="auto_person" id="auto_person_id" datatype="*" nullmsg="请选择办理人员或者角色！" onchange="LaravelFlow.onchange(this,'auto_person');" style="float: left;">
                                     <option value="">请选择</option>
                                     {$process_type}
                                     <option value="2">协同人员</option>
@@ -972,25 +970,25 @@ php;
                                 </select>
                                 <div style="margin-left: 100px;">
                                     <div class="hide auto_person" id="auto_person_2">
-                                        <a class="button" onclick="laravelflow.lopen('办理人','{$urls['designapi']}/super_user/auto_xt?type_mode=user','60','95')">指定人员</a>
+                                        <a class="button" onclick="LaravelFlow.lopen('办理人','{$urls['designapi']}/super_user/auto_xt?type_mode=user','60','95')">指定人员</a>
                                         <input type="hidden" name="auto_xt_ids" id="auto_xt_ids" value="{$one['auto_xt_ids']}">
                                         <input type="hidden" name="auto_xt_text" id="auto_xt_text" value="{$one['auto_xt_text']}">
                                         <span id='auto_xt_html'>{$one['auto_xt_text']}</span>
                                     </div>
                                     <div class="hide auto_person" id="auto_person_3">
-                                        <a class="button" onclick="laravelflow.lopen('办理人','{$urls['designapi']}/super_user/range_user?type_mode=user','60','95')">自由选择</a>
+                                        <a class="button" onclick="LaravelFlow.lopen('办理人','{$urls['designapi']}/super_user/range_user?type_mode=user','60','95')">自由选择</a>
                                         <input type="hidden" name="range_user_ids" id="range_user_ids" value="{$one['range_user_ids']}" datatype="*" nullmsg="请选择办理人员！">
                                         <input type="hidden" name="range_user_text" id="range_user_text" value="{$one['range_user_text']}">
                                         <span id='range_user_html'>{$one['range_user_text']}</span>
                                     </div>
                                     <div class="hide auto_person" id="auto_person_4">
-                                        <a class="button" onclick="laravelflow.lopen('办理人','{$urls['designapi']}/super_user/auto_sponsor?type_mode=user','60','95')">指定人员</a>
+                                        <a class="button" onclick="LaravelFlow.lopen('办理人','{$urls['designapi']}/super_user/auto_sponsor?type_mode=user','60','95')">指定人员</a>
                                         <input type="hidden" name="auto_sponsor_ids" id="auto_sponsor_ids" value="{$one['auto_sponsor_ids']}">
                                         <input  type="hidden" name="auto_sponsor_text" id="auto_sponsor_text" value="{$one['auto_sponsor_text']}">
                                         <span id='auto_sponsor_html'>{$one['auto_sponsor_text']}</span>
                                     </div>
                                     <div class="hide auto_person" id="auto_person_5">
-                                        <a class="button" onclick="laravelflow.lopen('指定角色','{$urls['designapi']}/super_user/?type_mode=role','60','95')">指定角色</a>
+                                        <a class="button" onclick="LaravelFlow.lopen('指定角色','{$urls['designapi']}/super_user/?type_mode=role','60','95')">指定角色</a>
                                         <input type="hidden" name="auto_role_ids" id="auto_role_ids" value="{$one['auto_role_ids']}">
                                         <span id='auto_role_html'>{$one['auto_role_text']}</span>
                                         <input  type="hidden" name="auto_role_text" id="auto_role_text" value="{$one['auto_role_text']}">
@@ -1036,7 +1034,7 @@ php;
 </div>
 <script src="/static/work/jquery-1.7.2.min.js"></script>
 <script src="/static/work/lib/layer/2.4/layer.js"></script>
-<script src="/static/work/laravelflow.api.js"></script>
+<script src="/static/work/LaravelFlow.api.js"></script>
 <script src="/static/work/workflow.5.0.js"></script>
 <script type="text/javascript" src="/static/work/lib/Validform/5.3.2/Validform.min.js" ></script>
 <script type="text/javascript">
@@ -1081,7 +1079,7 @@ php;
             ajaxPost:true,
             showAllError:true,
             callback:function(ret){
-                laravelflow.common_return(ret);
+                LaravelFlow.common_return(ret);
             }
         });
     });
@@ -1089,17 +1087,17 @@ php;
 </body>
 </html>
 php;
-	}
+    }
 
-	/**
-	 * 公用模板方法
-	 *
-	 **/
-	static function commontmp($title)
-	{
-		$patch = unit::gconfig('static_url');
-		$css = '<link rel="stylesheet" type="text/css" href="' . $patch . 'workflow.5.0.css?V1.0"/>';
-		$js = '<script type="text/javascript" src="' . $patch . 'jquery-1.7.2.min.js" ></script>
+    /**
+     * 公用模板方法
+     *
+     **/
+    static function commontmp($title)
+    {
+        $patch = Unit::gconfig('static_url');
+        $css = '<link rel="stylesheet" type="text/css" href="' . $patch . 'workflow.5.0.css?V1.0"/>';
+        $js = '<script type="text/javascript" src="' . $patch . 'jquery-1.7.2.min.js" ></script>
 	<script type="text/javascript" src="' . $patch . 'jsPlumb-1.3.16-all-min.js"></script>
 			<script type="text/javascript" src="' . $patch . 'lib/layer/2.4/layer.js" ></script>
 			<script type="text/javascript" src="' . $patch . 'workflow.5.0.js?v=11" ></script>
@@ -1107,8 +1105,8 @@ php;
 			<script type="text/javascript" src="' . $patch . 'jquery-ui-1.9.2-min.js?" ></script>
 			<script type="text/javascript" src="' . $patch . 'multiselect2side.js" ></script>
 			<script type="text/javascript" src="' . $patch . 'lib/H5upload.js" ></script>';
-		$head = '<html><title>' . $title . '</title><head>' . $css . '</head><body style="background-color: white;">';
-		$form = '<script type="text/javascript">
+        $head = '<html><title>' . $title . '</title><head>' . $css . '</head><body style="background-color: white;">';
+        $form = '<script type="text/javascript">
 			$(function(){
 				$("#form").Validform({
 						tiptype:function(msg,o,cssctl){
@@ -1119,11 +1117,11 @@ php;
 						ajaxPost:true,
 						showAllError:true,
 						callback:function(ret){
-							laravelflow.common_return(ret);
+							LaravelFlow.common_return(ret);
 						}
 					});
 			});
 			</script>';
-		return ['head' => $head, 'css' => $css, 'js' => $js, 'form' => $form];
-	}
+        return ['head' => $head, 'css' => $css, 'js' => $js, 'form' => $form];
+    }
 }

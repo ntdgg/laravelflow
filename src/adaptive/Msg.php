@@ -1,18 +1,20 @@
 <?php
+
 /**
  *+------------------
- * laravelflow 消息节点数据
+ * LaravelFlow 消息节点数据
  *+------------------
  * Copyright (c) 2018~2025 liuzhiyun.com All rights reserved.  本版权不可删除，侵权必究
  *+------------------
  * Author: guoguo(1838188896@qq.com)
  *+------------------
  */
-declare (strict_types=1);
 
-namespace laravelflow\adaptive;
+declare(strict_types=1);
 
-use laravelflow\lib\unit;
+namespace LaravelFlow\Adaptive;
+
+use LaravelFlow\Lib\Unit;
 
 class Msg
 {
@@ -21,10 +23,10 @@ class Msg
 
     public function __construct()
     {
-        if (unit::gconfig('wf_db_mode') == 1) {
-            $className = '\\laravelflow\\custom\\laravel\\AdapteeMsg';
+        if (Unit::gconfig('wf_db_mode') == 1) {
+            $className = '\\LaravelFlow\\custom\\laravel\\AdapteeMsg';
         } else {
-            $className = unit::gconfig('wf_db_namespace') . 'AdapteeMsg';
+            $className = Unit::gconfig('wf_db_namespace') . 'AdapteeMsg';
         }
         $this->mode = new $className();
     }
@@ -37,10 +39,10 @@ class Msg
     public static function find($map)
     {
         $info = self::findWhere($map);
-        if($info){
-            $msg_api = unit::gconfig('msg_api') ?? '';
+        if ($info) {
+            $msg_api = Unit::gconfig('msg_api') ?? '';
             if (class_exists($msg_api)) {
-                (new $msg_api())->node_msg($info['run_id'],$info['process_msgid']);
+                (new $msg_api())->node_msg($info['run_id'], $info['process_msgid']);
             }
             /*更
             /*更新执行消息节点*/
@@ -75,11 +77,8 @@ class Msg
      */
     public static function add($data)
     {
-        if(!self::findWhere([['run_id','=',$data['run_id']],['process_id','=',$data['process_id']],['process_msgid','=',$data['process_msgid']]]))
-        {
+        if (!self::findWhere([['run_id', '=', $data['run_id']], ['process_id', '=', $data['process_id']], ['process_msgid', '=', $data['process_msgid']]])) {
             return (new Msg())->mode->add($data);
         }
     }
-
-
 }
