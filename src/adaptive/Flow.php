@@ -332,19 +332,21 @@ class Flow
      */
     static function ProcessAttSave($datas)
     {
-        $process_condition = trim($datas['process_condition'], ','); //process_to
-        $process_condition = explode(',', $process_condition);
         $out_condition = array();
-        if (count($process_condition) > 1 and $datas['wf_mode'] == 1) {
-            foreach ($process_condition as $value) {
-                $value = intval($value);
-                if ($value > 0) {
-                    $condition = trim($datas['process_in_set_' . $value], "@wf@");
-                    if ($condition == '') {
-                        return ['code' => 1, 'msg' => '转出条件必须设置！!', 'info' => ''];
+        if(!empty($datas['process_condition'])){
+            $process_condition = trim($datas['process_condition'], ','); //process_to
+            $process_condition = explode(',', $process_condition);            
+            if (count($process_condition) > 1 and $datas['wf_mode'] == 1) {
+                foreach ($process_condition as $value) {
+                    $value = intval($value);
+                    if ($value > 0) {
+                        $condition = trim($datas['process_in_set_' . $value], "@wf@");
+                        if ($condition == '') {
+                            return ['code' => 1, 'msg' => '转出条件必须设置！!', 'info' => ''];
+                        }
+                        $condition = $condition ? explode("@wf@", $condition) : array();
+                        $out_condition[$value] = ['condition' => $condition];
                     }
-                    $condition = $condition ? explode("@wf@", $condition) : array();
-                    $out_condition[$value] = ['condition' => $condition];
                 }
             }
         }
